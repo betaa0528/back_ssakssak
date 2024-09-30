@@ -508,11 +508,11 @@ CREATE TABLE Teacher (
                          `tch_account`	VARCHAR(100)	NULL,
                          `tch_pw`	VARCHAR(100)	NULL,
                          `grade`	INT	NULL,
-                         `group`	VARCHAR(100)	NULL
+                         `room`	VARCHAR(100)	NULL
 );
 
 
-INSERT INTO Teacher (tch_name, tch_email, tch_account, tch_pw, grade, group) VALUES
+INSERT INTO Teacher (tch_name, tch_email, tch_account, tch_pw, grade, room) VALUES
                                                                                  ('김철수', 'kim@example.com', 'kimc', 'password123', 1, '1반'),
                                                                                  ('이영희', 'lee@example.com', 'leey', 'qwerty456', 2, '2반'),
                                                                                  ('박민수', 'park@example.com', 'parkm', 'abcde789', 3, '3반'),
