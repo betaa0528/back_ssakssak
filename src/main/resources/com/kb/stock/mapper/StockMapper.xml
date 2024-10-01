@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kb.stock.mapper.StockMapper">
+    <select id="selectStockTradeList" resultType="com.kb.stock.domain.StockTrade">
+        select * from stock_trade;
+    </select>
+
+    <select id="selectRateHistory" resultType="com.kb.stock.domain.RateHistory">
+        select * from rate_history;
+    </select>
+
+    <select id="selectStockNews" resultType="com.kb.stock.domain.StockNews">
+        select * from stock_news;
+    </select>
+
+    <insert id="insertStockBuy" parameterType="com.kb.stock.dto.StockTradeRequest">
+        insert into stock_trade(std_id, tch_id, trade_type, quantity, stock_price, trade_date)
+        values (#{stdId}, #{tchId},'S', #{quantity}, #{stockPrice}, now()  );
+    </insert>
+    <insert id="insertStockSell" parameterType="com.kb.stock.dto.StockTradeRequest">
+        insert into stock_trade(std_id, tch_id, trade_type, quantity, stock_price, trade_date)
+        values (#{stdId}, #{tchId}, 'B', #{quantity}, #{stockPrice}, now());
+    </insert>
+
+    <select id="selectMyStock">
+        WITH Total_Stock_Trade AS (
+            SELECT
+                std_id,
+                SUM(CASE WHEN trade_type = 'B' THEN quantity ELSE 0 END) AS total_quantity,   -- 총 매수 수량
+                SUM(CASE WHEN trade_type = 'B' THEN quantity * stock_price ELSE 0 END) AS total_invested_capital, -- 투자한 총 금액
+                SUM(CASE WHEN trade_type = 'B' THEN quantity ELSE 0 END) * 1.0 / SUM(CASE WHEN trade_type = 'B' THEN quantity ELSE 0 END) AS avg_purchase_price  -- 주당 평균 구매 금액
+            FROM Stock_trade
+            GROUP BY std_id
+        ),
+             Current_Stock_Price AS (
+                 SELECT stock_price AS current_stock_price
+                 FROM rate_history
+                 ORDER BY date DESC
+                 LIMIT 1
+             )
+        SELECT
+            T.std_id,
+            T.total_quantity,     -- 보유 수량
+            T.total_invested_capital,  -- 투자한 원금
+            T.avg_purchase_price,  -- 1주당 평균 구매 금액
+            C.current_stock_price,  -- 현재 주식 1주당 가격
+            (C.current_stock_price * T.total_quantity) AS current_stock_value,  -- 현재 주식 평가액
+            ((C.current_stock_price * T.total_quantity) - T.total_invested_capital) AS current_profit,  -- 현재 수익금
+            (((C.current_stock_price * T.total_quantity) - T.total_invested_capital) / T.total_invested_capital) * 100 AS current_return_rate  -- 현재 수익률 (%)
+        FROM Total_Stock_Trade T
+                 CROSS JOIN Current_Stock_Price C;
+    </select>
+</mapper>
