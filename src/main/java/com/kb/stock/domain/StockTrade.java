@@ -1,4 +1,4 @@
-package com.kb.stockTrade.domain;
+package com.kb.stock.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
