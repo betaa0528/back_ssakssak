@@ -44,16 +44,16 @@
         <level value="warn" />
     </logger>
 
-    <logger name="_org.springframework.web.servlet.HandlerMapping.Mappings">
-        <level value="debug" />
-    </logger>
-    <logger name="jdbc">
-        <level value="trace" />
-    </logger>
+<!--    <logger name="_org.springframework.web.servlet.HandlerMapping.Mappings">-->
+<!--        <level value="debug" />-->
+<!--    </logger>-->
+<!--    <logger name="jdbc">-->
+<!--        <level value="trace" />-->
+<!--    </logger>-->
 
-    <logger name="jdbc.sqlonly">
-        <level value="trace" />
-    </logger>
+<!--    <logger name="jdbc.sqlonly">-->
+<!--        <level value="trace" />-->
+<!--    </logger>-->
 
     <!-- Root Logger -->
     <root>
