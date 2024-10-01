@@ -1,15 +1,19 @@
 package com.kb.controller.student;
 
-import com.kb.rateHistory.dto.RateHistoryDTO;
-import com.kb.rateHistory.service.StockService;
+import com.kb.stock.domain.RateHistory;
+import com.kb.rateHistory.service.RateHistoryService;
+import com.kb.stock.domain.StockNews;
+import com.kb.stock.dto.StockTradeRequest;
+import com.kb.stock.service.StockService;
+import com.kb.stockNews.service.StockNewsService;
+import com.kb.stock.domain.StockTrade;
+import com.kb.stockTrade.service.StockTradeService;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,17 +21,44 @@ import java.util.List;
 @RequestMapping("/student/stock")
 @RequiredArgsConstructor
 @Slf4j
-@Api(value= "StudentStockController", tags = "학생 주식 정보")
+@Api(value = "StudentStockController", tags = "학생 주식 정보")
 @PropertySource({"classpath:/application.properties"})
 public class StudentStockController {
 
     private final StockService stockService;
 
     @GetMapping("/data")
-    public ResponseEntity<List<RateHistoryDTO>> getHistories() {
-        List<RateHistoryDTO> histories = stockService.getRateHistories();
+    public ResponseEntity<List<RateHistory>> getHistories() {
+        List<RateHistory> histories = stockService.getRateHistories();
 
         return ResponseEntity.ok(histories);
+    }
+
+    @GetMapping("/news")
+    public ResponseEntity<List<StockNews>> getNewsList() {
+        List<StockNews> newsList = stockService.getStockNewsList();
+
+        return ResponseEntity.ok(newsList);
+    }
+
+    @GetMapping("/trade")
+    public ResponseEntity<List<StockTrade>> getStockTradeList() {
+        List<StockTrade> tradeList = stockService.getStockTradeList();
+
+        return ResponseEntity.ok(tradeList);
+    }
+
+    @PostMapping("/buy")
+    public ResponseEntity<String> buyStock(@RequestBody StockTradeRequest request) {
+        int result = stockService.buyStock(request);
+
+        return ResponseEntity.ok("succes");
+    }
+    @PostMapping("/sell")
+    public ResponseEntity<String> sellStock(@RequestBody StockTradeRequest request) {
+        int result = stockService.sellStock(request);
+
+        return ResponseEntity.ok("succes");
     }
 
 
