@@ -19,23 +19,23 @@ import java.util.List;
 @PropertySource({"classpath:/application.properties"})
 public class StudentCouponController {
 
-    private final CouponService CouponService;
+    private final CouponService couponService;
 
     @GetMapping("/list")
     public ResponseEntity<List<CouponDTO>> getCoupons() {
-        List<CouponDTO> coupons = CouponService.getAllCoupons();
+        List<CouponDTO> coupons = couponService.getAllCoupons();
         return ResponseEntity.ok(coupons);
     }
 
     @GetMapping("/list/{id}")
     public ResponseEntity<CouponDTO> getCouponById(@PathVariable Long id) {
-        CouponDTO coupon = CouponService.getCouponById(id);
+        CouponDTO coupon = couponService.getCouponById(id);
         return ResponseEntity.ok(coupon);
     }
 
     @PostMapping("/buy/{couponId}")
     public ResponseEntity<String> buyCoupon(@PathVariable Long couponId) {
-        CouponService.buyCoupon(couponId);
+        couponService.buyCoupon(couponId);
         return ResponseEntity.ok("Coupon purchased successfully!");
     }
 }
