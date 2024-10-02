@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/student/saving")
+@RequestMapping("/api/student/bank")
 @RequiredArgsConstructor
 @Slf4j
 @Api(value= "StudentSavingController", tags = "학생 주식 정보")
@@ -26,7 +26,8 @@ public class StudentBankController {
     private final SavingService SavingService;
     private final SavingAccountService SavingAccountService;
 
-    @GetMapping("/data")
+    //금융 삼품 출력
+    @GetMapping("/products-list")
     public ResponseEntity<List<SavingDTO>> getSavingProduct() {
         List<SavingDTO> SavingList = SavingService.getSavingProduct();
 
@@ -34,15 +35,23 @@ public class StudentBankController {
     }
 
 
-    @GetMapping("/account/data")
+    @GetMapping("/account/list")
     public ResponseEntity<List<SavingAccountDTO>> getSavingAccount() {
         List<SavingAccountDTO> SavingAccountList = SavingAccountService.getSavingAccount();
         return ResponseEntity.ok(SavingAccountList);
     }
 
 
+    // stdID에 따른 학생이 가진 적금내역 출력
+    @GetMapping("/mylist/{studentId}")
+    public ResponseEntity<List<SavingAccountDTO>> getMySavingAccounts(@PathVariable Long studentId) {
+        List<SavingAccountDTO> savingAccountList = SavingAccountService.getSavingAccountsByStudentId(studentId);
+        return ResponseEntity.ok(savingAccountList);
+    }
+
+
 //    적금 가입 정보 전송
-    @PostMapping("/bank/product/{id}")
+    @PostMapping("/product/{id}")
     public ResponseEntity<SavingAccountDTO> createSavingAccount(@RequestBody SavingAccountDTO savingAccountDTO) {
         // SavingAccountService를 통해 적금 상품 가입 처리
         SavingAccountDTO createdSavingAccount = SavingAccountService.createSavingAccount(savingAccountDTO);

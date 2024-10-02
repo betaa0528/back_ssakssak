@@ -23,6 +23,20 @@
         select * from Saving_account;
     </select>
 
+
+    <select id="selectSavingAccountByStudentId" resultMap="savingAccountResultMap">
+        SELECT
+            account_id,
+            saving_id,
+            rate,
+            deposit_amount,
+            end_date,
+            status,
+            total_amount
+        FROM Saving_account
+        WHERE std_id = #{stdId};
+    </select>
+
     <insert id="insertSavingAccount" parameterType="com.kb.savingAccount.dto.SavingAccountDTO">
         INSERT INTO Saving_account (std_id, tch_id, saving_id, rate, deposit_amount, start_date, end_date, status, total_amount)
         VALUES (#{stdId}, #{tchId}, #{savingId}, #{rate}, #{depositAmount}, #{startDate}, #{endDate}, #{status}, #{totalAmount})
