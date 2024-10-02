@@ -23,6 +23,6 @@
     <update id="updateCouponQuantity" parameterType="long">
         update coupon
         set cp_quantity = cp_quantity - 1
-        where cp_id = #{couponId} and cp_quantity > 0;
+        where cp_id = #{couponId};
     </update>
 </mapper>
