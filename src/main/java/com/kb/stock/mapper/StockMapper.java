@@ -4,6 +4,8 @@ import com.kb.stock.domain.RateHistory;
 import com.kb.stock.domain.StockNews;
 import com.kb.stock.domain.StockTrade;
 import com.kb.stock.dto.HoldingStockDTO;
+import com.kb.stock.dto.RateHistoryDTO;
+import com.kb.stock.dto.StockNewsRequest;
 import com.kb.stock.dto.StockTradeRequest;
 
 import java.util.List;
@@ -18,4 +20,9 @@ public interface StockMapper {
     int updateHoldingStock(HoldingStockDTO holdingStockDTO);
     HoldingStockDTO selectHoldingStock(long stdId);
 
+    List<RateHistoryDTO> selectRateHistoryLast5Days();
+
+    int insertRateHistory(RateHistoryDTO rateHistoryDTO);
+
+    int insertStockNews(StockNewsRequest request);
 }
