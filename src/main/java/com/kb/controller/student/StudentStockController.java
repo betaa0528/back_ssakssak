@@ -3,6 +3,7 @@ package com.kb.controller.student;
 import com.kb.stock.domain.RateHistory;
 import com.kb.rateHistory.service.RateHistoryService;
 import com.kb.stock.domain.StockNews;
+import com.kb.stock.dto.HoldingStockDTO;
 import com.kb.stock.dto.StockTradeRequest;
 import com.kb.stock.service.StockService;
 import com.kb.stockNews.service.StockNewsService;
@@ -12,13 +13,14 @@ import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/student/stock")
+@RequestMapping("/api/student/stock")
 @RequiredArgsConstructor
 @Slf4j
 @Api(value = "StudentStockController", tags = "학생 주식 정보")
@@ -49,16 +51,28 @@ public class StudentStockController {
     }
 
     @PostMapping("/buy")
-    public ResponseEntity<String> buyStock(@RequestBody StockTradeRequest request) {
+    public ResponseEntity<HoldingStockDTO> buyStock(@RequestBody StockTradeRequest request) {
         int result = stockService.buyStock(request);
+        HoldingStockDTO holdingStock = stockService.getHoldingStock(request.getStdId());
 
-        return ResponseEntity.ok("succes");
+        return ResponseEntity.status(HttpStatus.OK).body(holdingStock);
     }
-    @PostMapping("/sell")
-    public ResponseEntity<String> sellStock(@RequestBody StockTradeRequest request) {
-        int result = stockService.sellStock(request);
 
-        return ResponseEntity.ok("succes");
+    @PostMapping("/sell")
+    public ResponseEntity<HoldingStockDTO> sellStock(@RequestBody StockTradeRequest request) {
+        int result = stockService.sellStock(request);
+        HoldingStockDTO holdingStock = stockService.getHoldingStock(request.getStdId());
+
+        return ResponseEntity.status(HttpStatus.OK).body(holdingStock);
+    }
+
+    @GetMapping("/my-stock/{stdId}")
+    public ResponseEntity<HoldingStockDTO> getHoldingStock(@PathVariable long stdId) throws Exception {
+        HoldingStockDTO holdingStock = stockService.getHoldingStock(stdId);
+        if (holdingStock == null) {
+            throw new Exception("해당 학생의 보유주식 없음");
+        }
+        return ResponseEntity.ok(holdingStock);
     }
 
 
