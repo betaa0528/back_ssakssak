@@ -16,7 +16,8 @@
 
     <select id="selectStockNews" resultType="com.kb.stock.domain.StockNews">
         select *
-        from stock_news;
+        from stock_news
+        order by date desc;
     </select>
 
     <insert id="insertStockBuy" parameterType="com.kb.stock.dto.StockTradeRequest">
@@ -35,6 +36,17 @@
                 #{profitRate});
     </insert>
 
+    <insert id="insertRateHistory" parameterType="com.kb.stock.dto.RateHistoryDTO">
+        insert into rate_history(date, `change`, stock_price) values (now(), #{change}, #{stockPrice});
+    </insert>
+
+    <insert id="insertStockNews" parameterType="com.kb.stock.dto.StockNewsRequest">
+        <selectKey keyProperty="newsId" resultType="long" order="AFTER">
+            SELECT @@identity as newsId
+        </selectKey>
+        insert into stock_news values (#{title}, #{content}, now());
+    </insert>
+
     <update id="updateHoldingStock" parameterType="com.kb.stock.dto.HoldingStockDTO">
         update holding_stock
         set total_quantity   = #{totalQuantity},
@@ -50,5 +62,13 @@
         select *
         from holding_stock
         where std_id = #{stdId};
+    </select>
+
+
+    <select id="selectRateHistoryLast5Days" resultType="com.kb.stock.dto.RateHistoryDTO">
+        select `change`, stock_price
+        from rate_history
+        order by date desc
+        limit 5;
     </select>
 </mapper>
