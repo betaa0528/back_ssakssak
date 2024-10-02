@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kb.stock.mapper.StockMapper">
+    <select id="selectStockTradeList" resultType="com.kb.stock.domain.StockTrade">
+        select *
+        from stock_trade;
+    </select>
+
+    <select id="selectRateHistory" resultType="com.kb.stock.domain.RateHistory">
+        select *
+        from rate_history;
+    </select>
+
+    <select id="selectStockNews" resultType="com.kb.stock.domain.StockNews">
+        select *
+        from stock_news;
+    </select>
+
+    <insert id="insertStockBuy" parameterType="com.kb.stock.dto.StockTradeRequest">
+        insert into stock_trade(std_id, tch_id, trade_type, quantity, stock_price, trade_date)
+        values (#{stdId}, #{tchId}, 'S', #{quantity}, #{stockPrice}, now());
+    </insert>
+
+    <insert id="insertStockSell" parameterType="com.kb.stock.dto.StockTradeRequest">
+        insert into stock_trade(std_id, tch_id, trade_type, quantity, stock_price, trade_date)
+        values (#{stdId}, #{tchId}, 'B', #{quantity}, #{stockPrice}, now());
+    </insert>
+
+    <insert id="insertHoldingStock" parameterType="com.kb.stock.dto.HoldingStockDTO">
+        insert into holding_stock
+        values (#{stdId}, #{totalQuantity}, #{totalInvestment}, #{averagePrice}, #{currentValue}, #{profitLoss},
+                #{profitRate});
+    </insert>
+
+    <update id="updateHoldingStock" parameterType="com.kb.stock.dto.HoldingStockDTO">
+        update holding_stock
+        set total_quantity   = #{totalQuantity},
+            total_investment = #{totalInvestment},
+            average_price    = #{averagePrice},
+            current_value    = #{currentValue},
+            profit_loss      = #{profitLoss},
+            profit_rate      = #{profitRate}
+        where std_id = #{stdId};
+    </update>
+
+    <select id="selectHoldingStock" parameterType="long" resultType="com.kb.stock.dto.HoldingStockDTO">
+        select *
+        from holding_stock
+        where std_id = #{stdId};
+    </select>
+</mapper>

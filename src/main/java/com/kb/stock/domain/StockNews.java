@@ -1,4 +1,4 @@
-package com.kb.stockNews.domain;
+package com.kb.stock.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
