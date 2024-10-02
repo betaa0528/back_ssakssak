@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="com.kb.saving.mapper.SavingMapper">
+    <resultMap id="savingResultMap" type="com.kb.saving.dto.SavingDTO">
+        <id property="savingId" column="saving_id"/>
+        <result property="product" column="product"/>
+        <result property="maxDeposit" column="max_deposit"/>
+        <result property="depositPeriod" column="deposit_period"/>
+        <result property="rate" column="rate"/>
+        <result property="isPrime" column="isPrime"/>
+    </resultMap>
+
+    <select id="selectSaving" resultMap="savingResultMap">
+        select * from Saving;
+    </select>
+</mapper>

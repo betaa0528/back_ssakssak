@@ -24,6 +24,17 @@ tasks.withType(JavaCompile) {
   options.encoding = 'UTF-8'
 }
 
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(17)  // 자바 17 사용 설정
+  }
+}
+
+tasks.withType(JavaCompile) {
+  options.release.set(17)  // 자바 17로 컴파일
+}
+
+
 dependencies {
   // 스프링
   implementation ("org.springframework:spring-context:${springVersion}")
@@ -97,6 +108,9 @@ dependencies {
 
   // https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
   implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1'
+
+  implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.0'
+
 
 }
 

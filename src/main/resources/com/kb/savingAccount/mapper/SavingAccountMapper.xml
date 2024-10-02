@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="com.kb.savingAccount.mapper.SavingAccountMapper">
+    <resultMap id="savingAccountResultMap" type="com.kb.savingAccount.dto.SavingAccountDTO">
+        <result property="stdId" column="std_id"/>
+        <result property="savingId" column="saving_id"/>
+        <result property="rate" column="rate"/>
+        <result property="depositAmount" column="deposit_amount"/>
+        <result property="startDate" column="start_date"/>
+        <result property="endDate" column="end_date"/>
+        <result property="totalAmount" column="total_amount"/>
+    </resultMap>
+
+    <select id="selectSavingAccount" resultMap="savingAccountResultMap">
+        select * from Saving_account;
+    </select>
+
+
+    <select id="selectSavingAccountByStudentId" resultMap="savingAccountResultMap">
+        SELECT
+            std_id,
+            tch_id,
+            saving_id,
+            rate,
+            deposit_amount,
+            start_date,
+            end_date,
+            total_amount
+        FROM Saving_account
+        WHERE std_id = #{stdId};
+    </select>
+
+    <insert id="insertSavingAccount" parameterType="com.kb.savingAccount.dto.SavingAccountDTO">
+        INSERT INTO Saving_account (std_id,tch_id, saving_id, rate, deposit_amount, start_date, end_date, total_amount)
+        VALUES (#{stdId},#{tchId}, #{savingId}, #{rate}, #{depositAmount}, #{startDate}, #{endDate}, #{totalAmount})
+    </insert>
+
+</mapper>
