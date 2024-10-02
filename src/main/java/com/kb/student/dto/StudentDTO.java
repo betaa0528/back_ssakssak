@@ -1,15 +1,12 @@
-package com.kb.student.domain;
+package com.kb.student.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.List;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Data
-@Builder
-public class Student {
+@NoArgsConstructor
+public class StudentDTO {
     private long stdId;
     private long tchId;
     private int stdNum;
@@ -19,4 +16,6 @@ public class Student {
     private String stdBirth;
     private long jobId;
     private int seed;
+
+    private List<DailyCheckDTO> recentAttendance;  // 필드가 존재해야 함
 }
