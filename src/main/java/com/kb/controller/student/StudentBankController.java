@@ -19,7 +19,7 @@ import java.util.List;
 @RequestMapping("/api/student/bank")
 @RequiredArgsConstructor
 @Slf4j
-@Api(value= "StudentSavingController", tags = "학생 주식 정보")
+@Api(value= "StudentBankController", tags = "학생 dmsgod 정보")
 @PropertySource({"classpath:/application.properties"})
 public class StudentBankController {
 
