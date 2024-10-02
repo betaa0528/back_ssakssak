@@ -26,7 +26,6 @@ public class StudentBankController {
     private final SavingService SavingService;
     private final SavingAccountService SavingAccountService;
 
-    //금융 삼품 출력
     @GetMapping("/products-list")
     public ResponseEntity<List<SavingDTO>> getSavingProduct() {
         List<SavingDTO> SavingList = SavingService.getSavingProduct();
@@ -35,14 +34,6 @@ public class StudentBankController {
     }
 
 
-    @GetMapping("/account/list")
-    public ResponseEntity<List<SavingAccountDTO>> getSavingAccount() {
-        List<SavingAccountDTO> SavingAccountList = SavingAccountService.getSavingAccount();
-        return ResponseEntity.ok(SavingAccountList);
-    }
-
-
-    // stdID에 따른 학생이 가진 적금내역 출력
     @GetMapping("/mylist/{studentId}")
     public ResponseEntity<List<SavingAccountDTO>> getMySavingAccounts(@PathVariable Long studentId) {
         List<SavingAccountDTO> savingAccountList = SavingAccountService.getSavingAccountsByStudentId(studentId);
@@ -50,13 +41,10 @@ public class StudentBankController {
     }
 
 
-//    적금 가입 정보 전송
     @PostMapping("/product/{id}")
     public ResponseEntity<SavingAccountDTO> createSavingAccount(@RequestBody SavingAccountDTO savingAccountDTO) {
-        // SavingAccountService를 통해 적금 상품 가입 처리
         SavingAccountDTO createdSavingAccount = SavingAccountService.createSavingAccount(savingAccountDTO);
 
-        // 성공적으로 생성되면 201(Created) 상태 반환
         return new ResponseEntity<>(createdSavingAccount, HttpStatus.CREATED);
     }
 

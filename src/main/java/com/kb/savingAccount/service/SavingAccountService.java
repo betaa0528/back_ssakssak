@@ -21,21 +21,13 @@ public class SavingAccountService {
 
     private final SavingAccountMapper mapper;
 
-    public List<SavingAccountDTO> getSavingAccount() {
-        List<SavingAccountDTO> SavingAccountList = mapper.selectSavingAccount();
-        log.info(SavingAccountList);
-        return SavingAccountList;
-    }
 
     public List<SavingAccountDTO> getSavingAccountsByStudentId(Long studentId) {
         return mapper.selectSavingAccountByStudentId(studentId);
     };
 
     public SavingAccountDTO createSavingAccount(SavingAccountDTO SavingAccountDTO) {
-        // mapper.insertSavingAccount() 메서드 호출 시 인스턴스를 전달해야 합니다.
         mapper.insertSavingAccount(SavingAccountDTO);
-
-        // 생성된 계좌 정보를 반환
         return SavingAccountDTO;
     }
 }

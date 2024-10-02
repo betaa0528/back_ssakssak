@@ -26,15 +26,16 @@
 
     <select id="selectSavingAccountByStudentId" resultMap="savingAccountResultMap">
         SELECT
-            account_id,
+            std_id,
             saving_id,
             rate,
             deposit_amount,
+            start_date,
             end_date,
             status,
             total_amount
         FROM Saving_account
-        WHERE std_id = #{stdId};
+        WHERE std_id = #{stdId}  AND status = 'Y';
     </select>
 
     <insert id="insertSavingAccount" parameterType="com.kb.savingAccount.dto.SavingAccountDTO">
