@@ -20,7 +20,6 @@ public class SavingService {
 
     public List<SavingDTO> getSavingProduct() {
         List<SavingDTO> SavingList = mapper.selectSaving();
-        log.info(SavingList);
         return SavingList;
     }
 }

@@ -7,15 +7,12 @@
 
 <mapper namespace="com.kb.savingAccount.mapper.SavingAccountMapper">
     <resultMap id="savingAccountResultMap" type="com.kb.savingAccount.dto.SavingAccountDTO">
-        <id property="accountId" column="account_id"/>
         <result property="stdId" column="std_id"/>
-        <result property="tchId" column="tch_id"/>
         <result property="savingId" column="saving_id"/>
         <result property="rate" column="rate"/>
         <result property="depositAmount" column="deposit_amount"/>
         <result property="startDate" column="start_date"/>
         <result property="endDate" column="end_date"/>
-        <result property="status" column="status"/>
         <result property="totalAmount" column="total_amount"/>
     </resultMap>
 
@@ -27,20 +24,20 @@
     <select id="selectSavingAccountByStudentId" resultMap="savingAccountResultMap">
         SELECT
             std_id,
+            tch_id,
             saving_id,
             rate,
             deposit_amount,
             start_date,
             end_date,
-            status,
             total_amount
         FROM Saving_account
-        WHERE std_id = #{stdId}  AND status = 'Y';
+        WHERE std_id = #{stdId};
     </select>
 
     <insert id="insertSavingAccount" parameterType="com.kb.savingAccount.dto.SavingAccountDTO">
-        INSERT INTO Saving_account (std_id, tch_id, saving_id, rate, deposit_amount, start_date, end_date, status, total_amount)
-        VALUES (#{stdId}, #{tchId}, #{savingId}, #{rate}, #{depositAmount}, #{startDate}, #{endDate}, #{status}, #{totalAmount})
+        INSERT INTO Saving_account (std_id,tch_id, saving_id, rate, deposit_amount, start_date, end_date, total_amount)
+        VALUES (#{stdId},#{tchId}, #{savingId}, #{rate}, #{depositAmount}, #{startDate}, #{endDate}, #{totalAmount})
     </insert>
 
 </mapper>

@@ -19,6 +19,5 @@ public class SavingAccountDTO {
     private Integer depositAmount;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-    private String status;
     private Integer totalAmount;
 }
