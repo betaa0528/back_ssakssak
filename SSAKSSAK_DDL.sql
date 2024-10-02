@@ -228,6 +228,28 @@ INSERT INTO Stock_news (title, content, news_date) VALUES
                                                        ('싹싹 주식회사 성장 기대감 상승', '싹싹 주식회사가 앞으로 더 크게 성장할 것으로 기대되고 있습니다. 많은 사람들이 이 회사에 주목하고 있습니다.', '2024-01-20');
 
 
+CREATE TABLE Holding_stock (
+                               std_id BIGINT NOT NULL,              -- 학생 ID
+                               total_quantity INT NOT NULL,         -- 보유 주식 수량
+                               total_investment DECIMAL(15, 2),     -- 총 투자 원금
+                               average_price DECIMAL(15, 2),        -- 주당 평균 매수 가격
+                               current_value DECIMAL(15, 2),        -- 현재 주식 평가액
+                               profit_loss DECIMAL(15, 2),          -- 현재 수익금
+                               profit_rate DECIMAL(15, 2),          -- 현재 수익률
+                               PRIMARY KEY (std_id)
+);
+
+INSERT INTO Holding_stock (std_id, total_quantity, total_investment, average_price, current_value, profit_loss, profit_rate)
+VALUES
+    (1, 45, 4153.33, 101.41, 4950, 796.67, 19.18);
+
+INSERT INTO Holding_stock (std_id, total_quantity, total_investment, average_price, current_value, profit_loss, profit_rate)
+VALUES
+    (2, 50, 5540, 110.8, 5500, -40, -0.72);
+
+INSERT INTO Holding_stock (std_id, total_quantity, total_investment, average_price, current_value, profit_loss, profit_rate)
+VALUES
+    (3, 50, 3897.53, 97.53, 5500, 1602.47, 41.11);
 
 -- 쿠폰 테이블
 drop table if exists coupon;
@@ -492,11 +514,11 @@ CREATE TABLE Teacher (
 
 
 INSERT INTO Teacher (tch_name, tch_email, tch_account, tch_pw, grade, room) VALUES
-                                                                                 ('김철수', 'kim@example.com', 'kimc', 'password123', 1, '1반'),
-                                                                                 ('이영희', 'lee@example.com', 'leey', 'qwerty456', 2, '2반'),
-                                                                                 ('박민수', 'park@example.com', 'parkm', 'abcde789', 3, '3반'),
-                                                                                 ('최정훈', 'choi@example.com', 'choij', 'securePass', 4, '4반'),
-                                                                                 ('정예진', 'jung@example.com', 'jungy', 'myPassword', 5, '5반');
+                                                                                ('김철수', 'kim@example.com', 'kimc', 'password123', 1, '1반'),
+                                                                                ('이영희', 'lee@example.com', 'leey', 'qwerty456', 2, '2반'),
+                                                                                ('박민수', 'park@example.com', 'parkm', 'abcde789', 3, '3반'),
+                                                                                ('최정훈', 'choi@example.com', 'choij', 'securePass', 4, '4반'),
+                                                                                ('정예진', 'jung@example.com', 'jungy', 'myPassword', 5, '5반');
 
 
 -- 출석체크 테이블
@@ -560,3 +582,4 @@ INSERT INTO Daily_check (std_id, tch_id, check_date, isCheck) VALUES
                                                                   (14, 1, '2024-01-04', 'N'),
                                                                   (19, 1, '2024-01-16', 'N'),
                                                                   (2, 1, '2024-01-08', 'N');
+
