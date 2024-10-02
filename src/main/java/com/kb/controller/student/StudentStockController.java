@@ -1,14 +1,11 @@
 package com.kb.controller.student;
 
 import com.kb.stock.domain.RateHistory;
-import com.kb.rateHistory.service.RateHistoryService;
 import com.kb.stock.domain.StockNews;
 import com.kb.stock.dto.HoldingStockDTO;
 import com.kb.stock.dto.StockTradeRequest;
-import com.kb.stock.service.StockService;
-import com.kb.stockNews.service.StockNewsService;
 import com.kb.stock.domain.StockTrade;
-import com.kb.stockTrade.service.StockTradeService;
+import com.kb.stock.service.StockService;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
