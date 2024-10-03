@@ -1,20 +1,19 @@
-package com.kb.rewardGive.domain;
+package com.kb.reward.domain;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@Builder
-public class rewardGive {
+public class RewardGive {
     private long giveId;
     private long rewardId;
-    private Date giveDate;
+    private LocalDateTime giveDate;
     private long stdId;
     private long tchId;
 }
