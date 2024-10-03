@@ -4,10 +4,7 @@ import com.kb.stock.domain.HoldingStock;
 import com.kb.stock.domain.RateHistory;
 import com.kb.stock.domain.StockNews;
 import com.kb.stock.domain.StockTrade;
-import com.kb.stock.dto.HoldingStockDTO;
-import com.kb.stock.dto.RateHistoryDTO;
-import com.kb.stock.dto.StockNewsRequest;
-import com.kb.stock.dto.StockTradeRequest;
+import com.kb.stock.dto.*;
 import com.kb.stock.mapper.StockMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -17,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Log4j
 @RequiredArgsConstructor
@@ -109,6 +107,31 @@ public class StockService {
         stockMapper.insertStockNews(request);
 
         StockNews stockNews = getStockNewsList().get(0);
+        return stockNews;
+    }
+
+    public List<ChartDataDTO> getChartDataDTO() {
+        return stockMapper.selectChartData();
+    }
+
+    public StockChartDTO getStockChartDTO() {
+        StockChartDTO stockChartDTO = stockMapper.selectStockChart();
+        stockChartDTO.setChartData(getChartDataDTO());
+        return stockChartDTO;
+    }
+
+    public StockNews getStockNewsById(long id) {
+        StockNews stockNews = stockMapper.selectStockNewsById(id);
+        return Optional.of(stockNews).orElseThrow(NoSuchElementException::new);
+    }
+
+    public StockNews deleteNews(long newsId) {
+        StockNews stockNews = getStockNewsById(newsId);
+        int result = stockMapper.deleteStockNews(newsId);
+        if(result != 1) {
+            throw new NoSuchElementException();
+        }
+
         return stockNews;
     }
 }
