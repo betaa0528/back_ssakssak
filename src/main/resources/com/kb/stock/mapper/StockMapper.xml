@@ -4,6 +4,10 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.kb.stock.mapper.StockMapper">
+    <update id="deleteStockNews" parameterType="long">
+        update stock_news set status = 'n' where news_id = #{newsId};
+    </update>
+
     <select id="selectStockTradeList" resultType="com.kb.stock.domain.StockTrade">
         select *
         from stock_trade;
@@ -17,7 +21,8 @@
     <select id="selectStockNews" resultType="com.kb.stock.domain.StockNews">
         select *
         from stock_news
-        order by date desc;
+        where status = 'y'
+        order by news_date desc;
     </select>
 
     <insert id="insertStockBuy" parameterType="com.kb.stock.dto.StockTradeRequest">
@@ -37,14 +42,14 @@
     </insert>
 
     <insert id="insertRateHistory" parameterType="com.kb.stock.dto.RateHistoryDTO">
-        insert into rate_history(date, `change`, stock_price) values (now(), #{change}, #{stockPrice});
+        insert into rate_history(stock_date, `change`, stock_price) values (now(), #{change}, #{stockPrice});
     </insert>
 
     <insert id="insertStockNews" parameterType="com.kb.stock.dto.StockNewsRequest">
-        <selectKey keyProperty="newsId" resultType="long" order="AFTER">
-            SELECT @@identity as newsId
-        </selectKey>
-        insert into stock_news values (#{title}, #{content}, now());
+<!--        <selectKey keyProperty="newsId" resultType="long" order="AFTER">-->
+<!--            SELECT @@identity as newsId-->
+<!--        </selectKey>-->
+        insert into stock_news(title, content, news_date) values (#{title}, #{content}, now());
     </insert>
 
     <update id="updateHoldingStock" parameterType="com.kb.stock.dto.HoldingStockDTO">
@@ -64,11 +69,56 @@
         where std_id = #{stdId};
     </select>
 
-
     <select id="selectRateHistoryLast5Days" resultType="com.kb.stock.dto.RateHistoryDTO">
         select `change`, stock_price
         from rate_history
-        order by date desc
+        order by stock_date desc
         limit 5;
+    </select>
+
+    <select id="selectStockChart" resultType="com.kb.stock.dto.StockChartDTO">
+        SELECT
+            COALESCE(
+                    (SELECT stock_price
+                     FROM rate_history
+                     WHERE DATE(stock_date) = CURDATE()
+                    LIMIT 1),
+            (SELECT stock_price
+             FROM rate_history
+             ORDER BY stock_date DESC
+             LIMIT 1)
+        ) AS todayPrice,
+
+            COALESCE(
+                    (SELECT stock_price
+                     FROM rate_history
+                     WHERE DATE(stock_date) = CURDATE()
+                    LIMIT 1),
+            (SELECT stock_price
+             FROM rate_history
+             ORDER BY stock_date DESC
+             LIMIT 1)
+        ) -
+            (SELECT stock_price
+             FROM rate_history
+             ORDER BY stock_date DESC
+             LIMIT 1 OFFSET 1) AS priceChange,
+
+        (SELECT MAX(stock_price)
+         FROM rate_history
+         WHERE stock_date >= NOW() - INTERVAL 30 DAY) AS highPrice30Days,
+
+        (SELECT MIN(stock_price)
+         FROM rate_history
+         WHERE stock_date >= NOW() - INTERVAL 30 DAY) AS lowPrice30Days;
+
+    </select>
+
+    <select id="selectChartData" resultType="com.kb.stock.dto.ChartDataDTO">
+        select DATE_FORMAT(stock_date, '%Y-%m-%d') as stockDate, stock_price from rate_history WHERE stock_date >= NOW() - INTERVAL 30 DAY;
+    </select>
+
+    <select id="selectStockNewsById" resultType="com.kb.stock.domain.StockNews">
+        select * from stock_news where news_id = #{newsId};
     </select>
 </mapper>
