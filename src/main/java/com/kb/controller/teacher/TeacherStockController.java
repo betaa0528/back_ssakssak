@@ -1,7 +1,9 @@
 package com.kb.controller.teacher;
 
 import com.kb.stock.domain.StockNews;
+import com.kb.stock.dto.ChartDataDTO;
 import com.kb.stock.dto.RateHistoryDTO;
+import com.kb.stock.dto.StockChartDTO;
 import com.kb.stock.dto.StockNewsRequest;
 import com.kb.stock.service.StockService;
 import com.kb.stockNews.dto.StockNewsDTO;
@@ -48,6 +50,18 @@ public class TeacherStockController {
     public ResponseEntity<StockNews> createNews(@RequestBody StockNewsRequest request) {
         StockNews stockNews = stockService.createStockNews(request);
 
+        return ResponseEntity.ok(stockNews);
+    }
+
+    @GetMapping("/chart")
+    public ResponseEntity<StockChartDTO> getStockChart() {
+        StockChartDTO stockChartDTO = stockService.getStockChartDTO();
+        return ResponseEntity.ok(stockChartDTO);
+    }
+
+    @PostMapping("/news/{newsId}")
+    public ResponseEntity<StockNews> deleteNews(@PathVariable Long newsId) {
+        StockNews stockNews = stockService.deleteNews(newsId);
         return ResponseEntity.ok(stockNews);
     }
 }
