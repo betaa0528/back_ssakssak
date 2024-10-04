@@ -17,7 +17,7 @@
     <select id="selectStockNews" resultType="com.kb.stock.domain.StockNews">
         select *
         from stock_news
-        order by date desc;
+        order by news_date desc;
     </select>
 
     <insert id="insertStockBuy" parameterType="com.kb.stock.dto.StockTradeRequest">
