@@ -18,6 +18,6 @@ public class Student {
     private String stdAccount;
     private String stdPw;
     private String stdBirth;
-    private long jobName;
+    private long jobId;
     private int stdSeed;
 }

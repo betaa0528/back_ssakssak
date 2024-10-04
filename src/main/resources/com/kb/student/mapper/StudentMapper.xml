@@ -11,17 +11,17 @@
         <result property="stdName" column="std_name"/>
         <result property="stdNum" column="std_num"/>
         <result property="stdBirth" column="std_birth"/>
-        <result property="jobName" column="job_name"/>
+        <result property="jobId" column="job_id"/>
         <result property="stdSeed" column="std_seed"/>
     </resultMap>
 
     <select id="getStudentList" resultMap="StudentResultMap">
-        SELECT std_id, std_name, std_num, std_birth, job_name, std_seed
+        SELECT std_id, std_name, std_num, std_birth, job_id, std_seed
         FROM student
     </select>
 
     <insert id="insertStudent" parameterType="com.kb.student.dto.StudentDTO">
-        INSERT INTO student (tch_id, std_num, std_name, std_birth, job_name, std_seed)
+        INSERT INTO student (tch_id, std_num, std_name, std_birth, job_id, std_seed)
         VALUES (1, #{stdName}, #{stdNum}, #{stdBirth}, #{jobName}, #{stdSeed})
     </insert>
 
