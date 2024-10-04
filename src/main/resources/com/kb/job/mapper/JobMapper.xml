@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kb.job.mapper.JobMapper">
+
+    <resultMap id="JobResultMap" type="com.kb.job.dto.JobDTO">
+        <id property="jobId" column="job_id"/>
+        <result property="jobName" column="job_name"/>
+        <result property="jobContent" column="job_content"/>
+        <result property="isPrime" column="isPrime"/>
+    </resultMap>
+
+    <select id="getJobList" resultMap="JobResultMap">
+        SELECT * FROM Job
+    </select>
+
+    <select id="checkJobExistsByName" parameterType="String" resultType="int">
+        SELECT COUNT(*)
+        FROM Job
+        WHERE job_name = #{jobName}
+    </select>
+
+    <insert id="insertJob" parameterType="com.kb.job.dto.JobDTO">
+        INSERT INTO Job (job_name, job_content, isPrime)
+        VALUES (#{jobName}, #{jobContent}, #{isPrime})
+    </insert>
+
+
+</mapper>
