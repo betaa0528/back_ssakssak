@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Builder
+
 public class Student {
     private long stdId;
     private long tchId;
@@ -18,5 +19,5 @@ public class Student {
     private String stdPw;
     private String stdBirth;
     private long jobId;
-    private int seed;
+    private int stdSeed;
 }
