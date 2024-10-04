@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="com.kb.quiz.mapper.QuizMapper">
+
+    <!-- QuizDTO 매핑 -->
+    <resultMap id="QuizResultMap" type="com.kb.quiz.dto.QuizDTO">
+        <id property="quizId" column="quiz_id"/>
+        <result property="quizContent" column="quiz_content"/>
+        <result property="answer1" column="answer1"/>
+        <result property="answer2" column="answer2"/>
+        <result property="answer3" column="answer3"/>
+        <result property="answer4" column="answer4"/>
+        <result property="answerNum" column="answer_num" javaType="String"/>
+        <result property="quizDate" column="quiz_date"/>
+    </resultMap>
+
+    <!-- 오늘의 퀴즈 가져오기 -->
+    <select id="getTodayQuiz" resultType="com.kb.quiz.dto.QuizDTO">
+        SELECT quiz_id, quiz_content, answer1, answer2, answer3, answer4, quiz_date, answer_num
+        FROM quiz
+        WHERE quiz_date = CURDATE()
+    </select>
+
+    <!-- 퀴즈 정답 번호 가져오기 -->
+    <select id="getCorrectAnswer" resultType="String">
+        SELECT answer_num FROM quiz WHERE quiz_id = #{quizId}
+    </select>
+
+</mapper>
