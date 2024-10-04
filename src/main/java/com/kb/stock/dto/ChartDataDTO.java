@@ -1,17 +1,14 @@
-package com.kb.stock.domain;
+package com.kb.stock.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class RateHistory {
-    private long rateHistoryId;
-    private Date date;
-    private int change;
+public class ChartDataDTO {
+    private String stockDate;
     private int stockPrice;
+
 }
