@@ -3,18 +3,26 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-
-
 <mapper namespace="com.kb.store.mapper.StoreMapper">
     <resultMap id="StoreResultMap" type="com.kb.store.dto.StoreDTO">
-        <id property="storeId" column="store_id"/>
-        <result property="cpId" column="cp_id"/>
-        <result property="stdId" column="std_id"/>
-        <result property="storeDate" column="store_date"/>
-        <result property="quantity" column="quantity"/>
+        <id property="cpId" column="cp_id"/>
+        <result property="cpPrice" column="cp_price"/>
+        <result property="cpName" column="cp_name"/>
+        <result property="cpContent" column="cp_content"/>
+        <result property="cpQuantity" column="cp_quantity"/>
+        <result property="cpDate" column="cp_date"/>
+        <result property="cpImage" column="cp_image"/>
     </resultMap>
 
-    <select id="selectStore" resultMap="StoreResultMap">
-        select * from store;
+    <insert id="insertStore" parameterType="com.kb.store.dto.StoreDTO">
+        INSERT INTO coupon (cp_name, cp_content, cp_price, cp_quantity, cp_image)
+        VALUES ( #{cpName}, #{cpContent}, #{cpPrice}, #{cpQuantity}, #{cpImage})
+    </insert>
+
+    <select id="getStoreList" resultMap="StoreResultMap">
+        SELECT cp_id, cp_price, cp_name, cp_content, cp_quantity,
+               date_format(cp_date, '%Y-%m-%d') as formattedDate
+        FROM coupon
     </select>
+
 </mapper>
