@@ -10,7 +10,6 @@ import java.util.List;
 @Mapper
 public interface StudentMapper {
 
-    // 학생 프로필 조회
     StudentDTO selectStudentProfile(Long studentId);
     List<DailyCheckDTO> selectRecentFiveDaysAttendance(@Param("studentId") Long studentId);
 }

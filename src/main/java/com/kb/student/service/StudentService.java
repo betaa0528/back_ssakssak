@@ -16,11 +16,9 @@ public class StudentService {
 
     private final StudentMapper studentMapper;
 
-    // 학생 프로필 조회 (최근 5일간 출석 정보 포함)
     public StudentDTO getStudentProfile(Long studentId) {
         StudentDTO profile = studentMapper.selectStudentProfile(studentId);
 
-        // 최근 5일간의 출석 정보 추가
         List<DailyCheckDTO> recentAttendance = studentMapper.selectRecentFiveDaysAttendance(studentId);
         profile.setRecentAttendance(recentAttendance);
 
