@@ -19,5 +19,5 @@ public class Student {
     private String stdPw;
     private String stdBirth;
     private long jobId;
-    private int seed;
+    private int stdSeed;
 }

@@ -14,6 +14,10 @@
         <result property="jobId" column="job_id"/>
     </resultMap>
 
+    <update id="updateStudentSeed">
+        update student set seed = seed + #{rewardSeed} where std_id = #{stdId};
+    </update>
+
     <select id="selectStudentProfile" parameterType="long" resultMap="StudentResultMap">
         select std_id, std_num, std_name, std_account, std_birth, job_id
         from student

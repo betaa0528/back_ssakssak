@@ -12,4 +12,6 @@ public interface StudentMapper {
 
     StudentDTO selectStudentProfile(Long studentId);
     List<DailyCheckDTO> selectRecentFiveDaysAttendance(@Param("studentId") Long studentId);
+
+    int updateStudentSeed(@Param("stdId") long stdId, @Param("rewardSeed") int rewardSeed);
 }

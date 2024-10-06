@@ -14,5 +14,4 @@ public class RateHistory {
     private Date date;
     private int change;
     private int stockPrice;
-
 }
