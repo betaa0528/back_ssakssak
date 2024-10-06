@@ -1,11 +1,9 @@
 package com.kb._config;
 
+import com.kb.security.filter.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.mybatis.spring.annotation.MapperScan;
-import com.kb.security.filter.AuthenticationErrorFilter;
-import com.kb.security.filter.JwtAuthenticationFilter;
-import com.kb.security.filter.JwtUsernamePasswordAuthenticationFilter;
 import com.kb.security.handler.CustomAccessDeniedHandler;
 import com.kb.security.handler.CustomAuthenticationEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +36,14 @@ import org.springframework.web.filter.CorsFilter;
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+//    @Autowired
+//    private JwtUsernamePasswordAuthenticationFilter jwtUsernamePasswordAuthenticationFilter;
+
     @Autowired
-    private JwtUsernamePasswordAuthenticationFilter jwtUsernamePasswordAuthenticationFilter;
+    private JwtStudentAuthenticationFilter jwtStudentAuthenticationFilter;
+
+    @Autowired
+    private JwtTeacherAuthenticationFilter jwtTeacherAuthenticationFilter;
 
     private final UserDetailsService userDetailsService;
     private final AuthenticationErrorFilter authenticationErrorFilter;
@@ -103,7 +107,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // Jwt 인증 필터
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 // 로그인 인증 필터
-                .addFilterBefore(jwtUsernamePasswordAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+//                .addFilterBefore(jwtUsernamePasswordAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtTeacherAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtStudentAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         // 예외 처리 설정
         http
@@ -119,6 +125,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers(HttpMethod.POST, "/api/board/**").authenticated()
 //                .antMatchers(HttpMethod.PUT, "/api/board/**").authenticated()
 //                .antMatchers(HttpMethod.DELETE, "/api/board/**").authenticated()
+//                .anyRequest().authenticated();
                 .anyRequest().permitAll()
         ;
 
