@@ -16,12 +16,11 @@ import java.util.List;
 @Setter
 @ToString
 public class MemberDTO {
-    private String id; 			// id=username
+    private String username; 			// id=username
     private String password;	// password
     private String name;        // 사용자이름
-    private String email;       // 이메일
 
     public Member toMember() {
-        return Member.builder().id(id).password(password).name(name).email(email).build();
+        return Member.builder().username(username).password(password).name(name).build();
     }
 }
