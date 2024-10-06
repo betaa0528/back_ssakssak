@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kb.alarm.mapper.AlarmMapper">
+    <insert id="insertAlarm" parameterType="com.kb.alarm.dto.Alarm">
+        insert into alarm values (#{student.stdId} , #{type}, #{targetId});
+    </insert>
+
+    <select id="selectAllByStudentId" resultType="com.kb.alarm.dto.Alarm">
+        select * from alarm where student_id = #{stdId} and target_id = #{tchId};
+    </select>
+</mapper>
