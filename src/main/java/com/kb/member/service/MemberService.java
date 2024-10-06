@@ -33,7 +33,7 @@ public class MemberService{
 
 
     public Member login(Member member) {
-        Member saveMember = mapper.selectById(member.getId());
+        Member saveMember = mapper.selectById(member.getUsername());
         if(passwordEncoder.matches(member.getPassword(), saveMember.getPassword())) {
             saveMember.setPassword("");
             saveMember.setMno(0);
@@ -82,26 +82,26 @@ public class MemberService{
         if(result != 1){
             throw new IllegalAccessException();
         }
-        Auth auth = new Auth(member.getId(), "ROLE_MEMBER");
+        Auth auth = new Auth(member.getUsername(), "ROLE_MEMBER");
         result = mapper.insertAuth(auth);
         if(result != 1){
             throw new IllegalAccessException();
         }
         saveAvatar(avatar, member.getUsername());
-        return mapper.selectById(member.getId());
+        return mapper.selectById(member.getUsername());
     }
 
     public Member update(Member updateMember, MultipartFile avatar) throws IllegalAccessException {
-        Member oldMember = mapper.selectById(updateMember.getId());
+        Member oldMember = mapper.selectById(updateMember.getUsername());
         if(!passwordEncoder.matches(updateMember.getPassword(),oldMember.getPassword())) {
             throw new PasswordMissmatchException();
         }
         updateMember.setMno(oldMember.getMno());
         mapper.updateMember(updateMember);
         if(avatar != null && !avatar.isEmpty()) {
-            saveAvatar(avatar, oldMember.getId());
+            saveAvatar(avatar, oldMember.getUsername());
         }
-        return mapper.selectById(updateMember.getId());
+        return mapper.selectById(updateMember.getUsername());
     }
 
     public Member delete(String id) {
