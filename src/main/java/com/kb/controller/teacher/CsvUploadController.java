@@ -28,8 +28,8 @@ public class CsvUploadController {
         return ResponseEntity.ok("CSV data uploaded and saved successfully");
     }
 
-    @GetMapping("/class/student")
-    public List<StudentCsvDTO> getAllStudents() {
-        return studentService.getAllStudents();
-    }
+//    @GetMapping("/class/student")
+//    public List<StudentCsvDTO> getAllStudents() {
+//        return studentService.getAllStudents();
+//    }
 }

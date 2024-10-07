@@ -55,13 +55,13 @@
     </select>
 
 
-    <insert id="insertStudent" parameterType="com.kb.student.dto.StudentCsvDTO">
+    <insert id="insertCSVStudent" parameterType="com.kb.student.dto.StudentCsvDTO">
         INSERT INTO student (std_num, std_name, std_birth, job_id, seed, tch_id)
         VALUES (#{stdNum}, #{stdName}, #{stdBirth}, #{jobId}, #{seed}, #{tchId})
     </insert>
 
 
-    <select id="getAllStudents" resultType="com.kb.student.dto.StudentCsvDTO">
+    <select id="getAllStudents" resultType="com.kb.student.dto.StudentDTO">
         SELECT std_id, std_num, std_name, std_birth, job_id, seed, tch_id
         FROM student
     </select>

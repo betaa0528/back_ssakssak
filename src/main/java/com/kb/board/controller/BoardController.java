@@ -115,7 +115,7 @@ public class BoardController {
     public ResponseEntity<BoardReply> deleteReply(@PathVariable long rno,
                     @AuthenticationPrincipal Member principal) throws Exception {
         BoardReply reply = service.getReply(rno);
-        if(!reply.getMemberId().equals(principal.getId())) {
+        if(!reply.getMemberId().equals(principal.getUsername())) {
             throw new IllegalAccessException();
         }
         int result = service.delteReply(rno);
