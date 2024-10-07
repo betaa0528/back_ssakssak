@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kb.deposit.mapper.DepositMapper">
+    <resultMap id="depositResultMap" type="com.kb.deposit.dto.DepositDTO">
+        <id property="depositId" column="deposit_id"/>
+        <result property="depositName" column="deposit_name"/>
+        <result property="depositContent" column="deposit_content"/>
+        <result property="maxDeposit" column="max_deposit"/>
+        <result property="depositPeriod" column="deposit_period"/>
+        <result property="rate" column="rate"/>
+    </resultMap>
+
+    <select id="getDepositList" resultMap="depositResultMap">
+        select * from Deposit;
+    </select>
+
+</mapper>
