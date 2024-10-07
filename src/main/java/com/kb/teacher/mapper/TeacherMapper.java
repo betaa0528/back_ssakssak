@@ -1,5 +1,6 @@
 package com.kb.teacher.mapper;
 
+import com.kb.alarm.dto.TeacherProfile;
 import com.kb.teacher.dto.TeacherDTO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -13,4 +14,6 @@ public interface TeacherMapper {
     int checkTeacherAccount(TeacherDTO teacherDTO);
 
     void updateTeacherPassword(TeacherDTO teacherDTO);
+
+    TeacherDTO selectByTeacherProfile(String username);
 }

@@ -5,10 +5,18 @@
 
 <mapper namespace="com.kb.alarm.mapper.AlarmMapper">
     <insert id="insertAlarm" parameterType="com.kb.alarm.dto.Alarm">
-        insert into alarm values (#{student.stdId} , #{type}, #{targetId});
+        insert into alarm (student_id, type, target_id)
+        values (#{student.stdId}, #{type}, #{targetId});
     </insert>
+    <update id="updateAlarmIsChecked">
+        update alarm set is_checked = 'n' where id = #{id};
+    </update>
 
     <select id="selectAllByStudentId" resultType="com.kb.alarm.dto.Alarm">
-        select * from alarm where student_id = #{stdId} and target_id = #{tchId};
+        select * from alarm where student_id = #{stdId} and target_id = #{tchId} and is_checked = 'y';
+    </select>
+
+    <select id="selectAllAlarmListByTeacherId" resultType="com.kb.alarm.dto.Alarm">
+        select * from alarm where target_id = #{tchId} and is_checked = 'y';
     </select>
 </mapper>
