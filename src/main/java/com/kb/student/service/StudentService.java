@@ -32,11 +32,12 @@ public class StudentService {
         return profile;
     }
 
-
+    //조은
     public List<SeedRankingDTO> getSeedRanking() {
         return studentMapper.getSeedRanking();
     }
 
+    
     public void saveStudents(List<StudentCsvDTO> Student) {
         for (StudentCsvDTO studentcsvDTO : Student) {
             studentMapper.insertStudent(studentcsvDTO);

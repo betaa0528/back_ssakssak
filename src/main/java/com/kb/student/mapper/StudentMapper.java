@@ -19,9 +19,8 @@ public interface StudentMapper {
     List<DailyCheckDTO> selectRecentFiveDaysAttendance(@Param("studentId") Long studentId);
 
 
+    //조은
     List<SeedRankingDTO> getSeedRanking();
-
-
 
     void insertStudent(StudentCsvDTO student);
     List<StudentCsvDTO> getAllStudents();
