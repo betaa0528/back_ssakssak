@@ -30,6 +30,10 @@ public class StudentService {
         return profile;
     }
 
+    public void registerStudent(StudentDTO studentDTO) {
+        studentMapper.insertStudent(studentDTO);
+    }
+
     //조은
     public List<SeedRankingDTO> getSeedRanking() {
         return studentMapper.getSeedRanking();
@@ -38,10 +42,10 @@ public class StudentService {
     
     public void saveStudents(List<StudentCsvDTO> Student) {
         for (StudentCsvDTO studentcsvDTO : Student) {
-            studentMapper.insertStudent(studentcsvDTO);
+            studentMapper.insertCSVStudent(studentcsvDTO);
         }
     }
-    public List<StudentCsvDTO> getAllStudents() {
+    public List<StudentDTO> getAllStudents() {
         return studentMapper.getAllStudents();
     }
 }

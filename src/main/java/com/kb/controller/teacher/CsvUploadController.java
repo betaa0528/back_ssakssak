@@ -2,6 +2,7 @@ package com.kb.controller.teacher;
 
 
 import com.kb.student.dto.StudentCsvDTO;
+import com.kb.student.dto.StudentDTO;
 import com.kb.student.service.StudentService;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,7 @@ public class CsvUploadController {
     }
 
     @GetMapping("/class/student")
-    public List<StudentCsvDTO> getAllStudents() {
+    public List<StudentDTO> getAllStudents() {
         return studentService.getAllStudents();
     }
 }
