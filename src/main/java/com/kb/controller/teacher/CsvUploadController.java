@@ -2,6 +2,7 @@ package com.kb.controller.teacher;
 
 
 import com.kb.student.dto.StudentCsvDTO;
+import com.kb.student.dto.StudentDTO;
 import com.kb.student.service.StudentService;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
@@ -28,8 +29,8 @@ public class CsvUploadController {
         return ResponseEntity.ok("CSV data uploaded and saved successfully");
     }
 
-//    @GetMapping("/class/student")
-//    public List<StudentCsvDTO> getAllStudents() {
-//        return studentService.getAllStudents();
-//    }
+    @GetMapping("/class/student")
+    public List<StudentDTO> getAllStudents() {
+        return studentService.getAllStudents();
+    }
 }
