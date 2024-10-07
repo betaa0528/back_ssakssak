@@ -1,9 +1,13 @@
 package com.kb.student.mapper;
 
+import com.kb.student.domain.Student;
 import com.kb.student.dto.DailyCheckDTO;
+import com.kb.student.dto.SeedRankingDTO;
+import com.kb.student.dto.StudentCsvDTO;
 import com.kb.student.dto.StudentDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -15,4 +19,12 @@ public interface StudentMapper {
     StudentDTO selectStudentProfile(Long studentId);
     List<DailyCheckDTO> selectRecentFiveDaysAttendance(@Param("studentId") Long studentId);
     int updateStudentSeed(@Param("stdId") long stdId, @Param("rewardSeed") int rewardSeed);
-}
+  
+  
+    //조은
+    List<SeedRankingDTO> getSeedRanking();
+
+    void insertStudent(StudentCsvDTO student);
+    List<StudentCsvDTO> getAllStudents();
+
+ }
