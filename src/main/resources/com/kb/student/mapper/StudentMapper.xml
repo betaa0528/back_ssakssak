@@ -31,4 +31,24 @@
         INSERT INTO Daily_check (std_id, tch_id, check_date, isCheck)
         VALUES (#{stdId}, #{tchId}, #{checkDate}, #{isCheck})
     </insert>
+
+
+
+    <select id="getSeedRanking" resultType="com.kb.student.dto.SeedRankingDTO">
+        SELECT std_id AS stdId, seed
+        FROM Student
+        ORDER BY seed DESC
+    </select>
+
+
+    <insert id="insertStudent" parameterType="com.kb.student.dto.StudentCsvDTO">
+        INSERT INTO student (std_num, std_name, std_birth, job_id, seed, tch_id)
+        VALUES (#{stdNum}, #{stdName}, #{stdBirth}, #{jobId}, #{seed}, #{tchId})
+    </insert>
+
+
+    <select id="getAllStudents" resultType="com.kb.student.dto.StudentCsvDTO">
+        SELECT std_id, std_num, std_name, std_birth, job_id, seed, tch_id
+        FROM student
+    </select>
 </mapper>

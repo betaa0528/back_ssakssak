@@ -5,6 +5,8 @@ import com.kb.saving.dto.SavingDTO;
 import com.kb.saving.service.SavingService;
 import com.kb.savingAccount.dto.SavingAccountDTO;
 import com.kb.savingAccount.service.SavingAccountService;
+import com.kb.student.dto.SeedRankingDTO;
+import com.kb.student.service.StudentService;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,5 +50,12 @@ public class StudentBankController {
         return new ResponseEntity<>(createdSavingAccount, HttpStatus.CREATED);
     }
 
+    private final StudentService studentService;
+
+    @GetMapping("/seed-ranking")
+    public ResponseEntity<List<SeedRankingDTO>> getSeedRanking() {
+        List<SeedRankingDTO> ranking = studentService.getSeedRanking();
+        return ResponseEntity.ok(ranking);
+    }
 
 }
