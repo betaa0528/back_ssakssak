@@ -40,4 +40,10 @@
         VALUES (#{stdId},#{tchId}, #{savingId}, #{rate}, #{depositAmount}, #{startDate}, #{endDate}, #{totalAmount})
     </insert>
 
+    <insert id="insertSavingAccountTeacher" parameterType="com.kb.saving.dto.SavingDTO">
+        INSERT INTO Saving (product, rate, saving_content, target, deposit_period, deposit_cycle, max_deposit, prime_rate, prime_job)
+        VALUES (#{product}, #{rate}, #{savingContent}, #{target}, #{depositPeriod}, #{depositCycle}, #{maxDeposit}, #{primeRate}, #{primeJob})
+    </insert>
+
+
 </mapper>
