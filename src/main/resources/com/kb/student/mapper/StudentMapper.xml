@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
@@ -6,12 +7,18 @@
 <mapper namespace="com.kb.student.mapper.StudentMapper">
     <resultMap id="StudentResultMap" type="com.kb.student.dto.StudentDTO">
         <id property="stdId" column="std_id"/>
-        <result property="stdNum" column="std_num"/>
+        <result property="tchId" column="tch_id"/>
         <result property="stdName" column="std_name"/>
-        <result property="stdAccount" column="std_account"/>
+        <result property="stdNum" column="std_num"/>
         <result property="stdBirth" column="std_birth"/>
         <result property="jobId" column="job_id"/>
+        <result property="stdSeed" column="std_seed"/>
     </resultMap>
+
+    <select id="getStudentList" resultMap="StudentResultMap">
+        SELECT std_id, std_name, std_num, std_birth, job_id, std_seed
+        FROM student
+    </select>
 
     <select id="selectStudentProfile" parameterType="long" resultMap="StudentResultMap">
         select std_id, std_num, std_name, std_account, std_birth, job_id
@@ -26,6 +33,13 @@
           AND check_date >= DATE_SUB(NOW(), INTERVAL 5 DAY)
         ORDER BY check_date DESC
     </select>
+
+    <update id="updateStudentSeed">
+        update student
+        set seed = seed + #{rewardSeed}
+        where std_id = #{stdId};
+    </update>
+
 
     <insert id="insertDailyCheck" parameterType="com.kb.student.dto.DailyCheckDTO">
         INSERT INTO Daily_check (std_id, tch_id, check_date, isCheck)
@@ -51,4 +65,10 @@
         SELECT std_id, std_num, std_name, std_birth, job_id, seed, tch_id
         FROM student
     </select>
+
+    <insert id="insertStudent" parameterType="com.kb.student.dto.StudentDTO">
+        INSERT INTO student (tch_id, std_num, std_name, std_birth, job_id, std_seed)
+        VALUES (1, #{stdName}, #{stdNum}, #{stdBirth}, #{jobName}, #{stdSeed})
+    </insert>
+
 </mapper>

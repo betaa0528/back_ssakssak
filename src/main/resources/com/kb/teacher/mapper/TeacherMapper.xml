@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kb.teacher.mapper.TeacherMapper">
+    <insert id="insertTeacher" parameterType="com.kb.teacher.dto.TeacherDTO">
+        INSERT INTO Teacher (tch_name, tch_email, tch_account, tch_pw, grade, room)
+        VALUES (#{tchName}, #{tchEmail}, #{tchAccount}, #{tchPw}, #{grade}, #{room})
+    </insert>
+
+    <select id="findTeacherIdByNameAndEmail" parameterType="com.kb.teacher.dto.TeacherDTO" resultType="String">
+        SELECT tch_account
+        FROM Teacher
+        WHERE tch_name = #{tchName} AND tch_email = #{tchEmail}
+    </select>
+
+    <select id="checkTeacherAccount" parameterType="com.kb.teacher.dto.TeacherDTO" resultType="int">
+        SELECT COUNT(*)
+        FROM Teacher
+        WHERE tch_name = #{tchName} AND tch_email = #{tchEmail} AND tch_account = #{tchAccount}
+    </select>
+
+    <update id="updateTeacherPassword" parameterType="com.kb.teacher.dto.TeacherDTO">
+        UPDATE Teacher
+        SET tch_pw = #{tchPw}
+        WHERE tch_account = #{tchAccount}
+    </update>
+
+</mapper>
