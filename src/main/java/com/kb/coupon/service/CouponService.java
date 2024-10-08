@@ -34,14 +34,14 @@ public class CouponService {
     }
 
     public CouponDTO getCouponById(Long id) {
-        CouponDTO coupon = couponMapper.selectCouponById(id);
+        CouponDTO coupon = couponMapper.selectAvailableCouponById(id);
         return coupon;
     }
 
     @Transactional
     public void buyCoupon(Long couponId, Member member) {
         Student student = studentMapper.selectStudentByUsernameAndStdName(member.getUsername(), member.getName());
-        CouponDTO couponDTO = couponMapper.selectCouponById(couponId);
+        CouponDTO couponDTO = couponMapper.selectAvailableCouponById(couponId);
 
         AlarmArgs alarmArgs = new CouponAlarmArgs(AlarmType.COUPON_BUY, couponDTO.getCpName());
         String alarmMsg = alarmArgs.getAlarmType().createMessage(alarmArgs);
