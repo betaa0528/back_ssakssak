@@ -1,8 +1,8 @@
 package com.kb.alarm.service;
 
-import com.kb.alarm.dto.Alarm;
-import com.kb.alarm.dto.TeacherProfile;
+import com.kb.alarm.dto.*;
 import com.kb.alarm.mapper.AlarmMapper;
+import com.kb.coupon.mapper.CouponMapper;
 import com.kb.student.domain.Student;
 import com.kb.student.mapper.StudentMapper;
 import com.kb.teacher.dto.TeacherDTO;
@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Log4j
@@ -35,6 +36,7 @@ public class AlarmService {
     private static final Long DEFAULT_TIMEOUT = 60L * 1000 * 60;
     private final StudentMapper studentMapper;
     private final TeacherMapper teacherMapper;
+    private final CouponMapper couponMapper;
 
     public SseEmitter addEmitter(long tchId) throws IOException {
         SseEmitter sseEmitter = new SseEmitter(DEFAULT_TIMEOUT);
@@ -42,24 +44,25 @@ public class AlarmService {
         sseEmitter.onCompletion(() -> emitters.get(tchId).remove(sseEmitter));
         sseEmitter.onTimeout(() -> emitters.get(tchId).remove(sseEmitter));
 
-        try {
-            log.info("send");
-            sseEmitter.send(SseEmitter.event()
-                    .id("id")
-                    .name(ALARM_NAME)
-                    .data("connect completed"));
-        } catch (IOException e) {
-            throw new IOException("알람 연결 에러입니다.");
-        }
+//        try {
+//            log.info("send");
+//            sseEmitter.send(SseEmitter.event()
+//                    .id("id")
+//                    .name(ALARM_NAME)
+//                    .data("connect completed"));
+//        } catch (IOException e) {
+//            throw new IOException("알람 연결 에러입니다.");
+//        }
         return sseEmitter;
     }
 
-    public void sendAlarm(Long userId, String message) {
+    public void sendAlarm(Long userId, String message, AlarmType type, Long productId) {
         Alarm alarm = new Alarm();
         Student student = studentMapper.selectStudentById(userId);
         alarm.setStudent(student);
-        alarm.setType(message);
+        alarm.setType(type.toString());
         alarm.setTargetId(student.getStdId());
+        alarm.setProductId(productId);
         alarmMapper.insertAlarm(alarm);
 
         List<SseEmitter> userEmitters = emitters.get(userId);
@@ -79,9 +82,20 @@ public class AlarmService {
         }
     }
 
-    public List<Alarm> getAlarmByTeacherProfile(String username) {
+    public List<AlarmResponse> getAlarmByTeacherProfile(String username) {
         TeacherDTO teacherDTO = teacherMapper.selectByTeacherProfile(username);
-        return alarmMapper.selectAllAlarmListByTeacherId(teacherDTO.getTchId());
+        List<Alarm> alarmList = alarmMapper.selectAllAlarmListByTeacherId(teacherDTO.getTchId());
+
+        return alarmList.stream()
+                .map(alarm -> {
+                    AlarmType alarmType = AlarmType.valueOf(alarm.getType());
+                    String productName = selectProductName(alarmType, alarm.getProductId());
+                    AlarmArgsImpl alarmArgs = new AlarmArgsImpl(alarmType, productName);
+                    String alarmMsg = alarmType.createMessage(alarmArgs);
+                    StringBuilder sb = new StringBuilder(alarm.getStudent().getStdName()).append(alarmMsg);
+                    return new AlarmResponse(alarm.getId(), alarm.getType(), sb.toString());
+                })
+                .collect(Collectors.toList());
     }
 
     public void changeIsChecked(long id) {
@@ -90,4 +104,16 @@ public class AlarmService {
             throw new NoSuchElementException("update Failed");
         }
     }
+
+    private String selectProductName(AlarmType type, long productId) {
+        switch (type) {
+            case COUPON_BUY -> {
+                return couponMapper.selectCouponById(productId).getCpName();
+            }
+            default -> {
+                return "";
+            }
+        }
+    }
+
 }

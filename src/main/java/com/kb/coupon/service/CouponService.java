@@ -1,6 +1,9 @@
 package com.kb.coupon.service;
 
+import com.kb.alarm.dto.AlarmArgs;
+import com.kb.alarm.dto.AlarmType;
 import com.kb.alarm.service.AlarmService;
+import com.kb.coupon.dto.CouponAlarmArgs;
 import com.kb.coupon.dto.CouponDTO;
 import com.kb.coupon.mapper.CouponMapper;
 import com.kb.member.dto.Member;
@@ -10,8 +13,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Log4j
 @Service
@@ -33,12 +38,19 @@ public class CouponService {
         return coupon;
     }
 
+    @Transactional
     public void buyCoupon(Long couponId, Member member) {
         Student student = studentMapper.selectStudentByUsernameAndStdName(member.getUsername(), member.getName());
-        StringBuilder sb = new StringBuilder();
         CouponDTO couponDTO = couponMapper.selectCouponById(couponId);
-        sb.append(member.getName()).append("학생이 ").append(couponDTO.getCpName()).append("을 구매했어요");
-        alarmService.sendAlarm(student.getTchId(), sb.toString());
+
+        AlarmArgs alarmArgs = new CouponAlarmArgs(AlarmType.COUPON_BUY, couponDTO.getCpName());
+        String alarmMsg = alarmArgs.getAlarmType().createMessage(alarmArgs);
+        StringBuilder sb = new StringBuilder(member.getName()).append(alarmMsg);
+        alarmService.sendAlarm(student.getTchId(), sb.toString(), AlarmType.COUPON_BUY, couponId);
         int result = couponMapper.updateCouponQuantity(couponId);
+
+        if(result != 1) {
+            throw new NoSuchElementException("쿠폰 수량이 제대로 업데이트 되지 않았습니다.");
+        }
     }
 }
