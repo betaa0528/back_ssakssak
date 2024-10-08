@@ -28,18 +28,13 @@ public class AlarmController {
         return alarmService.addEmitter(tchId);
     }
 
-//    @PostMapping("/send/{userId}")
-//    public ResponseEntity<String> sendNotification(@PathVariable Long userId, @RequestBody AlarmRequest request) {
-//        log.info("subscribe");
-//        String message = request.getMessage();
-//        AlarmType alarmType = request.getAlarmType();
-//        alarmService.sendAlarm(userId, message, alarmType);
-//        return ResponseEntity.ok("");
-//    }
-
     @GetMapping("/history")
     public ResponseEntity<List<AlarmResponse>> getAlarmHistory(@RequestParam String username) {
         List<AlarmResponse> alarmList = alarmService.getAlarmByTeacherProfile(username);
+
+        if(alarmList.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
         return ResponseEntity.ok(alarmList);
     }
 
