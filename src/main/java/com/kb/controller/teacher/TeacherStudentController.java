@@ -15,14 +15,14 @@ public class TeacherStudentController {
 
     private final StudentService studentService;
 
-//    @GetMapping("/list")
-//    public List<StudentDTO> getStudentList() {
-//        return studentService.getAllStudents();
-//    }
-//
-//    @PostMapping("/student-apply")
-//    public ResponseEntity<String> registerStudent(@RequestBody StudentDTO studentDTO) {
-//        studentService.registerStudent(studentDTO);
-//        return ResponseEntity.ok("Student registered successfully!");
-//    }
+    @GetMapping("/list")
+    public List<StudentDTO> getStudentList() {
+        return studentService.getAllStudents();
+    }
+
+    @PostMapping("/student-apply")
+    public ResponseEntity<String> registerStudent(@RequestBody StudentDTO studentDTO) {
+        studentService.registerStudent(studentDTO);
+        return ResponseEntity.ok("Student registered successfully!");
+    }
 }
