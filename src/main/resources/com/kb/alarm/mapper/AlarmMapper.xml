@@ -4,9 +4,28 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.kb.alarm.mapper.AlarmMapper">
+    <resultMap id="AlarmResultMap" type="com.kb.alarm.dto.Alarm">
+        <id property="id" column="id"/>
+        <result property="type" column="type"/>
+        <result property="targetId" column="target_id"/>
+        <result property="productId" column="product_id" />
+        <result property="isChecked" column="is_checked"/>
+
+        <association property="student" javaType="com.kb.student.domain.Student">
+            <id property="stdId" column="std_id"/>
+            <result property="stdName" column="std_name"/>
+            <result property="stdAccount" column="std_account"/>
+            <result property="stdPw" column="std_pw"/>
+            <result property="stdBirth" column="std_birth"/>
+            <result property="jobId" column="job_Id"/>
+            <result property="stdSeed" column="seed"/>
+        </association>
+    </resultMap>
+
+
     <insert id="insertAlarm" parameterType="com.kb.alarm.dto.Alarm">
-        insert into alarm (student_id, type, target_id)
-        values (#{student.stdId}, #{type}, #{targetId});
+        insert into alarm (student_id, type, target_id, product_id)
+        values (#{student.stdId}, #{type}, #{targetId}, #{productId});
     </insert>
     <update id="updateAlarmIsChecked">
         update alarm set is_checked = 'n' where id = #{id};
@@ -16,7 +35,25 @@
         select * from alarm where student_id = #{stdId} and target_id = #{tchId} and is_checked = 'y';
     </select>
 
-    <select id="selectAllAlarmListByTeacherId" resultType="com.kb.alarm.dto.Alarm">
-        select * from alarm where target_id = #{tchId} and is_checked = 'y';
+    <select id="selectAllAlarmListByTeacherId" resultMap="AlarmResultMap">
+        SELECT
+        a.id,
+        a.type,
+        a.product_id,
+        a.target_id,
+        a.is_checked,
+        s.std_id,  <!-- Student의 id -->
+        s.std_name,  <!-- Student의 name -->
+        s.std_account,
+        s.std_pw,
+        s.std_birth,
+        s.job_Id,
+        s.seed
+        FROM Alarm a
+        JOIN Student s ON a.student_id = s.std_id
+        WHERE s.tch_id = #{teacherId} and a.is_checked = 'y';
     </select>
+
+
+
 </mapper>

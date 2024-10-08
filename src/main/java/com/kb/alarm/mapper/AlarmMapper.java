@@ -1,6 +1,7 @@
 package com.kb.alarm.mapper;
 
 import com.kb.alarm.dto.Alarm;
+import com.kb.alarm.dto.AlarmResponse;
 
 import java.util.List;
 
