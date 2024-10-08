@@ -20,6 +20,9 @@
         FROM Teacher
         WHERE tch_name = #{tchName} AND tch_email = #{tchEmail} AND tch_account = #{tchAccount}
     </select>
+    <select id="selectByTeacherProfile" resultType="com.kb.teacher.dto.TeacherDTO">
+        select * from teacher where tch_account = #{username};
+    </select>
 
     <update id="updateTeacherPassword" parameterType="com.kb.teacher.dto.TeacherDTO">
         UPDATE Teacher

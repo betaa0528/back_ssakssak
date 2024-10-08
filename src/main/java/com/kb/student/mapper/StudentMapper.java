@@ -19,12 +19,14 @@ public interface StudentMapper {
     StudentDTO selectStudentProfile(Long studentId);
     List<DailyCheckDTO> selectRecentFiveDaysAttendance(@Param("studentId") Long studentId);
     int updateStudentSeed(@Param("stdId") long stdId, @Param("rewardSeed") int rewardSeed);
-  
-  
+
+
     //조은
     List<SeedRankingDTO> getSeedRanking();
 
     void insertCSVStudent(StudentCsvDTO student);
     List<StudentDTO> getAllStudents();
 
- }
+    Student selectStudentById(long stdId);
+    Student selectStudentByUsernameAndStdName(@Param("username") String username,@Param("name") String name);
+}

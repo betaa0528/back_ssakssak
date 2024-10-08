@@ -3,10 +3,16 @@ package com.kb._config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+
+import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 @Configuration
 @EnableWebMvc
@@ -43,5 +49,14 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .addResourceLocations("classpath:/META-INF/resources/");
     }
 
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        StringHttpMessageConverter converter = new StringHttpMessageConverter(StandardCharsets.UTF_8);
+        converter.setDefaultCharset(StandardCharsets.UTF_8);
+
+        converters.add(converter);
+
+        converters.add(new MappingJackson2HttpMessageConverter());
+    }
 }
 
