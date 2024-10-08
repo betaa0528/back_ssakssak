@@ -1,7 +1,9 @@
 package com.kb.controller.teacher;
 
 import com.kb.alarm.dto.Alarm;
-import com.kb.alarm.dto.TeacherProfile;
+import com.kb.alarm.dto.AlarmRequest;
+import com.kb.alarm.dto.AlarmResponse;
+import com.kb.alarm.dto.AlarmType;
 import com.kb.alarm.service.AlarmService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,20 +28,23 @@ public class AlarmController {
         return alarmService.addEmitter(tchId);
     }
 
-    @PostMapping("/send/{userId}")
-    public ResponseEntity<String> sendNotification(@PathVariable Long userId, @RequestBody String message) {
-        alarmService.sendAlarm(userId, message);
-        return ResponseEntity.ok("Notification sent");
-    }
+//    @PostMapping("/send/{userId}")
+//    public ResponseEntity<String> sendNotification(@PathVariable Long userId, @RequestBody AlarmRequest request) {
+//        log.info("subscribe");
+//        String message = request.getMessage();
+//        AlarmType alarmType = request.getAlarmType();
+//        alarmService.sendAlarm(userId, message, alarmType);
+//        return ResponseEntity.ok("");
+//    }
 
     @GetMapping("/history")
-    public ResponseEntity<List<Alarm>> getAlarmHistory(@RequestParam String username) {
-        List<Alarm> alarmList = alarmService.getAlarmByTeacherProfile(username);
+    public ResponseEntity<List<AlarmResponse>> getAlarmHistory(@RequestParam String username) {
+        List<AlarmResponse> alarmList = alarmService.getAlarmByTeacherProfile(username);
         return ResponseEntity.ok(alarmList);
     }
 
     @PostMapping("/checked/{id}")
-    public ResponseEntity<String> udpateAlarmIsChecked(@PathVariable long id) {
+    public ResponseEntity<String> updateAlarmIsChecked(@PathVariable long id) {
         alarmService.changeIsChecked(id);
         return ResponseEntity.ok("Alarm check success");
     }
