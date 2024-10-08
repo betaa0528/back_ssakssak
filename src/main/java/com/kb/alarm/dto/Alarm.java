@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class Alarm {
-    private int id;
+    private long id;
     private Student student;
     private String type;
+    private long productId;
     private Long targetId;
     private char isChecked;
-
 }
