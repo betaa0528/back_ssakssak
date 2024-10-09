@@ -1,11 +1,12 @@
 package com.kb.stock.service;
 
-import com.kb.stock.domain.HoldingStock;
 import com.kb.stock.domain.RateHistory;
 import com.kb.stock.domain.StockNews;
 import com.kb.stock.domain.StockTrade;
 import com.kb.stock.dto.*;
 import com.kb.stock.mapper.StockMapper;
+import com.kb.student.domain.Student;
+import com.kb.student.mapper.StudentMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.context.annotation.PropertySource;
@@ -23,6 +24,7 @@ import java.util.Optional;
 public class StockService {
 
     private final StockMapper stockMapper;
+    private final StudentMapper studentMapper;
 
     public List<RateHistory> getRateHistories() {
         return stockMapper.selectRateHistory();
@@ -37,15 +39,24 @@ public class StockService {
     }
 
     @Transactional
-    public int buyStock(StockTradeRequest request) {
-        int result = stockMapper.insertStockBuy(request);
+    public int buyStock(StockTradeRequest stockTradeRequest) {
+        Student student = studentMapper.selectStudentByUsernameAndStdName
+                (stockTradeRequest.getUsername(), stockTradeRequest.getName());
 
-        HoldingStockDTO holdingStockDTO = getHoldingStock(request.getStdId());
+        TradeRequest tradeRequest = new TradeRequest();
+        tradeRequest.setStdId(student.getStdId());
+        tradeRequest.setTchId(student.getTchId());
+        tradeRequest.setQuantity(stockTradeRequest.getQuantity());
+        tradeRequest.setStockPrice(stockTradeRequest.getStockPrice());
 
-        int totalInvestment = holdingStockDTO.getTotalInvestment() + request.getQuantity() * request.getStockPrice();
-        int totalQuantity = holdingStockDTO.getTotalQuantity() + request.getQuantity();
+        int result = stockMapper.insertStockBuy(tradeRequest);
+
+        HoldingStockDTO holdingStockDTO = getHoldingStock(tradeRequest.getStdId());
+
+        int totalInvestment = holdingStockDTO.getTotalInvestment() + tradeRequest.getQuantity() * tradeRequest.getStockPrice();
+        int totalQuantity = holdingStockDTO.getTotalQuantity() + tradeRequest.getQuantity();
         double averagePrice = (double) totalInvestment / totalQuantity;
-        double currentValue = request.getStockPrice() * totalQuantity;
+        double currentValue = tradeRequest.getStockPrice() * totalQuantity;
         double profitLoss = currentValue - totalInvestment;
         double profitRate = profitLoss / totalInvestment * 100;
 
@@ -63,7 +74,7 @@ public class StockService {
         return result;
     }
 
-    public int sellStock(StockTradeRequest request) {
+    public int sellStock(TradeRequest request) {
         int result = stockMapper.insertStockSell(request);
 
         HoldingStockDTO holdingStockDTO = getHoldingStock(request.getStdId());

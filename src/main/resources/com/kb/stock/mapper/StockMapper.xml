@@ -25,12 +25,12 @@
         order by news_date desc;
     </select>
 
-    <insert id="insertStockBuy" parameterType="com.kb.stock.dto.StockTradeRequest">
+    <insert id="insertStockBuy" parameterType="com.kb.stock.dto.TradeRequest">
         insert into stock_trade(std_id, tch_id, trade_type, quantity, stock_price, trade_date)
         values (#{stdId}, #{tchId}, 'S', #{quantity}, #{stockPrice}, now());
     </insert>
 
-    <insert id="insertStockSell" parameterType="com.kb.stock.dto.StockTradeRequest">
+    <insert id="insertStockSell" parameterType="com.kb.stock.dto.TradeRequest">
         insert into stock_trade(std_id, tch_id, trade_type, quantity, stock_price, trade_date)
         values (#{stdId}, #{tchId}, 'B', #{quantity}, #{stockPrice}, now());
     </insert>
