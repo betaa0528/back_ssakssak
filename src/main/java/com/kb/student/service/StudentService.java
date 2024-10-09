@@ -38,6 +38,9 @@ public class StudentService {
     public List<SeedRankingDTO> getSeedRanking() {
         return studentMapper.getSeedRanking();
     }
+    public List<SeedRankingDTO> getSeedRankingThree() {
+        return studentMapper.getSeedRankingThree();
+    }
 
     
     public void saveStudents(List<StudentCsvDTO> Student) {
@@ -47,5 +50,9 @@ public class StudentService {
     }
     public List<StudentDTO> getAllStudents() {
         return studentMapper.getAllStudents();
+    }
+
+    public List<SeedRankingDTO> getStudentSeed() {
+        return studentMapper.getStudentSeed();
     }
 }

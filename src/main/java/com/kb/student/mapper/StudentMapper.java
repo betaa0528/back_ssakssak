@@ -23,8 +23,10 @@ public interface StudentMapper {
   
     //조은
     List<SeedRankingDTO> getSeedRanking();
+    List<SeedRankingDTO> getSeedRankingThree();
 
     void insertCSVStudent(StudentCsvDTO student);
     List<StudentDTO> getAllStudents();
+    List<SeedRankingDTO> getStudentSeed();
 
  }
