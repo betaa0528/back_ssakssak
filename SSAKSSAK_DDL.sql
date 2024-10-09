@@ -439,6 +439,7 @@ CREATE TABLE Quiz
     `quiz_date`    DATETIME           NULL
 );
 
+
 INSERT INTO Quiz (quiz_content, answer1, answer2, answer3, answer4, answer_num, quiz_date)
 VALUES ('은행에 돈을 맡기면 받을 수 있는 이자를 무엇이라고 할까요?', '이자', '수수료', '세금', '대출', '1', '2024-01-01'),
        ('돈을 빌리고 나중에 갚는 것을 무엇이라고 하나요?', '저축', '대출', '투자', '기부', '2', '2024-01-02'),
