@@ -16,8 +16,11 @@
         select * from coupon where cp_quantity > 0;
     </select>
 
-    <select id="selectCouponById" parameterType="long" resultMap="CouponResultMap">
+    <select id="selectAvailableCouponById" parameterType="long" resultMap="CouponResultMap">
         select * from coupon where cp_id = #{id} and cp_quantity > 0;
+    </select>
+    <select id="selectCouponById" resultType="com.kb.coupon.dto.CouponDTO">
+        select * from coupon where cp_id = #{id};
     </select>
 
     <update id="updateCouponQuantity" parameterType="long">

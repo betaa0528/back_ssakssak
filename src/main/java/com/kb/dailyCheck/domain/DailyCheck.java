@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @NoArgsConstructor
@@ -15,6 +16,6 @@ public class DailyCheck {
     private long checkId;
     private long stdId;
     private long tchId;
-    private Date checkDate;
+    private LocalDateTime checkDate;
     private char isCheck;
 }

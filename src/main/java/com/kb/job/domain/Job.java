@@ -10,9 +10,8 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class Job {
-    private long jobId;
-    private long stdId;
-    private long tchId;
+    private Long jobId;
     private String jobName;
-    private char isPrime;
+    private String jobContent;
+    private String isPrime;
 }

@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface CouponMapper {
     List<CouponDTO> selectCoupon();
+    CouponDTO selectAvailableCouponById(Long id);
     CouponDTO selectCouponById(Long id);
     int updateCouponQuantity(Long couponId);
 }
