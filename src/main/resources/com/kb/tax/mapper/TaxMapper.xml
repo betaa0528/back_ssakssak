@@ -8,5 +8,8 @@
         FROM Tax
         WHERE DATE(transaction_date) BETWEEN #{startDate} AND #{endDate}
     </select>
+    <select id="selectTaxPolicyByType" resultType="com.kb.tax.domain.TaxPolicy">
+        select * from tax_policy where policy_type = #{policyType};
+    </select>
 
 </mapper>
