@@ -1,6 +1,7 @@
 package com.kb.controller.teacher;
 
 import com.kb.tax.domain.TaxPolicy;
+import com.kb.tax.dto.TaxPolicyDTO;
 import com.kb.tax.service.TaxService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -24,5 +25,11 @@ public class TeacherTaxController {
     public ResponseEntity<TaxPolicy> getTaxPolicy(@PathVariable String policyType) {
 
         return ResponseEntity.ok(taxService.getTaxPolicyByType(policyType));
+    }
+
+    @PutMapping("/tax-policy/apply")
+    public ResponseEntity<String> updateTaxPolicy(@RequestBody TaxPolicyDTO taxPolicyDTO) {
+        taxService.updateTaxPolicy(taxPolicyDTO);
+        return ResponseEntity.ok("Tax policy updated successfully!");
     }
 }

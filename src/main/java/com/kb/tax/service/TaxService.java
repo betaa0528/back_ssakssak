@@ -1,6 +1,7 @@
 package com.kb.tax.service;
 
 import com.kb.tax.domain.TaxPolicy;
+import com.kb.tax.dto.TaxPolicyDTO;
 import com.kb.tax.mapper.TaxMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,5 +27,9 @@ public class TaxService {
             throw new NoSuchElementException("세금 정책을 제대로 못 불러왔음...");
         }
         return taxPolicy;
+    }
+
+    public void updateTaxPolicy(TaxPolicyDTO taxPolicyDTO) {
+        taxMapper.updateTaxPolicy(taxPolicyDTO);
     }
 }
