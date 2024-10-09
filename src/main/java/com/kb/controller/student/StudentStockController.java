@@ -4,6 +4,7 @@ import com.kb.stock.domain.RateHistory;
 import com.kb.stock.domain.StockNews;
 import com.kb.stock.dto.HoldingStockDTO;
 import com.kb.stock.dto.StockTradeRequest;
+import com.kb.stock.dto.TradeRequest;
 import com.kb.stock.domain.StockTrade;
 import com.kb.stock.service.StockService;
 import io.swagger.annotations.Api;
@@ -56,7 +57,7 @@ public class StudentStockController {
     }
 
     @PostMapping("/sell")
-    public ResponseEntity<HoldingStockDTO> sellStock(@RequestBody StockTradeRequest request) {
+    public ResponseEntity<HoldingStockDTO> sellStock(@RequestBody TradeRequest request) {
         int result = stockService.sellStock(request);
         HoldingStockDTO holdingStock = stockService.getHoldingStock(request.getStdId());
 

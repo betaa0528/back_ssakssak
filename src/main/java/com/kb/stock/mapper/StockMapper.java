@@ -12,8 +12,8 @@ public interface StockMapper {
     List<StockNews> selectStockNews();
     StockNews selectStockNewsById(long newsId);
     List<RateHistory> selectRateHistory();
-    int insertStockBuy(StockTradeRequest request);
-    int insertStockSell(StockTradeRequest request);
+    int insertStockBuy(TradeRequest request);
+    int insertStockSell(TradeRequest request);
     int insertHoldingStock(HoldingStockDTO holdingStockDTO);
     int updateHoldingStock(HoldingStockDTO holdingStockDTO);
     HoldingStockDTO selectHoldingStock(long stdId);
