@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class AlarmRequest {
+    private long id;
     private String message;
-    private AlarmType alarmType;
 }

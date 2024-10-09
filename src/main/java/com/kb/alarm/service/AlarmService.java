@@ -1,5 +1,6 @@
 package com.kb.alarm.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kb.alarm.dto.*;
 import com.kb.alarm.mapper.AlarmMapper;
 import com.kb.coupon.mapper.CouponMapper;
@@ -12,7 +13,6 @@ import lombok.extern.log4j.Log4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
@@ -44,15 +44,6 @@ public class AlarmService {
         sseEmitter.onCompletion(() -> emitters.get(tchId).remove(sseEmitter));
         sseEmitter.onTimeout(() -> emitters.get(tchId).remove(sseEmitter));
 
-//        try {
-//            log.info("send");
-//            sseEmitter.send(SseEmitter.event()
-//                    .id("id")
-//                    .name(ALARM_NAME)
-//                    .data("connect completed"));
-//        } catch (IOException e) {
-//            throw new IOException("알람 연결 에러입니다.");
-//        }
         return sseEmitter;
     }
 
@@ -65,16 +56,21 @@ public class AlarmService {
         alarm.setProductId(productId);
         alarmMapper.insertAlarm(alarm);
 
+        AlarmRequest request = new AlarmRequest(productId, message);
+
         List<SseEmitter> userEmitters = emitters.get(userId);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("text", "event-stream", StandardCharsets.UTF_8));
+
+        ObjectMapper om = new ObjectMapper();
         if (userEmitters != null) {
             for(SseEmitter emitter : userEmitters) {
                 try {
+                    String alarmJson = om.writeValueAsString(request);
                     emitter.send(SseEmitter.event()
                             .name(ALARM_NAME)
-                            .data(message, MediaType.TEXT_EVENT_STREAM));
+                            .data(alarmJson, MediaType.TEXT_EVENT_STREAM));
                 } catch (IOException e) {
                     emitter.completeWithError(e);
                 }
@@ -85,6 +81,8 @@ public class AlarmService {
     public List<AlarmResponse> getAlarmByTeacherProfile(String username) {
         TeacherDTO teacherDTO = teacherMapper.selectByTeacherProfile(username);
         List<Alarm> alarmList = alarmMapper.selectAllAlarmListByTeacherId(teacherDTO.getTchId());
+
+
 
         return alarmList.stream()
                 .map(alarm -> {

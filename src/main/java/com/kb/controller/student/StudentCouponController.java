@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/student/coupon")
+@RequestMapping("/api/student/coupon")
 @RequiredArgsConstructor
 @Slf4j
 @Api(value = "StudentCouponController", tags = "쿠폰 상세 정보")
