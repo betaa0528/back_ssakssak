@@ -8,5 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SeedRankingDTO {
     private long stdId;
+    private String stdName;
     private int seed;
 }

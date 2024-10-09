@@ -23,9 +23,11 @@ public interface StudentMapper {
 
     //조은
     List<SeedRankingDTO> getSeedRanking();
+    List<SeedRankingDTO> getSeedRankingThree();
 
     void insertCSVStudent(StudentCsvDTO student);
     List<StudentDTO> getAllStudents();
+    List<SeedRankingDTO> getStudentSeed();
 
     Student selectStudentById(long stdId);
     Student selectStudentByUsernameAndStdName(@Param("username") String username,@Param("name") String name);
