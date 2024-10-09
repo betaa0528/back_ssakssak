@@ -8,9 +8,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class QuizRecordDTO {
-    private long qrId;
-    private long quizId;
-    private String isCorrect;
+public class StudentRankingDTO {
     private long stdId;
+    private String stdName;
+    private int correctCount;
 }

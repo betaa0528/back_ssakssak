@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="com.kb.quizRecord.mapper.QuizRecordMapper">
+
+    <!-- QuizRecordDTO 매핑 -->
+    <resultMap id="QuizRecordResultMap" type="com.kb.quizRecord.dto.QuizRecordDTO">
+        <id property="qrId" column="qr_id"/>
+        <result property="quizId" column="quiz_id"/>
+        <result property="stdId" column="std_id"/>
+        <result property="isCorrect" column="isCorrect"/>
+    </resultMap>
+
+
+    <insert id="insertQuizRecord" parameterType="com.kb.quizRecord.dto.QuizRecordDTO" useGeneratedKeys="true" keyProperty="qrId">
+        INSERT INTO quiz_record (quiz_id, isCorrect, std_id)
+        VALUES (#{quizId}, #{isCorrect}, #{stdId})
+    </insert>
+
+    <select id="getStudentCorrectAnswerRankings" resultType="com.kb.quizRecord.dto.StudentRankingDTO">
+        SELECT std.std_id AS stdId,
+               std.std_name AS stdName,
+               COUNT(qr.isCorrect) AS correctCount
+        FROM Student std
+                 LEFT JOIN quiz_record qr ON std.std_id = qr.std_id
+        WHERE qr.isCorrect = 'Y'
+        GROUP BY std.std_id, std.std_name
+        ORDER BY correctCount DESC
+    </select>
+
+</mapper>

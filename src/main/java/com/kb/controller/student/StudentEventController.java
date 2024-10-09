@@ -5,6 +5,7 @@ import com.kb.quiz.dto.QuizAnswerDTO;
 import com.kb.quiz.dto.QuizDTO;
 import com.kb.quiz.service.QuizService;
 import com.kb.quizRecord.dto.QuizRecordDTO;
+import com.kb.quizRecord.dto.StudentRankingDTO;
 import com.kb.quizRecord.service.QuizRecordService;
 import com.kb.savingAccount.dto.SavingAccountDTO;
 import io.swagger.annotations.Api;
@@ -16,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/student/event")
@@ -36,11 +38,13 @@ public class StudentEventController {
     }
 
     @PostMapping("/submit")
-    public ResponseEntity<QuizRecordDTO> createQuizRecord(@RequestBody QuizRecordDTO QuizRecordDTO) {
-        QuizRecordDTO createdQuizRecord = quizRecordService.createQuizRecord(QuizRecordDTO);
-
-        return new ResponseEntity<>(createdQuizRecord, HttpStatus.CREATED);
+    public ResponseEntity<QuizRecordDTO> createQuizRecord(@RequestBody QuizRecordDTO quizRecordDTO) {
+        QuizRecordDTO createdQuizRecord = quizRecordService.createQuizRecord(quizRecordDTO);
+        return new ResponseEntity<>(createdQuizRecord, HttpStatus.CREATED);  // 삽입된 데이터 반환
     }
 
-
+    @GetMapping("/quiz-ranking")
+    public List<StudentRankingDTO> getStudentCorrectAnswerRankings() {
+        return quizRecordService.getStudentCorrectAnswerRankings();
+    }
 }
