@@ -27,4 +27,6 @@ public interface StockMapper {
     List<ChartDataDTO> selectChartData();
 
     int deleteStockNews(long newsId);
+
+    int selectCurrentStockPrice();
 }
