@@ -6,13 +6,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @Data
-public class StockTradeRequest {
-    private String username;
-    private String name;
+public class TradeRequest {
+    private long stdId;
+    private long tchId;
     private int quantity;
     private int stockPrice;
 }

@@ -1,11 +1,12 @@
 package com.kb.stock.service;
 
-import com.kb.stock.domain.HoldingStock;
 import com.kb.stock.domain.RateHistory;
 import com.kb.stock.domain.StockNews;
 import com.kb.stock.domain.StockTrade;
 import com.kb.stock.dto.*;
 import com.kb.stock.mapper.StockMapper;
+import com.kb.student.domain.Student;
+import com.kb.student.mapper.StudentMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.context.annotation.PropertySource;
@@ -23,13 +24,15 @@ import java.util.Optional;
 public class StockService {
 
     private final StockMapper stockMapper;
+    private final StudentMapper studentMapper;
 
     public List<RateHistory> getRateHistories() {
         return stockMapper.selectRateHistory();
     }
 
-    public List<StockNews> getStockNewsList() {
-        return stockMapper.selectStockNews();
+    public List<StockNewsDTO> getStockNewsList() {
+        List<StockNews> stockNews = stockMapper.selectStockNews();
+        return stockNews.stream().map(StockNewsDTO::from).toList();
     }
 
     public List<StockTrade> getStockTradeList() {
@@ -37,15 +40,71 @@ public class StockService {
     }
 
     @Transactional
-    public int buyStock(StockTradeRequest request) {
-        int result = stockMapper.insertStockBuy(request);
+    public void buyStock(StockTradeRequest stockTradeRequest) {
+        Student student = Student.of(studentMapper.selectStudentByUsernameAndName
+                (stockTradeRequest.getUsername(), stockTradeRequest.getName()));
 
-        HoldingStockDTO holdingStockDTO = getHoldingStock(request.getStdId());
+        int buyTotalPrice = stockTradeRequest.getQuantity() * stockTradeRequest.getStockPrice();
 
-        int totalInvestment = holdingStockDTO.getTotalInvestment() + request.getQuantity() * request.getStockPrice();
-        int totalQuantity = holdingStockDTO.getTotalQuantity() + request.getQuantity();
+        if (student.getStdSeed() < buyTotalPrice) {
+            throw new IllegalArgumentException("보유한 씨드가 부족합니다.");
+        }
+
+        int currentPrice = stockMapper.selectCurrentStockPrice();
+
+        TradeRequest tradeRequest = new TradeRequest();
+        tradeRequest.setStdId(student.getStdId());
+        tradeRequest.setTchId(student.getTchId());
+        tradeRequest.setQuantity(stockTradeRequest.getQuantity());
+        tradeRequest.setStockPrice(stockTradeRequest.getStockPrice());
+
+        int result = stockMapper.insertStockBuy(tradeRequest);
+
+        HoldingStockDTO holdingStockDTO = getHoldingStock(stockTradeRequest.getUsername(), stockTradeRequest.getName());
+
+        int totalInvestment = holdingStockDTO.getTotalInvestment() + tradeRequest.getQuantity() * tradeRequest.getStockPrice();
+        int totalQuantity = holdingStockDTO.getTotalQuantity() + tradeRequest.getQuantity();
         double averagePrice = (double) totalInvestment / totalQuantity;
-        double currentValue = request.getStockPrice() * totalQuantity;
+        double currentValue = currentPrice * totalQuantity;
+        double profitLoss = currentValue - totalInvestment;
+        double profitRate = (profitLoss / totalInvestment) * 100;
+
+        holdingStockDTO.setTotalQuantity(totalQuantity);
+        holdingStockDTO.setTotalInvestment(totalInvestment);
+        holdingStockDTO.setAveragePrice(averagePrice);
+        holdingStockDTO.setCurrentValue(currentValue);
+        holdingStockDTO.setProfitLoss(profitLoss);
+        holdingStockDTO.setProfitRate(profitRate);
+
+        studentMapper.updateStudentSeed(student.getStdId(), -buyTotalPrice);
+        int holdingStockResult = stockMapper.updateHoldingStock(holdingStockDTO);
+        if (holdingStockResult != 1 || result != 1) {
+            throw new NoSuchElementException();
+        }
+    }
+
+    @Transactional
+    public void sellStock(StockTradeRequest stockTradeRequest) {
+        Student student = Student.of(studentMapper.selectStudentByUsernameAndName
+                (stockTradeRequest.getUsername(), stockTradeRequest.getName()));
+
+        int sellTotalPrice = stockTradeRequest.getQuantity() * stockTradeRequest.getStockPrice();
+        int currentPrice = stockMapper.selectCurrentStockPrice();
+
+        TradeRequest tradeRequest = new TradeRequest();
+        tradeRequest.setStdId(student.getStdId());
+        tradeRequest.setTchId(student.getTchId());
+        tradeRequest.setQuantity(stockTradeRequest.getQuantity());
+        tradeRequest.setStockPrice(stockTradeRequest.getStockPrice());
+
+        int result = stockMapper.insertStockSell(tradeRequest);
+
+        HoldingStockDTO holdingStockDTO = getHoldingStock(stockTradeRequest.getUsername(), stockTradeRequest.getName());
+
+        int totalInvestment = holdingStockDTO.getTotalInvestment() - tradeRequest.getQuantity() * tradeRequest.getStockPrice();
+        int totalQuantity = holdingStockDTO.getTotalQuantity() - tradeRequest.getQuantity();
+        double averagePrice = (double) totalInvestment / totalQuantity;
+        double currentValue = currentPrice * totalQuantity;
         double profitLoss = currentValue - totalInvestment;
         double profitRate = profitLoss / totalInvestment * 100;
 
@@ -56,42 +115,17 @@ public class StockService {
         holdingStockDTO.setProfitLoss(profitLoss);
         holdingStockDTO.setProfitRate(profitRate);
 
+        studentMapper.updateStudentSeed(student.getStdId(), sellTotalPrice);
         int holdingStockResult = stockMapper.updateHoldingStock(holdingStockDTO);
         if (holdingStockResult != 1 || result != 1) {
             throw new NoSuchElementException();
         }
-        return result;
     }
 
-    public int sellStock(StockTradeRequest request) {
-        int result = stockMapper.insertStockSell(request);
-
-        HoldingStockDTO holdingStockDTO = getHoldingStock(request.getStdId());
-
-        int totalInvestment = holdingStockDTO.getTotalInvestment() - request.getQuantity() * request.getStockPrice();
-        int totalQuantity = holdingStockDTO.getTotalQuantity() - request.getQuantity();
-        double averagePrice = (double) totalInvestment / totalQuantity;
-        double currentValue = request.getStockPrice() * totalQuantity;
-        double profitLoss = currentValue - totalInvestment;
-        double profitRate = profitLoss / totalInvestment * 100;
-
-        holdingStockDTO.setTotalQuantity(totalQuantity);
-        holdingStockDTO.setTotalInvestment(totalInvestment);
-        holdingStockDTO.setAveragePrice(averagePrice);
-        holdingStockDTO.setCurrentValue(currentValue);
-        holdingStockDTO.setProfitLoss(profitLoss);
-        holdingStockDTO.setProfitRate(profitRate);
-
-        int holdingStockResult = stockMapper.updateHoldingStock(holdingStockDTO);
-        if (holdingStockResult != 1 || result != 1) {
-            throw new NoSuchElementException();
-        }
-
-        return result;
-    }
-
-    public HoldingStockDTO getHoldingStock(long stdId) {
-        return stockMapper.selectHoldingStock(stdId);
+    public HoldingStockDTO getHoldingStock(String username, String name) {
+        Student student = Student.of(studentMapper.selectStudentByUsernameAndName
+                (username, name));
+        return stockMapper.selectHoldingStock(student.getStdId());
     }
 
     public List<RateHistoryDTO> getRateHistoryLast5Days() {
@@ -103,11 +137,11 @@ public class StockService {
         return getRateHistoryLast5Days().get(0);
     }
 
-    public StockNews createStockNews(StockNewsRequest request) {
-        stockMapper.insertStockNews(request);
-
-        StockNews stockNews = getStockNewsList().get(0);
-        return stockNews;
+    public void createStockNews(StockNewsRequest request) {
+        int result = stockMapper.insertStockNews(request);
+        if(result != 1) {
+            throw new NoSuchElementException("뉴스 생성 실패");
+        }
     }
 
     public List<ChartDataDTO> getChartDataDTO() {
@@ -128,7 +162,7 @@ public class StockService {
     public StockNews deleteNews(long newsId) {
         StockNews stockNews = getStockNewsById(newsId);
         int result = stockMapper.deleteStockNews(newsId);
-        if(result != 1) {
+        if (result != 1) {
             throw new NoSuchElementException();
         }
 

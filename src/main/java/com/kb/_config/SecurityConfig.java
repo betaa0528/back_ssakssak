@@ -36,8 +36,8 @@ import org.springframework.web.filter.CorsFilter;
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-//    @Autowired
-//    private JwtUsernamePasswordAuthenticationFilter jwtUsernamePasswordAuthenticationFilter;
+    @Autowired
+    private JwtUsernamePasswordAuthenticationFilter jwtUsernamePasswordAuthenticationFilter;
 
     @Autowired
     private JwtStudentAuthenticationFilter jwtStudentAuthenticationFilter;
@@ -107,7 +107,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // Jwt 인증 필터
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 // 로그인 인증 필터
-//                .addFilterBefore(jwtUsernamePasswordAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtUsernamePasswordAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtTeacherAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtStudentAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
@@ -120,13 +120,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
 //                .antMatchers(HttpMethod.OPTIONS).permitAll()
-//                .antMatchers(HttpMethod.POST, "/api/member").authenticated()
-//                .antMatchers(HttpMethod.PUT, "/api/member", "/api/member/*/changepassword").authenticated()
-//                .antMatchers(HttpMethod.POST, "/api/board/**").authenticated()
-//                .antMatchers(HttpMethod.PUT, "/api/board/**").authenticated()
-//                .antMatchers(HttpMethod.DELETE, "/api/board/**").authenticated()
-//                .anyRequest().authenticated();
-                .anyRequest().permitAll()
+//                .antMatchers(HttpMethod.POST, "/api/student/**").authenticated()
+//                .antMatchers(HttpMethod.POST, "/api/student/**").authenticated()
+                .anyRequest().authenticated()
+//                .anyRequest().permitAll()
         ;
 
         http.httpBasic().disable()        // 기본 HTTP 인증 비활성화

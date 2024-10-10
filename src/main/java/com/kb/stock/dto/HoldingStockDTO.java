@@ -16,8 +16,9 @@ public class HoldingStockDTO {
     private double currentValue;
     private double profitLoss;
     private double profitRate;
+    private int seed;
 
-    public static HoldingStockDTO from(HoldingStock holdingStock) {
+    public static HoldingStockDTO from(HoldingStock holdingStock, int seed) {
         return new HoldingStockDTO(
                 holdingStock.getStdId(),
                 holdingStock.getTotalQuantity(),
@@ -25,7 +26,8 @@ public class HoldingStockDTO {
                 holdingStock.getAveragePrice(),
                 holdingStock.getCurrentValue(),
                 holdingStock.getProfitLoss(),
-                holdingStock.getProfitRate()
+                holdingStock.getProfitRate(),
+                seed
         );
     }
 
