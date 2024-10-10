@@ -39,9 +39,17 @@ public class StockService {
     }
 
     @Transactional
-    public int buyStock(StockTradeRequest stockTradeRequest) {
-        Student student = studentMapper.selectStudentByUsernameAndStdName
-                (stockTradeRequest.getUsername(), stockTradeRequest.getName());
+    public void buyStock(StockTradeRequest stockTradeRequest) {
+        Student student = Student.of(studentMapper.selectStudentByUsernameAndName
+                (stockTradeRequest.getUsername(), stockTradeRequest.getName()));
+
+        int buyTotalPrice = stockTradeRequest.getQuantity() * stockTradeRequest.getStockPrice();
+
+        if(student.getStdSeed() < buyTotalPrice) {
+            throw new IllegalArgumentException("보유한 씨드가 부족합니다.");
+        }
+
+        int currentPrice = stockMapper.selectCurrentStockPrice();
 
         TradeRequest tradeRequest = new TradeRequest();
         tradeRequest.setStdId(student.getStdId());
@@ -51,14 +59,14 @@ public class StockService {
 
         int result = stockMapper.insertStockBuy(tradeRequest);
 
-        HoldingStockDTO holdingStockDTO = getHoldingStock(tradeRequest.getStdId());
+        HoldingStockDTO holdingStockDTO = getHoldingStock(stockTradeRequest.getUsername(), stockTradeRequest.getName());
 
         int totalInvestment = holdingStockDTO.getTotalInvestment() + tradeRequest.getQuantity() * tradeRequest.getStockPrice();
         int totalQuantity = holdingStockDTO.getTotalQuantity() + tradeRequest.getQuantity();
         double averagePrice = (double) totalInvestment / totalQuantity;
-        double currentValue = tradeRequest.getStockPrice() * totalQuantity;
+        double currentValue = currentPrice * totalQuantity;
         double profitLoss = currentValue - totalInvestment;
-        double profitRate = profitLoss / totalInvestment * 100;
+        double profitRate = (profitLoss / totalInvestment) * 100;
 
         holdingStockDTO.setTotalQuantity(totalQuantity);
         holdingStockDTO.setTotalInvestment(totalInvestment);
@@ -67,22 +75,35 @@ public class StockService {
         holdingStockDTO.setProfitLoss(profitLoss);
         holdingStockDTO.setProfitRate(profitRate);
 
+        studentMapper.updateStudentSeed(student.getStdId(), -buyTotalPrice);
         int holdingStockResult = stockMapper.updateHoldingStock(holdingStockDTO);
         if (holdingStockResult != 1 || result != 1) {
             throw new NoSuchElementException();
         }
-        return result;
     }
 
-    public int sellStock(TradeRequest request) {
-        int result = stockMapper.insertStockSell(request);
+    @Transactional
+    public void sellStock(StockTradeRequest stockTradeRequest) {
+        Student student = Student.of(studentMapper.selectStudentByUsernameAndName
+                (stockTradeRequest.getUsername(), stockTradeRequest.getName()));
 
-        HoldingStockDTO holdingStockDTO = getHoldingStock(request.getStdId());
+        int sellTotalPrice = stockTradeRequest.getQuantity() * stockTradeRequest.getStockPrice();
+        int currentPrice = stockMapper.selectCurrentStockPrice();
 
-        int totalInvestment = holdingStockDTO.getTotalInvestment() - request.getQuantity() * request.getStockPrice();
-        int totalQuantity = holdingStockDTO.getTotalQuantity() - request.getQuantity();
+        TradeRequest tradeRequest = new TradeRequest();
+        tradeRequest.setStdId(student.getStdId());
+        tradeRequest.setTchId(student.getTchId());
+        tradeRequest.setQuantity(stockTradeRequest.getQuantity());
+        tradeRequest.setStockPrice(stockTradeRequest.getStockPrice());
+
+        int result = stockMapper.insertStockSell(tradeRequest);
+
+        HoldingStockDTO holdingStockDTO = getHoldingStock(stockTradeRequest.getUsername(), stockTradeRequest.getName());
+
+        int totalInvestment = holdingStockDTO.getTotalInvestment() - tradeRequest.getQuantity() * tradeRequest.getStockPrice();
+        int totalQuantity = holdingStockDTO.getTotalQuantity() - tradeRequest.getQuantity();
         double averagePrice = (double) totalInvestment / totalQuantity;
-        double currentValue = request.getStockPrice() * totalQuantity;
+        double currentValue = currentPrice * totalQuantity;
         double profitLoss = currentValue - totalInvestment;
         double profitRate = profitLoss / totalInvestment * 100;
 
@@ -93,16 +114,17 @@ public class StockService {
         holdingStockDTO.setProfitLoss(profitLoss);
         holdingStockDTO.setProfitRate(profitRate);
 
+        studentMapper.updateStudentSeed(student.getStdId(), sellTotalPrice);
         int holdingStockResult = stockMapper.updateHoldingStock(holdingStockDTO);
         if (holdingStockResult != 1 || result != 1) {
             throw new NoSuchElementException();
         }
-
-        return result;
     }
 
-    public HoldingStockDTO getHoldingStock(long stdId) {
-        return stockMapper.selectHoldingStock(stdId);
+    public HoldingStockDTO getHoldingStock(String username, String name) {
+        Student student = Student.of(studentMapper.selectStudentByUsernameAndName
+                (username, name));
+        return stockMapper.selectHoldingStock(student.getStdId());
     }
 
     public List<RateHistoryDTO> getRateHistoryLast5Days() {
