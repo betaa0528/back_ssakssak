@@ -45,10 +45,8 @@
         insert into rate_history(stock_date, `change`, stock_price) values (now(), #{change}, #{stockPrice});
     </insert>
 
-    <insert id="insertStockNews" parameterType="com.kb.stock.dto.StockNewsRequest">
-<!--        <selectKey keyProperty="newsId" resultType="long" order="AFTER">-->
-<!--            SELECT @@identity as newsId-->
-<!--        </selectKey>-->
+    <insert id="insertStockNews" parameterType="com.kb.stock.dto.StockNewsRequest"
+            useGeneratedKeys="true" keyProperty="newsId">
         insert into stock_news(title, content, news_date) values (#{title}, #{content}, now());
     </insert>
 
@@ -64,9 +62,17 @@
     </update>
 
     <select id="selectHoldingStock" parameterType="long" resultType="com.kb.stock.dto.HoldingStockDTO">
-        select *
-        from holding_stock
-        where std_id = #{stdId};
+        select h.std_id,
+               h.total_quantity,
+               h.total_investment,
+               h.average_price,
+               h.current_value,
+               h.profit_loss,
+               h.profit_rate,
+               s.seed
+        from holding_stock h
+                 join student s on h.std_id = s.std_id
+        where h.std_id = #{stdId};
     </select>
 
     <select id="selectRateHistoryLast5Days" resultType="com.kb.stock.dto.RateHistoryDTO">
@@ -123,6 +129,6 @@
     </select>
 
     <select id="selectCurrentStockPrice" resultType="java.lang.Integer">
-        select stock_price from rate_history order by stock_date desc limit 1;
+        select stock_price from rate_history order by date desc limit 1;
     </select>
 </mapper>
