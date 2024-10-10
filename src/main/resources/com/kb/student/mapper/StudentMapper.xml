@@ -83,6 +83,9 @@
         SELECT std_id, std_name, seed
         FROM student
     </select>
+    <select id="selectStudentByUsernameAndName" resultType="com.kb.student.dto.StudentDTO">
+        select * from student where std_account = #{username} and std_name = #{name};
+    </select>
 
     <insert id="insertStudent" parameterType="com.kb.student.dto.StudentDTO">
         INSERT INTO student (tch_id, std_num, std_name, std_birth, job_id, std_seed)
