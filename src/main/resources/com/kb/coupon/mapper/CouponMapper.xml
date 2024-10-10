@@ -12,6 +12,11 @@
         <result property="cpPrice" column="cp_price"/>
     </resultMap>
 
+    <insert id="insertStudentCoupon">
+        insert into student_coupon (cp_id, std_id, cp_quantity) values (#{cpId}, #{stdId}, #{quantity});
+    </insert>
+
+
     <select id="selectCoupon" resultMap="CouponResultMap">
         select * from coupon where cp_quantity > 0;
     </select>
@@ -23,9 +28,20 @@
         select * from coupon where cp_id = #{id};
     </select>
 
-    <update id="updateCouponQuantity" parameterType="long">
+    <select id="selectStudentCoupon" resultType="com.kb.coupon.domain.StudentCoupon">
+        select * from student_coupon where std_id = #{stdId} and cp_id = #{cpId};
+    </select>
+
+    <update id="updateCouponQuantity" parameterType="com.kb.coupon.dto.BuyRequest">
         update coupon
-        set cp_quantity = cp_quantity - 1
-        where cp_id = #{couponId};
+        set cp_quantity = cp_quantity - #{quantity}
+        where cp_id = #{cpId};
     </update>
+    <update id="updateStudentCoupon">
+        update student_coupon
+        set cp_quantity = cp_quantity + #{quantity}
+        where cp_id = #{cpId}
+          and std_id = #{stdId};
+    </update>
+
 </mapper>
