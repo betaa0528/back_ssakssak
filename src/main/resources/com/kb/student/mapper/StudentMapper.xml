@@ -89,4 +89,14 @@
         VALUES (1, #{stdName}, #{stdNum}, #{stdBirth}, #{jobName}, #{stdSeed})
     </insert>
 
+
+    <update id="updateAllStudentSeed" parameterType="com.kb.student.dto.StudentSalaryDTO">
+        UPDATE Student
+        SET seed = seed + #{seed}
+    </update>
+
+    <select id="getStudentCount" resultType="int">
+        SELECT COUNT(*) FROM Student
+    </select>
+
 </mapper>

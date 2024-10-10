@@ -2,13 +2,12 @@ package com.kb.controller.student;
 
 import com.kb.student.dto.SeedRankingDTO;
 import com.kb.student.dto.StudentDTO;
+import com.kb.student.dto.StudentSalaryDTO;
 import com.kb.student.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,5 +31,7 @@ public class StudentMainController {
         List<SeedRankingDTO> seedRankingThree = studentService.getSeedRankingThree();
         return ResponseEntity.ok(seedRankingThree);
     }
+
+
 
 }

@@ -28,6 +28,9 @@ public interface StudentMapper {
     void insertCSVStudent(StudentCsvDTO student);
     List<StudentDTO> getAllStudents();
     List<SeedRankingDTO> getStudentSeed();
+    int getStudentCount();
+
+    void updateAllStudentSeed(@Param("seed") int seed);
 
     Student selectStudentById(long stdId);
     Student selectStudentByUsernameAndStdName(@Param("username") String username,@Param("name") String name);
