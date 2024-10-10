@@ -69,4 +69,6 @@ public class StudentStockController {
         HoldingStockDTO holdingStock = stockService.getHoldingStock(principal.getUsername(), principal.getName());
         return ResponseEntity.ok(holdingStock);
     }
+
+
 }
