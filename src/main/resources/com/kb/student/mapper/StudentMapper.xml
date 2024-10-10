@@ -42,7 +42,7 @@
 
     <update id="updateStudentSeed">
         update student
-        set seed = seed + #{rewardSeed}
+        set seed = seed + #{changeSeed}
         where std_id = #{stdId};
     </update>
 
