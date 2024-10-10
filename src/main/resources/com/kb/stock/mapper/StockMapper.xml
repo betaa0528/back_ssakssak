@@ -121,4 +121,8 @@
     <select id="selectStockNewsById" resultType="com.kb.stock.domain.StockNews">
         select * from stock_news where news_id = #{newsId};
     </select>
+
+    <select id="selectCurrentStockPrice" resultType="java.lang.Integer">
+        select stock_price from rate_history order by stock_date desc limit 1;
+    </select>
 </mapper>
