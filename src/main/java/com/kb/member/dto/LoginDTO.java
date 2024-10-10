@@ -22,9 +22,8 @@ public class LoginDTO {
     public static LoginDTO of(HttpServletRequest request) throws AuthenticationException {
         ObjectMapper om = new ObjectMapper();
         try {
-            String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-            System.out.println("Request body: " + body);  // 요청 본문 로그로 확인
-            return om.readValue(body, LoginDTO.class);
+//            String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+            return om.readValue(request.getInputStream(), LoginDTO.class);
         }catch (Exception e) {
             e.printStackTrace();
             throw new BadCredentialsException("username 또는 password가 없습니다.");
