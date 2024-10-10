@@ -2,10 +2,9 @@ package com.kb.controller.student;
 
 import com.kb.member.dto.Member;
 import com.kb.stock.domain.RateHistory;
-import com.kb.stock.domain.StockNews;
 import com.kb.stock.dto.HoldingStockDTO;
+import com.kb.stock.dto.StockNewsDTO;
 import com.kb.stock.dto.StockTradeRequest;
-import com.kb.stock.dto.TradeRequest;
 import com.kb.stock.domain.StockTrade;
 import com.kb.stock.service.StockService;
 import io.swagger.annotations.Api;
@@ -37,10 +36,8 @@ public class StudentStockController {
     }
 
     @GetMapping("/news")
-    public ResponseEntity<List<StockNews>> getNewsList(@AuthenticationPrincipal Member member) {
-        System.out.println(member);
-        List<StockNews> newsList = stockService.getStockNewsList();
-
+    public ResponseEntity<List<StockNewsDTO>> getNewsList() {
+        List<StockNewsDTO> newsList = stockService.getStockNewsList();
         return ResponseEntity.ok(newsList);
     }
 
