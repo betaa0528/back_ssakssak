@@ -1,14 +1,11 @@
 package com.kb.controller.teacher;
 
 import com.kb.stock.domain.StockNews;
-import com.kb.stock.dto.ChartDataDTO;
 import com.kb.stock.dto.RateHistoryDTO;
 import com.kb.stock.dto.StockChartDTO;
 import com.kb.stock.dto.StockNewsRequest;
 import com.kb.stock.service.StockService;
-import com.kb.stockNews.dto.StockNewsDTO;
 import io.swagger.annotations.Api;
-import io.swagger.models.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.PropertySource;

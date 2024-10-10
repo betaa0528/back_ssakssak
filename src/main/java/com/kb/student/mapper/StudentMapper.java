@@ -18,7 +18,7 @@ public interface StudentMapper {
     // 학생 프로필 조회
     StudentDTO selectStudentProfile(Long studentId);
     List<DailyCheckDTO> selectRecentFiveDaysAttendance(@Param("studentId") Long studentId);
-    int updateStudentSeed(@Param("stdId") long stdId, @Param("rewardSeed") int rewardSeed);
+    int updateStudentSeed(@Param("stdId") long stdId, @Param("changeSeed") int changeSeed);
 
 
     //조은
@@ -31,4 +31,5 @@ public interface StudentMapper {
 
     Student selectStudentById(long stdId);
     Student selectStudentByUsernameAndStdName(@Param("username") String username,@Param("name") String name);
+    StudentDTO selectStudentByUsernameAndName(@Param("username") String username,@Param("name") String name);
 }
