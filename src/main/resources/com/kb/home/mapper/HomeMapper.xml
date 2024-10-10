@@ -13,7 +13,7 @@
     <select id="getTreasuryTotal" resultType="int">
         SELECT balance
         FROM Treasury
-        ORDER BY last_updated DESC
+        WHERE treasury_id = 1;
     </select>
 
 
