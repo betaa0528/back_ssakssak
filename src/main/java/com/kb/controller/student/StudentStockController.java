@@ -1,5 +1,6 @@
 package com.kb.controller.student;
 
+import com.kb.member.dto.Member;
 import com.kb.stock.domain.RateHistory;
 import com.kb.stock.domain.StockNews;
 import com.kb.stock.dto.HoldingStockDTO;
@@ -13,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,7 +37,8 @@ public class StudentStockController {
     }
 
     @GetMapping("/news")
-    public ResponseEntity<List<StockNews>> getNewsList() {
+    public ResponseEntity<List<StockNews>> getNewsList(@AuthenticationPrincipal Member member) {
+        System.out.println(member);
         List<StockNews> newsList = stockService.getStockNewsList();
 
         return ResponseEntity.ok(newsList);
@@ -50,28 +53,23 @@ public class StudentStockController {
 
     @PostMapping("/buy")
     public ResponseEntity<HoldingStockDTO> buyStock(@RequestBody StockTradeRequest request) {
-        int result = stockService.buyStock(request);
-        HoldingStockDTO holdingStock = stockService.getHoldingStock(request.getStdId());
+        stockService.buyStock(request);
+        HoldingStockDTO holdingStock = stockService.getHoldingStock(request.getUsername(), request.getName());
 
         return ResponseEntity.status(HttpStatus.OK).body(holdingStock);
     }
 
     @PostMapping("/sell")
-    public ResponseEntity<HoldingStockDTO> sellStock(@RequestBody TradeRequest request) {
-        int result = stockService.sellStock(request);
-        HoldingStockDTO holdingStock = stockService.getHoldingStock(request.getStdId());
+    public ResponseEntity<HoldingStockDTO> sellStock(@RequestBody StockTradeRequest request) {
+        stockService.sellStock(request);
+        HoldingStockDTO holdingStock = stockService.getHoldingStock(request.getUsername(), request.getName());
 
         return ResponseEntity.status(HttpStatus.OK).body(holdingStock);
     }
 
-    @GetMapping("/my-stock/{stdId}")
-    public ResponseEntity<HoldingStockDTO> getHoldingStock(@PathVariable long stdId) throws Exception {
-        HoldingStockDTO holdingStock = stockService.getHoldingStock(stdId);
-        if (holdingStock == null) {
-            throw new Exception("해당 학생의 보유주식 없음");
-        }
+    @GetMapping("/my-stock")
+    public ResponseEntity<HoldingStockDTO> getHoldingStock(@AuthenticationPrincipal Member principal) throws Exception {
+        HoldingStockDTO holdingStock = stockService.getHoldingStock(principal.getUsername(), principal.getName());
         return ResponseEntity.ok(holdingStock);
     }
-
-
 }
