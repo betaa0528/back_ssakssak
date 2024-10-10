@@ -3,6 +3,7 @@ package com.kb.controller.teacher;
 import com.kb.stock.domain.StockNews;
 import com.kb.stock.dto.RateHistoryDTO;
 import com.kb.stock.dto.StockChartDTO;
+import com.kb.stock.dto.StockNewsDTO;
 import com.kb.stock.dto.StockNewsRequest;
 import com.kb.stock.service.StockService;
 import io.swagger.annotations.Api;
@@ -38,16 +39,16 @@ public class TeacherStockController {
     }
 
     @GetMapping("/news/list")
-    public ResponseEntity<List<StockNews>> getStockNewsList() {
-        List<StockNews> newsList = stockService.getStockNewsList();
+    public ResponseEntity<List<StockNewsDTO>> getStockNewsList() {
+        List<StockNewsDTO> newsList = stockService.getStockNewsList();
         return ResponseEntity.ok(newsList);
     }
 
     @PostMapping("/news")
-    public ResponseEntity<StockNews> createNews(@RequestBody StockNewsRequest request) {
-        StockNews stockNews = stockService.createStockNews(request);
+    public ResponseEntity<String> createNews(@RequestBody StockNewsRequest request) {
+        stockService.createStockNews(request);
 
-        return ResponseEntity.ok(stockNews);
+        return ResponseEntity.ok("뉴스 생성 성공");
     }
 
     @GetMapping("/chart")
