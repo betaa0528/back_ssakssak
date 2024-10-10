@@ -129,6 +129,6 @@
     </select>
 
     <select id="selectCurrentStockPrice" resultType="java.lang.Integer">
-        select stock_price from rate_history order by date desc limit 1;
+        select stock_price from rate_history order by stock_date desc limit 1;
     </select>
 </mapper>

@@ -1,14 +1,12 @@
-package com.kb.studentCoupon.domain;
+package com.kb.coupon.domain;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
-@Builder
 public class StudentCoupon {
     private long stcpId;
     private long cpId;

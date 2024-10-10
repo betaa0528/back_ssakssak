@@ -46,7 +46,7 @@ public class StockService {
 
         int buyTotalPrice = stockTradeRequest.getQuantity() * stockTradeRequest.getStockPrice();
 
-        if (student.getStdSeed() < buyTotalPrice) {
+        if (student.getSeed() < buyTotalPrice) {
             throw new IllegalArgumentException("보유한 씨드가 부족합니다.");
         }
 

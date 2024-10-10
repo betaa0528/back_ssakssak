@@ -11,7 +11,7 @@ import java.util.Date;
 @Data
 public class RateHistory {
     private long rateHistoryId;
-    private Date date;
+    private Date stockDate;
     private int change;
     private int stockPrice;
 }
