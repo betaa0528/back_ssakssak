@@ -12,11 +12,11 @@
         <result property="stdNum" column="std_num"/>
         <result property="stdBirth" column="std_birth"/>
         <result property="jobId" column="job_id"/>
-        <result property="seed" column="std_seed"/>
+        <result property="seed" column="seed"/>
     </resultMap>
 
     <select id="getStudentList" resultMap="StudentResultMap">
-        SELECT std_id, std_name, std_num, std_birth, job_id, std_seed
+        SELECT std_id, std_name, std_num, std_birth, job_id, seed
         FROM student
     </select>
 
@@ -33,9 +33,11 @@
           AND check_date >= DATE_SUB(NOW(), INTERVAL 5 DAY)
         ORDER BY check_date DESC
     </select>
+
     <select id="selectStudentById" resultType="com.kb.student.domain.Student">
         select * from student where std_id = #{stdId};
     </select>
+
     <select id="selectStudentByUsernameAndStdName" resultType="com.kb.student.domain.Student">
         select * from student where std_account = #{username} and std_name = #{name};
     </select>
@@ -83,13 +85,14 @@
         SELECT std_id, std_name, seed
         FROM student
     </select>
+
     <select id="selectStudentByUsernameAndName" resultType="com.kb.student.dto.StudentDTO">
         select * from student where std_account = #{username} and std_name = #{name};
     </select>
 
     <insert id="insertStudent" parameterType="com.kb.student.dto.StudentDTO">
-        INSERT INTO student (tch_id, std_num, std_name, std_birth, job_id, std_seed)
-        VALUES (1, #{stdName}, #{stdNum}, #{stdBirth}, #{jobName}, #{stdSeed})
+        INSERT INTO student (tch_id, std_num, std_name, std_birth, job_id, seed)
+        VALUES (1, #{stdName}, #{stdNum}, #{stdBirth}, #{jobName}, #{seed})
     </insert>
 
 
