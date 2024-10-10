@@ -29,7 +29,7 @@ public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAut
             LoginFailureHandler loginFailureHandler ) {
         super(authenticationManager);
 
-//        setFilterProcessesUrl("/api/auth/login");		          // POST 로그인 요청 url
+        setFilterProcessesUrl("/api/auth/login");		          // POST 로그인 요청 url
 //        setFilterProcessesUrl("/api/student/auth/login");		          // POST 로그인 요청 url
 //        setFilterProcessesUrl("/api/teacher/auth/login");		          // POST 로그인 요청 url
         setAuthenticationSuccessHandler(loginSuccessHandler);	// 로그인 성공 핸들러 등록
@@ -52,18 +52,18 @@ public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAut
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword());
 
-        Authentication authenticate = getAuthenticationManager().authenticate(authenticationToken);
-        Collection<? extends GrantedAuthority> authorities = authenticate.getAuthorities();
-        boolean isTeacher = authorities.stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_TEACHER"));
-        boolean isStudent = authorities.stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_STUDENT"));
-
-        if(request.getRequestURI().contains("/student/auth/login") && isTeacher) {
-            throw new BadCredentialsException("학생 로그인 페이지에서는 선생님 계정으로 불가");
-        }
+//        Authentication authenticate = getAuthenticationManager().authenticate(authenticationToken);
+//        Collection<? extends GrantedAuthority> authorities = authenticate.getAuthorities();
+//        boolean isTeacher = authorities.stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_TEACHER"));
+//        boolean isStudent = authorities.stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_STUDENT"));
+//
+//        if(request.getRequestURI().contains("/student/auth/login") && isTeacher) {
+//            throw new BadCredentialsException("학생 로그인 페이지에서는 선생님 계정으로 불가");
+//        }
 
         // AuthenticationManager에게 인증 요청
-//        return getAuthenticationManager().authenticate(authenticationToken);
-        return authenticate;
+        return getAuthenticationManager().authenticate(authenticationToken);
+//        return authenticate;
     }
 
 }

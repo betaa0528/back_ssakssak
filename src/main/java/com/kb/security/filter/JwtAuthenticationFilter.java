@@ -29,8 +29,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private Authentication getAuthentication(String token) {
         String username = jwtProcessor.getUsername(token);
-        UserDetails princiapl = userDetailsService.loadUserByUsername(username);
-        return new UsernamePasswordAuthenticationToken(princiapl, null, princiapl.getAuthorities());
+        UserDetails principal = userDetailsService.loadUserByUsername(username);
+        return new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
     }
 
     @Override
@@ -40,8 +40,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String token = bearerToken.substring(BEARER_PREFIX.length());
 
             // 토큰에서 사용자 정보 추출 및 Authentication 객체 구성 후 SecurityContext에 저장
-            Authentication authentication = getAuthentication(token);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+//            Authentication authentication = getAuthentication(token);
+//            SecurityContextHolder.getContext().setAuthentication(authentication);
+            try {
+                Authentication authentication = getAuthentication(token);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                log.info("인증 성공: {}", authentication.getName());  // 로그 추가
+            } catch (Exception e) {
+                log.error("토큰 검증 실패", e);
+            }
+        } else {
+            log.info("JWT 토큰이 없거나 형식이 잘못되었습니다.");
         }
 
         super.doFilter(request, response, filterChain);
