@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -54,5 +55,10 @@ public class StudentService {
 
     public List<SeedRankingDTO> getStudentSeed() {
         return studentMapper.getStudentSeed();
+    }
+
+
+    public void giveSalaryToAllStudents(int seed) {
+        studentMapper.updateAllStudentSeed(seed);
     }
 }
