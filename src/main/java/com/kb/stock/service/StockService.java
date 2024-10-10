@@ -30,8 +30,9 @@ public class StockService {
         return stockMapper.selectRateHistory();
     }
 
-    public List<StockNews> getStockNewsList() {
-        return stockMapper.selectStockNews();
+    public List<StockNewsDTO> getStockNewsList() {
+        List<StockNews> stockNews = stockMapper.selectStockNews();
+        return stockNews.stream().map(StockNewsDTO::from).toList();
     }
 
     public List<StockTrade> getStockTradeList() {
@@ -45,7 +46,7 @@ public class StockService {
 
         int buyTotalPrice = stockTradeRequest.getQuantity() * stockTradeRequest.getStockPrice();
 
-        if(student.getStdSeed() < buyTotalPrice) {
+        if (student.getStdSeed() < buyTotalPrice) {
             throw new IllegalArgumentException("보유한 씨드가 부족합니다.");
         }
 
@@ -136,11 +137,11 @@ public class StockService {
         return getRateHistoryLast5Days().get(0);
     }
 
-    public StockNews createStockNews(StockNewsRequest request) {
-        stockMapper.insertStockNews(request);
-
-        StockNews stockNews = getStockNewsList().get(0);
-        return stockNews;
+    public void createStockNews(StockNewsRequest request) {
+        int result = stockMapper.insertStockNews(request);
+        if(result != 1) {
+            throw new NoSuchElementException("뉴스 생성 실패");
+        }
     }
 
     public List<ChartDataDTO> getChartDataDTO() {
@@ -161,7 +162,7 @@ public class StockService {
     public StockNews deleteNews(long newsId) {
         StockNews stockNews = getStockNewsById(newsId);
         int result = stockMapper.deleteStockNews(newsId);
-        if(result != 1) {
+        if (result != 1) {
             throw new NoSuchElementException();
         }
 
