@@ -7,12 +7,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class RewardGiveRequest {
+    private List<RewardStudentDTO> students;
     private long rewardId;
-    private long stdId;
-    private long tchId;
 }

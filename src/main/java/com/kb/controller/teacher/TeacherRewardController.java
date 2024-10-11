@@ -1,17 +1,15 @@
 package com.kb.controller.teacher;
 
+import com.kb.member.dto.Member;
 import com.kb.reward.domain.Reward;
-import com.kb.reward.dto.RewardGiveDTO;
-import com.kb.reward.dto.RewardGiveRequest;
-import com.kb.reward.dto.RewardRequest;
-import com.kb.reward.dto.RewardStudentDTO;
+import com.kb.reward.dto.*;
 import com.kb.reward.service.RewardService;
-import com.kb.student.domain.Student;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -52,17 +50,15 @@ public class TeacherRewardController {
     }
 
     @GetMapping("/pay/list")
-    public ResponseEntity<List<RewardGiveDTO>> getRewardGiveList() {
-        List<RewardGiveDTO> allRewardGiveList = rewardService.getAllRewardGiveList();
-        return ResponseEntity.ok(allRewardGiveList);
+    public ResponseEntity<RewardGivePageResult> getRewardGiveList(RewardGiveParam rewardGiveParam) {
+        RewardGivePageResult result = rewardService.getAllRewardGiveList(rewardGiveParam);
+        return ResponseEntity.ok(result);
     }
 
     @PostMapping("/pay")
-    public ResponseEntity<String> giveReward(@RequestBody List<RewardGiveRequest> rewardGiveRequestList) {
-        rewardService.giveRewardToStudents(rewardGiveRequestList);
-
-
-
+    public ResponseEntity<String> giveReward(@RequestBody RewardGiveRequest rewardGiveRequestList,
+                                             @AuthenticationPrincipal Member teacher) {
+        rewardService.giveRewardToStudents(rewardGiveRequestList, teacher);
         return ResponseEntity.ok("정상적으로 리워드가 지급 됐습니다.");
     }
 }
