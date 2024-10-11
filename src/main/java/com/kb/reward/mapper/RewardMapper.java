@@ -2,6 +2,7 @@ package com.kb.reward.mapper;
 
 import com.kb.reward.domain.Reward;
 import com.kb.reward.dto.*;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -17,7 +18,9 @@ public interface RewardMapper {
 
     List<RewardStudentDTO> selectStudentsList();
 
-    List<RewardGiveDTO> selectRewardGiveList();
+    List<RewardGiveDTO> selectRewardGiveList(RewardGiveParam rewardGiveParam);
 
-    int insertRewardGiveHistory(RewardGiveRequest rewardGiveRequest);
+    int insertRewardGiveHistory(@Param("rewardId") long rewardId,@Param("stdId") long stdId,@Param("tchId") long tchId);
+
+    int selectRewardGiveCount(RewardGiveParam rewardGiveParam);
 }
