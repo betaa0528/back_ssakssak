@@ -18,7 +18,7 @@
     </update>
 
     <select id="selectRewardList" resultType="com.kb.reward.domain.Reward">
-        select * from reward where status = 'y';
+        select * from reward where status = 'y' order by reward_id desc;
     </select>
 
     <select id="selectRewardById" resultType="com.kb.reward.domain.Reward">
