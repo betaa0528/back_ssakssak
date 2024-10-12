@@ -7,7 +7,7 @@
     <resultMap id="AlarmResultMap" type="com.kb.alarm.dto.Alarm">
         <id property="id" column="id"/>
         <result property="type" column="type"/>
-        <result property="targetId" column="target_id"/>
+        <result property="targetUserName" column="target_user_name"/>
         <result property="productId" column="product_id" />
         <result property="isChecked" column="is_checked"/>
 
@@ -18,29 +18,29 @@
             <result property="stdPw" column="std_pw"/>
             <result property="stdBirth" column="std_birth"/>
             <result property="jobId" column="job_Id"/>
-            <result property="stdSeed" column="seed"/>
+            <result property="seed" column="seed"/>
         </association>
     </resultMap>
 
 
     <insert id="insertAlarm" parameterType="com.kb.alarm.dto.Alarm">
-        insert into alarm (student_id, type, target_id, product_id)
-        values (#{student.stdId}, #{type}, #{targetId}, #{productId});
+        insert into alarm (student_id, type, target_user_name, product_id)
+        values (#{student.stdId}, #{type}, #{targetUserName}, #{productId});
     </insert>
     <update id="updateAlarmIsChecked">
         update alarm set is_checked = 'n' where id = #{id};
     </update>
 
-    <select id="selectAllByStudentId" resultType="com.kb.alarm.dto.Alarm">
-        select * from alarm where student_id = #{stdId} and target_id = #{tchId} and is_checked = 'y';
-    </select>
+<!--    <select id="selectAllByStudentId" resultType="com.kb.alarm.dto.Alarm">-->
+<!--        select * from alarm where student_id = #{stdId} and target_user_name = #{tchId} and is_checked = 'y';-->
+<!--    </select>-->
 
     <select id="selectAllAlarmListByTeacherId" resultMap="AlarmResultMap">
         SELECT
         a.id,
         a.type,
         a.product_id,
-        a.target_id,
+        a.target_user_name,
         a.is_checked,
         s.std_id,  <!-- Student의 id -->
         s.std_name,  <!-- Student의 name -->

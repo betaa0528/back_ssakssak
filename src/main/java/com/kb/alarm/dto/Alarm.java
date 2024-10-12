@@ -13,6 +13,6 @@ public class Alarm {
     private Student student;
     private String type;
     private long productId;
-    private Long targetId;
+    private String targetUserName;
     private char isChecked;
 }

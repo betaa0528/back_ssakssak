@@ -13,6 +13,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -23,6 +24,7 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String BEARER_PREFIX = "Bearer ";   // 끝에 공백 있음
+    public static final String JWT_COOKIE_NAME = "jwt";
 
     private final JwtProcessor jwtProcessor;
     private final UserDetailsService userDetailsService;
@@ -36,12 +38,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
+        String token = null;
         if (bearerToken != null && bearerToken.startsWith(BEARER_PREFIX)) {
-            String token = bearerToken.substring(BEARER_PREFIX.length());
+            token = bearerToken.substring(BEARER_PREFIX.length());
+        }
 
-            // 토큰에서 사용자 정보 추출 및 Authentication 객체 구성 후 SecurityContext에 저장
-//            Authentication authentication = getAuthentication(token);
-//            SecurityContextHolder.getContext().setAuthentication(authentication);
+        if (token == null) {
+            token = getJwtFromCookie(request, JWT_COOKIE_NAME);
+        }
+
+        if (token != null) {
             try {
                 Authentication authentication = getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -49,11 +55,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             } catch (Exception e) {
                 log.error("토큰 검증 실패", e);
             }
-        } else {
+        }else {
             log.info("JWT 토큰이 없거나 형식이 잘못되었습니다.");
         }
 
         super.doFilter(request, response, filterChain);
     }
 
+    private String getJwtFromCookie(HttpServletRequest request, String cookieName) {
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if (cookieName.equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
+            }
+        }
+        return null;
+    }
 }

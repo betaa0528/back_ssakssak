@@ -9,6 +9,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -26,9 +27,19 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         // 인증 결과 Principal
         Member member = (Member) authentication.getPrincipal();
         String token = jwtProcessor.generateToken(member.getUsername());
+        setJwtCookie(response, token);
         member.setToken(token);
         JsonResponse.send(response, member);
 
+    }
+
+    private void setJwtCookie(HttpServletResponse response, String jwt) {
+        Cookie cookie = new Cookie("jwt", jwt);
+        cookie.setHttpOnly(true); // 클라이언트에서 쿠키에 접근할 수 없게 설정
+        cookie.setSecure(false); // HTTPS에서만 쿠키 전송 (개발 환경에서는 false로 설정할 수도 있음)
+        cookie.setPath("/"); // 애플리케이션 전체에서 쿠키 사용
+        cookie.setMaxAge(724 * 60 * 60); // 7일간 유효
+        response.addCookie(cookie); // 응답에 쿠키 추가
     }
 
 }
