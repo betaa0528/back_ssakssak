@@ -92,7 +92,7 @@
 
     <insert id="insertStudent" parameterType="com.kb.student.dto.StudentDTO">
         INSERT INTO student (tch_id, std_num, std_name, std_birth, job_id, seed)
-        VALUES (1, #{stdName}, #{stdNum}, #{stdBirth}, #{jobName}, #{seed})
+        VALUES (1,#{stdNum}, #{stdName}, #{stdBirth}, #{jobId}, #{seed})
     </insert>
 
 
@@ -104,5 +104,17 @@
     <select id="getStudentCount" resultType="int">
         SELECT COUNT(*) FROM Student
     </select>
+
+
+    <!-- 학생 정보 업데이트 -->
+    <update id="updateStudentInfo" parameterType="com.kb.student.dto.StudentDTO">
+        UPDATE student
+        SET std_name = #{stdName},
+            std_birth = #{stdBirth},
+            job_id = #{jobId},
+            seed = #{seed}
+        WHERE std_id = #{stdId}
+    </update>
+
 
 </mapper>
