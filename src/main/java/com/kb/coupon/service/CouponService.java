@@ -11,6 +11,7 @@ import com.kb.coupon.mapper.CouponMapper;
 import com.kb.member.dto.Member;
 import com.kb.student.domain.Student;
 import com.kb.student.mapper.StudentMapper;
+import com.kb.teacher.mapper.TeacherMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.context.annotation.PropertySource;
@@ -29,6 +30,7 @@ public class CouponService {
     private final CouponMapper couponMapper;
     private final StudentMapper studentMapper;
     private final AlarmService alarmService;
+    private final TeacherMapper teacherMapper;
 
     public List<CouponDTO> getAllCoupons() {
         List<CouponDTO> coupons = couponMapper.selectCoupon();
@@ -57,14 +59,15 @@ public class CouponService {
             couponMapper.updateStudentCoupon(student.getStdId(), request.getCpId(), request.getQuantity());
         }
 
-        if (result != 1) {
-            throw new NoSuchElementException("쿠폰 구매에 실패했습니다.");
-        }
-
         studentMapper.updateStudentSeed(student.getStdId(), -request.getAmount());
         AlarmArgs alarmArgs = new CouponAlarmArgs(AlarmType.COUPON_BUY, couponDTO.getCpName());
         String alarmMsg = alarmArgs.getAlarmType().createMessage(alarmArgs);
         StringBuilder sb = new StringBuilder(member.getName()).append(alarmMsg);
-        alarmService.sendAlarm(student.getTchId(), sb.toString(), AlarmType.COUPON_BUY, request.getCpId());
+        alarmService.sendAlarm(student.getStdId(), sb.toString(), AlarmType.COUPON_BUY, request.getCpId());
+
+        if (result != 1) {
+            throw new NoSuchElementException("쿠폰 구매에 실패했습니다.");
+        }
+
     }
 }

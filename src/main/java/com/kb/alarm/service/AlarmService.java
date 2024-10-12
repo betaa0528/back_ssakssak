@@ -39,7 +39,7 @@ public class AlarmService {
     private final CouponMapper couponMapper;
 
     public SseEmitter addEmitter(String username) throws IOException {
-        SseEmitter sseEmitter = new SseEmitter(0L);
+        SseEmitter sseEmitter = new SseEmitter(DEFAULT_TIMEOUT);
         emitters.computeIfAbsent(username, k -> new ArrayList<>()).add(sseEmitter);
         sseEmitter.onCompletion(() -> emitters.get(username).remove(sseEmitter));
         sseEmitter.onTimeout(() -> emitters.get(username).remove(sseEmitter));
@@ -50,15 +50,16 @@ public class AlarmService {
     public void sendAlarm(Long userId, String message, AlarmType type, Long productId) {
         Alarm alarm = new Alarm();
         Student student = studentMapper.selectStudentById(userId);
+        String targetTchName = teacherMapper.selectTchNameByTchId(student.getTchId());
         alarm.setStudent(student);
         alarm.setType(type.toString());
-        alarm.setTargetId(student.getStdId());
+        alarm.setTargetUserName(targetTchName);
         alarm.setProductId(productId);
         alarmMapper.insertAlarm(alarm);
 
         AlarmRequest request = new AlarmRequest(productId, message);
 
-        List<SseEmitter> userEmitters = emitters.get(userId);
+        List<SseEmitter> userEmitters = emitters.get(targetTchName);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("text", "event-stream", StandardCharsets.UTF_8));
