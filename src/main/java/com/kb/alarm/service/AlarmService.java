@@ -31,18 +31,18 @@ public class AlarmService {
 
     private static final String ALARM_NAME = "alarm";
 
-    private final Map<Long, List<SseEmitter>> emitters = new ConcurrentHashMap<>();
+    private final Map<String, List<SseEmitter>> emitters = new ConcurrentHashMap<>();
     private final AlarmMapper alarmMapper;
     private static final Long DEFAULT_TIMEOUT = 60L * 1000 * 60;
     private final StudentMapper studentMapper;
     private final TeacherMapper teacherMapper;
     private final CouponMapper couponMapper;
 
-    public SseEmitter addEmitter(long tchId) throws IOException {
-        SseEmitter sseEmitter = new SseEmitter(DEFAULT_TIMEOUT);
-        emitters.computeIfAbsent(tchId, k -> new ArrayList<>()).add(sseEmitter);
-        sseEmitter.onCompletion(() -> emitters.get(tchId).remove(sseEmitter));
-        sseEmitter.onTimeout(() -> emitters.get(tchId).remove(sseEmitter));
+    public SseEmitter addEmitter(String username) throws IOException {
+        SseEmitter sseEmitter = new SseEmitter(0L);
+        emitters.computeIfAbsent(username, k -> new ArrayList<>()).add(sseEmitter);
+        sseEmitter.onCompletion(() -> emitters.get(username).remove(sseEmitter));
+        sseEmitter.onTimeout(() -> emitters.get(username).remove(sseEmitter));
 
         return sseEmitter;
     }

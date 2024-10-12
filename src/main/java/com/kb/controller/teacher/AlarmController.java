@@ -7,8 +7,10 @@ import com.kb.alarm.dto.AlarmType;
 import com.kb.alarm.service.AlarmService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
@@ -22,17 +24,17 @@ public class AlarmController {
 
     private final AlarmService alarmService;
 
-    @GetMapping("/subscribe/{userId}")
-    public SseEmitter subscribe(@PathVariable("userId") long tchId) throws IOException {
+    @GetMapping("/subscribe/{username}")
+    public SseEmitter subscribe(@PathVariable String username) throws IOException {
         log.info("subscribe");
-        return alarmService.addEmitter(tchId);
+        return alarmService.addEmitter(username);
     }
 
-    @GetMapping("/history")
-    public ResponseEntity<List<AlarmResponse>> getAlarmHistory(@RequestParam String username) {
+    @GetMapping("/history/{username}")
+    public ResponseEntity<List<AlarmResponse>> getAlarmHistory(@PathVariable String username) {
         List<AlarmResponse> alarmList = alarmService.getAlarmByTeacherProfile(username);
 
-        if(alarmList.isEmpty()) {
+        if (alarmList.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(alarmList);

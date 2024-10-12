@@ -18,7 +18,7 @@
             <result property="stdPw" column="std_pw"/>
             <result property="stdBirth" column="std_birth"/>
             <result property="jobId" column="job_Id"/>
-            <result property="stdSeed" column="seed"/>
+            <result property="seed" column="seed"/>
         </association>
     </resultMap>
 
