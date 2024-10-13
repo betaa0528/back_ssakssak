@@ -20,8 +20,12 @@
     </insert>
 
     <select id="getStoreList" resultMap="StoreResultMap">
-        SELECT cp_id, cp_price, cp_name, cp_content, cp_quantity,
-               date_format(cp_date, '%Y-%m-%d') as formattedDate
+        SELECT cp_id,
+               cp_price,
+               cp_name,
+               cp_content,
+               cp_quantity,
+               cp_date
         FROM coupon
     </select>
 
