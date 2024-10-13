@@ -8,12 +8,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-    public class SavingDTO {
-        private Long savingId;
-        private String product;
-        private Integer maxDeposit;
-        private Integer depositPeriod;
-        private Integer rate;
-        private String isPrime;
+public class SavingDTO {
+    private Long savingId;
+    private String product;
+    private Integer maxDeposit;
+    private Integer depositPeriod;
+    private Integer rate;
+    private String isPrime;
 
-     }
+}

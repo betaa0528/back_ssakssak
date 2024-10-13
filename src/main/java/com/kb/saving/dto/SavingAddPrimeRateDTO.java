@@ -1,22 +1,20 @@
-package com.kb.saving.domain;
+package com.kb.saving.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
-@Builder
-public class Saving {
+public class SavingAddPrimeRateDTO {
     private long savingId;
     private String savingName;
     private String savingContent;
     private int maxDeposit;
     private long savingPeriod;
-    private long savingCycle;
+    private char savingCycle;
     private int rate;
     private String img;
-    private char isPrime;
+    private int primeRate;
 }

@@ -1,15 +1,15 @@
-package com.kb.saving.domain;
+package com.kb.saving.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@Builder
-public class Saving {
+public class SavingAddRequest {
     private long savingId;
     private String savingName;
     private String savingContent;
@@ -19,4 +19,5 @@ public class Saving {
     private int rate;
     private String img;
     private char isPrime;
+    private List<Long> jobList;
 }
