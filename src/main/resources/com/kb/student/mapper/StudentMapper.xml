@@ -106,6 +106,7 @@
     </select>
 
 
+
     <update id="updateStudent" parameterType="com.kb.student.dto.StudentDTO">
         UPDATE student
         SET
@@ -116,5 +117,15 @@
             seed = #{student.seed}
         WHERE std_id = #{student.stdId}
     </update>
-
+  
+<!--       <!-- 학생 정보 업데이트 -->
+    <update id="updateStudentInfo" parameterType="com.kb.student.dto.StudentDTO">
+        UPDATE student
+        SET std_name = #{stdName},
+            std_birth = #{stdBirth},
+            job_id = #{jobId},
+            seed = #{seed}
+        WHERE std_id = #{stdId}
+    </update>
+ -->
 </mapper>

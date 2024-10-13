@@ -35,5 +35,11 @@
             isPrime = #{job.isPrime}
         WHERE job_id = #{job.jobId}
     </update>
+<!--  UPDATE jobs
+        SET job_name = #{jobName}, job_content = #{jobContent}, is_prime = #{isPrime}
+        WHERE job_id = #{jobId};
+    </update>
+ -->
+       
 
 </mapper>
