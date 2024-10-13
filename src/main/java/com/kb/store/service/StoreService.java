@@ -21,7 +21,7 @@ public class StoreService {
 
     private final StoreMapper storeMapper;
 
-    @Value("${upload.path}")
+    @Value("${file_save_location_win}")
     private String uploadPath;
 
     public void registerStore(StoreDTO storeDTO) {
@@ -43,6 +43,6 @@ public class StoreService {
             throw new RuntimeException("error", e);
         }
 
-        return filePath;
+        return "/images/" + fileName;
     }
 }

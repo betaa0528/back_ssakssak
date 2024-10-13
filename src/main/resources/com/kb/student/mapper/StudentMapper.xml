@@ -118,7 +118,7 @@
         WHERE std_id = #{student.stdId}
     </update>
   
-<!--       <!-- 학생 정보 업데이트 -->
+<!--
     <update id="updateStudentInfo" parameterType="com.kb.student.dto.StudentDTO">
         UPDATE student
         SET std_name = #{stdName},
