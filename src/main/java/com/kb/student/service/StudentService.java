@@ -43,9 +43,10 @@ public class StudentService {
         return studentMapper.getSeedRankingThree();
     }
 
-    // 학생 정보 업데이트 메서드
-    public int updateStudentInfo(StudentDTO studentDTO) {
-        return studentMapper.updateStudentInfo(studentDTO);
+    @Transactional
+    public void updateStudent(StudentDTO studentDTO) {
+        studentMapper.updateStudent(studentDTO);
+
     }
     
     public void saveStudents(List<StudentCsvDTO> Student) {

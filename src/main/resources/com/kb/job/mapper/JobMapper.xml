@@ -28,10 +28,18 @@
     </insert>
 
     <update id="updateJob" parameterType="com.kb.job.dto.JobDTO">
-        UPDATE jobs
+        UPDATE job
+        SET
+            job_name = #{job.jobName},
+            job_content = #{job.jobContent},
+            isPrime = #{job.isPrime}
+        WHERE job_id = #{job.jobId}
+    </update>
+<!--  UPDATE jobs
         SET job_name = #{jobName}, job_content = #{jobContent}, is_prime = #{isPrime}
         WHERE job_id = #{jobId};
     </update>
-
+ -->
+       
 
 </mapper>
