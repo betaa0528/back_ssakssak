@@ -92,17 +92,30 @@
 
     <insert id="insertStudent" parameterType="com.kb.student.dto.StudentDTO">
         INSERT INTO student (tch_id, std_num, std_name, std_birth, job_id, seed)
-        VALUES (1,#{stdNum}, #{stdName}, #{stdBirth}, #{jobId}, #{seed})
+        VALUES (1,#{stdNum}, #{stdName}, #{stdBirth}, #{jobId}, #{seed});
     </insert>
 
 
-    <update id="updateAllStudentSeed" parameterType="com.kb.student.dto.StudentSalaryDTO">
-        UPDATE Student
-        SET seed = seed + #{seed}
+    <update id="updateAllStudentSeed">
+        UPDATE student SET seed = seed + #{pay}
     </update>
 
     <select id="getStudentCount" resultType="int">
         SELECT COUNT(*) FROM Student
+    </select>
+
+    <select id="selectStudentBaseSalary" resultType="com.kb.student.dto.StudentSalaryDTO">
+        select std_id, seed
+        from student s
+        join job j on s.job_id = j.job_id
+        where j.isPrime = 'N';
+    </select>
+
+    <select id="selectStudentAdditionalSalary" resultType="com.kb.student.dto.StudentSalaryDTO">
+        select std_id, seed
+        from student s
+        join job j on s.job_id = j.job_id
+        where j.isPrime = 'Y';
     </select>
 
 

@@ -1,6 +1,4 @@
-
-
-        package com.kb.student.mapper;
+package com.kb.student.mapper;
 
 import com.kb.student.domain.Student;
 import com.kb.student.dto.DailyCheckDTO;
@@ -32,12 +30,15 @@ public interface StudentMapper {
     List<SeedRankingDTO> getStudentSeed();
     int getStudentCount();
 
-    void updateAllStudentSeed(@Param("seed") int seed);
-    void updateStudent(@Param("student") StudentDTO student);
+    void updateAllStudentSeed(int pay);
 
     int updateStudentInfo(StudentDTO studentDTO);
 
     Student selectStudentById(long stdId);
     Student selectStudentByUsernameAndStdName(@Param("username") String username,@Param("name") String name);
     StudentDTO selectStudentByUsernameAndName(@Param("username") String username,@Param("name") String name);
+
+    List<StudentSalaryDTO> selectStudentBaseSalary();
+    List<StudentSalaryDTO> selectStudentAdditionalSalary();
+
 }
