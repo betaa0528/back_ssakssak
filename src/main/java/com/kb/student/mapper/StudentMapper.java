@@ -1,12 +1,7 @@
-
-
-        package com.kb.student.mapper;
+package com.kb.student.mapper;
 
 import com.kb.student.domain.Student;
-import com.kb.student.dto.DailyCheckDTO;
-import com.kb.student.dto.SeedRankingDTO;
-import com.kb.student.dto.StudentCsvDTO;
-import com.kb.student.dto.StudentDTO;
+import com.kb.student.dto.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -32,12 +27,13 @@ public interface StudentMapper {
     List<SeedRankingDTO> getStudentSeed();
     int getStudentCount();
 
-    void updateAllStudentSeed(@Param("seed") int seed);
-    void updateStudent(@Param("student") StudentDTO student);
-
-    int updateStudentInfo(StudentDTO studentDTO);
+    void updateAllStudentSeed(int pay);
 
     Student selectStudentById(long stdId);
     Student selectStudentByUsernameAndStdName(@Param("username") String username,@Param("name") String name);
     StudentDTO selectStudentByUsernameAndName(@Param("username") String username,@Param("name") String name);
+
+    List<StudentSalaryDTO> selectStudentBaseSalary();
+    List<StudentSalaryDTO> selectStudentAdditionalSalary();
+
 }

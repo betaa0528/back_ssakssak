@@ -1,10 +1,9 @@
 package com.kb.student.service;
 
+import com.kb.salary.dto.Salary;
+import com.kb.salary.mapper.SalaryMapper;
 import com.kb.student.domain.Student;
-import com.kb.student.dto.SeedRankingDTO;
-import com.kb.student.dto.StudentCsvDTO;
-import com.kb.student.dto.StudentDTO;
-import com.kb.student.dto.DailyCheckDTO;
+import com.kb.student.dto.*;
 import com.kb.student.mapper.StudentMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -19,8 +18,8 @@ import java.util.List;
 @Log4j
 public class StudentService {
 
-    @Autowired
     private final StudentMapper studentMapper;
+    private final SalaryMapper salaryMapper;
 
     public StudentDTO getStudentProfile(Long studentId) {
         StudentDTO profile = studentMapper.selectStudentProfile(studentId);
@@ -39,6 +38,7 @@ public class StudentService {
     public List<SeedRankingDTO> getSeedRanking() {
         return studentMapper.getSeedRanking();
     }
+
     public List<SeedRankingDTO> getSeedRankingThree() {
         return studentMapper.getSeedRankingThree();
     }
@@ -48,12 +48,13 @@ public class StudentService {
         studentMapper.updateStudent(studentDTO);
 
     }
-    
+
     public void saveStudents(List<StudentCsvDTO> Student) {
         for (StudentCsvDTO studentcsvDTO : Student) {
             studentMapper.insertCSVStudent(studentcsvDTO);
         }
     }
+
     public List<StudentDTO> getAllStudents() {
         return studentMapper.getAllStudents();
     }
@@ -62,8 +63,4 @@ public class StudentService {
         return studentMapper.getStudentSeed();
     }
 
-
-    public void giveSalaryToAllStudents(int seed) {
-        studentMapper.updateAllStudentSeed(seed);
-    }
 }

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kb.salary.mapper.SalaryMapper">
+
+
+    <insert id="insertSalary">
+        insert into salary(base_salary, additional_salary,created_at) values (baseSalary, additionalSalary, now());
+    </insert>
+
+    <select id="selectSalary" resultType="com.kb.salary.dto.Salary">
+        select * from salary order by created_at desc limit 1;
+    </select>
+
+
+
+</mapper>
