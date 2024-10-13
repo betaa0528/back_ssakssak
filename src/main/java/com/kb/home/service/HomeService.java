@@ -21,23 +21,23 @@ public class HomeService {
     }
 
 
-    @Transactional
-    public void paySalaryToStudents(StudentSalaryDTO studentSalaryDTO) {
-        long treasuryId = 1; // 국고 테이블의 기본 treasury_id
-
-
-        studentMapper.updateAllStudentSeed(studentSalaryDTO.getSeed());
-
-        int studentCount = studentMapper.getStudentCount();
-
-        int balance = getTreasuryTotal();
-        int totalSalary = studentSalaryDTO.getSeed() * studentCount;
-        if (balance < totalSalary) {
-            throw new IllegalArgumentException("국고에 남아있는 잔액이 부족합니다. 주급 지급이 불가능합니다.");
-        }
-
-        homeMapper.decreaseTreasuryBalance(totalSalary, treasuryId);
-
-        homeMapper.recordSalaryTransaction(totalSalary, "주급 지급 (학생 수: " + studentCount + ")");
-    }
+//    @Transactional
+//    public void paySalaryToStudents(StudentSalaryDTO studentSalaryDTO) {
+//        long treasuryId = 1; // 국고 테이블의 기본 treasury_id
+//
+//
+//        studentMapper.updateAllStudentSeed(studentSalaryDTO.getSeed());
+//
+//        int studentCount = studentMapper.getStudentCount();
+//
+//        int balance = getTreasuryTotal();
+//        int totalSalary = studentSalaryDTO.getSeed() * studentCount;
+//        if (balance < totalSalary) {
+//            throw new IllegalArgumentException("국고에 남아있는 잔액이 부족합니다. 주급 지급이 불가능합니다.");
+//        }
+//
+//        homeMapper.decreaseTreasuryBalance(totalSalary, treasuryId);
+//
+//        homeMapper.recordSalaryTransaction(totalSalary, "주급 지급 (학생 수: " + studentCount + ")");
+//    }
 }
