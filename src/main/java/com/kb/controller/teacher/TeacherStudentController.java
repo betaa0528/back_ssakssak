@@ -25,4 +25,10 @@ public class TeacherStudentController {
         studentService.registerStudent(studentDTO);
         return ResponseEntity.ok("Student registered successfully!");
     }
+
+    @PutMapping("/update")
+    public String updateStudent(@RequestBody StudentDTO studentDTO) {
+        studentService.updateStudent(studentDTO);
+        return "Student updated successfully!";
+    }
 }

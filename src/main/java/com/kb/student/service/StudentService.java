@@ -42,7 +42,10 @@ public class StudentService {
     public List<SeedRankingDTO> getSeedRankingThree() {
         return studentMapper.getSeedRankingThree();
     }
-
+    @Transactional
+    public void updateStudent(StudentDTO studentDTO) {
+        studentMapper.updateStudent(studentDTO);
+    }
     
     public void saveStudents(List<StudentCsvDTO> Student) {
         for (StudentCsvDTO studentcsvDTO : Student) {

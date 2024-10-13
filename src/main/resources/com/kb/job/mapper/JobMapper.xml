@@ -27,5 +27,13 @@
         VALUES (#{jobName}, #{jobContent}, #{isPrime})
     </insert>
 
+    <update id="updateJob" parameterType="com.kb.job.dto.JobDTO">
+        UPDATE job
+        SET
+            job_name = #{job.jobName},
+            job_content = #{job.jobContent},
+            isPrime = #{job.isPrime}
+        WHERE job_id = #{job.jobId}
+    </update>
 
 </mapper>
