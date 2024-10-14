@@ -16,4 +16,8 @@ public class DepositService {
     public List<DepositDTO> getDepositList() {
         return depositMapper.getDepositList();
     }
+
+    public void deleteDeposit(long id) {
+        depositMapper.deleteDeposit(id);
+    }
 }

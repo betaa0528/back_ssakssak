@@ -10,6 +10,9 @@
         <result property="depositPeriod" column="deposit_period"/>
         <result property="rate" column="rate"/>
     </resultMap>
+    <delete id="deleteDeposit">
+        delete from deposit where deposit_id = #{id};
+    </delete>
 
     <select id="getDepositList" resultMap="depositResultMap">
         select * from Deposit;
