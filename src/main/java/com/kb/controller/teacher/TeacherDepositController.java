@@ -1,5 +1,6 @@
 package com.kb.controller.teacher;
 
+import com.kb.deposit.domain.Deposit;
 import com.kb.deposit.dto.DepositDTO;
 import com.kb.deposit.service.DepositService;
 import lombok.RequiredArgsConstructor;
