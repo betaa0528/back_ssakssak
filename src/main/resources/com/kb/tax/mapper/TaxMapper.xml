@@ -9,4 +9,23 @@
         WHERE DATE(transaction_date) BETWEEN #{startDate} AND #{endDate}
     </select>
 
+    <select id="selectTaxPolicyByType" resultType="com.kb.tax.domain.TaxPolicy">
+        select * from tax_policy where policy_type = #{policyType};
+    </select>
+
+    <update id="updateTaxPolicy" parameterType="com.kb.tax.dto.TaxPolicyDTO">
+        UPDATE Tax_Policy
+        SET policy_type = #{policyType}, rate = #{rate}
+        WHERE policy_id = #{policyId}
+    </update>
+
+    <select id="getLatestWeeklyTax" resultType="com.kb.tax.dto.TaxPolicyDTO">
+        SELECT policy_id AS policyId,
+        policy_type AS policyType,
+        rate
+        FROM tax_policy
+        WHERE policy_type = 'salary_tax'
+        ORDER BY effective_date DESC
+        LIMIT 1
+    </select>
 </mapper>
