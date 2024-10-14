@@ -10,6 +10,10 @@
         <result property="depositPeriod" column="deposit_period"/>
         <result property="rate" column="rate"/>
     </resultMap>
+    <insert id="insertDeposit">
+        insert into deposit(deposit_name, deposit_content, max_deposit, deposit_period, rate)
+        values (#{depositName}, #{depositContent}, #{maxDeposit}, #{depositPeriod}, #{rate});
+    </insert>
     <delete id="deleteDeposit">
         delete from deposit where deposit_id = #{id};
     </delete>
