@@ -12,8 +12,46 @@
         <result property="rate" column="rate"/>
         <result property="isPrime" column="isPrime"/>
     </resultMap>
+    <insert id="insertSaving" parameterType="com.kb.saving.domain.Saving" useGeneratedKeys="true" keyProperty="savingId">
+        insert into saving
+            (saving_name, saving_content, max_deposit, saving_period, saving_cycle, rate, img, isPrime)
+        values
+            (#{savingName}, #{savingContent}, #{maxDeposit}, #{savingPeriod}, #{savingCycle}, #{rate}, #{img},#{isPrime});
+    </insert>
+    <insert id="insertPrimeRate">
+        insert into prime_rate (saving_id, prime_rate, job_id) values(#{savingId}, #{primeRate}, #{jobId});
+    </insert>
+
+    <delete id="deleteSavingById">
+        delete from saving where saving_id = #{id};
+    </delete>
 
     <select id="selectSaving" resultMap="savingResultMap">
         select * from Saving;
+    </select>
+
+    <select id="selectAllSaving" resultType="com.kb.saving.dto.SavingAddPrimeRateDTO">
+        SELECT
+            distinct
+            s.saving_id,
+            s.saving_name,
+            s.saving_content,
+            s.max_deposit,
+            s.saving_period,
+            s.saving_cycle,
+            s.img,
+            s.rate AS rate,
+            CASE
+                WHEN s.isPrime = 'Y' THEN pr.prime_rate
+                ELSE 0
+                END AS prime_rate
+        FROM
+            Saving s
+                LEFT JOIN
+            Prime_rate pr
+            ON
+                s.saving_id = pr.saving_id
+        WHERE
+            (s.isPrime = 'Y' OR pr.prime_rate IS NULL);
     </select>
 </mapper>
