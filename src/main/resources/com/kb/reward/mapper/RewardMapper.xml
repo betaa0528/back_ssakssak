@@ -5,33 +5,50 @@
 
 <mapper namespace="com.kb.reward.mapper.RewardMapper">
     <insert id="insertReward" parameterType="com.kb.reward.dto.RewardRequest"
-    useGeneratedKeys="true" keyProperty="rewardId">
+            useGeneratedKeys="true" keyProperty="rewardId">
         insert into reward (reward_name, reward_seed)
         values (#{rewardName}, #{rewardSeed});
     </insert>
     <insert id="insertRewardGiveHistory" parameterType="com.kb.reward.dto.RewardGiveRequest">
-        insert into reward_give(reward_id, give_date, std_id, tch_id) values (#{rewardId}, now(), #{stdId}, #{tchId});
+        insert into reward_give(reward_id, give_date, std_id, tch_id)
+        values (#{rewardId}, now(), #{stdId}, #{tchId});
     </insert>
 
     <update id="deleteRewardById" parameterType="long">
-        update reward set status = 'n' where reward_id = #{rewardId};
+        update reward
+        set status = 'n'
+        where reward_id = #{rewardId};
     </update>
 
     <select id="selectRewardList" resultType="com.kb.reward.domain.Reward">
-        select * from reward where status = 'y';
+        select *
+        from reward
+        where status = 'y';
     </select>
 
     <select id="selectRewardById" resultType="com.kb.reward.domain.Reward">
-        select * from reward where reward_id = #{rewardId};
+        select *
+        from reward
+        where reward_id = #{rewardId};
     </select>
     <select id="selectStudentsList" resultType="com.kb.reward.dto.RewardStudentDTO">
-        select std_id, std_name, seed from student order by std_num;
+        select std_id, std_name, seed
+        from student
+        order by std_num;
     </select>
     <select id="selectRewardGiveList" resultType="com.kb.reward.dto.RewardGiveDTO">
-        select give_id, DATE_FORMAT(give_date, '%Y-%m-%d') as give_date, s.std_name, r.reward_name, r.reward_seed
-        from reward_give g
-                 join reward r on r.reward_id = g.reward_id
-                 join student s on s.std_id = g.std_id
-        order by give_date desc;
+        SELECT give_id,
+               DATE_FORMAT(give_date, '%Y-%m-%d') AS give_date,
+               s.std_name,
+               r.reward_name,
+               r.reward_seed                      AS give_seed
+        FROM reward_give g
+                 JOIN reward r ON r.reward_id = g.reward_id
+                 JOIN student s ON s.std_id = g.std_id
+        ORDER BY DATE(give_date) DESC, g.give_date DESC limit #{limit} offset #{offset};
+    </select>
+    <select id="selectRewardGiveCount" parameterType="com.kb.reward.dto.RewardGiveParam" resultType="java.lang.Integer">
+        select count(distinct give_id)
+        from reward_give
     </select>
 </mapper>

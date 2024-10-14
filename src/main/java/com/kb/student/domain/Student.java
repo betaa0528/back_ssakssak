@@ -19,7 +19,7 @@ public class Student {
     private String stdPw;
     private String stdBirth;
     private long jobId;
-    private int stdSeed;
+    private int seed;
 
     public static Student of(StudentDTO studentDTO) {
         return Student.builder()
@@ -31,7 +31,7 @@ public class Student {
                 .stdPw(studentDTO.getStdPw())
                 .stdBirth(studentDTO.getStdBirth())
                 .jobId(studentDTO.getJobId())
-                .stdSeed(studentDTO.getSeed())
+                .seed(studentDTO.getSeed())
                 .build();
 
 

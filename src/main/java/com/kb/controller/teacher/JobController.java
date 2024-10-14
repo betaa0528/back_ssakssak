@@ -29,4 +29,10 @@ public class JobController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @PutMapping("/job-update")
+    public String updateJob(@RequestBody JobDTO jobDTO) {
+        jobService.updateJob(jobDTO);
+        return "Job updated successfully!";
+    }
 }

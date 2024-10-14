@@ -4,6 +4,7 @@ import com.kb.job.dto.JobDTO;
 import com.kb.job.mapper.JobMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,5 +25,10 @@ public class JobService {
         }
 
         jobMapper.insertJob(jobDTO);
+    }
+
+    @Transactional
+    public void updateJob(JobDTO jobDTO) {
+        jobMapper.updateJob(jobDTO);
     }
 }

@@ -13,7 +13,22 @@
     <select id="getTreasuryTotal" resultType="int">
         SELECT balance
         FROM Treasury
-        ORDER BY last_updated DESC
+        WHERE treasury_id = 1;
     </select>
+
+
+    <!-- 국고 잔액에서 금액 차감 -->
+    <update id="decreaseTreasuryBalance" parameterType="com.kb.home.dto.HomeDTO">
+        UPDATE Treasury
+        SET balance = balance - #{amount}, last_updated = CURRENT_TIMESTAMP
+        WHERE treasury_id = #{treasuryId}
+    </update>
+
+    <!-- 국고 거래 내역 추가 (주급 지급 기록) -->
+    <insert id="recordSalaryTransaction" parameterType="com.kb.home.dto.TreasuryTransactionDTO">
+        INSERT INTO Treasury_Transaction (amount, transaction_type, source, description, transaction_date)
+        VALUES (#{amount}, 'EXPENSE', 'SALARY', #{description}, CURRENT_TIMESTAMP)
+    </insert>
+
 
 </mapper>

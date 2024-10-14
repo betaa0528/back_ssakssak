@@ -24,6 +24,10 @@
         select * from teacher where tch_account = #{username};
     </select>
 
+    <select id="selectTchNameByTchId" resultType="java.lang.String">
+        select tch_account from teacher where tch_id = #{tchId};
+    </select>
+
     <update id="updateTeacherPassword" parameterType="com.kb.teacher.dto.TeacherDTO">
         UPDATE Teacher
         SET tch_pw = #{tchPw}

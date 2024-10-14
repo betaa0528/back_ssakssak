@@ -111,6 +111,8 @@ dependencies {
 
   implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.0'
 
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.0'
+
 
 }
 

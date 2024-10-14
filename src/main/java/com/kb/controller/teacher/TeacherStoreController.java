@@ -1,5 +1,7 @@
 package com.kb.controller.teacher;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kb.store.dto.StoreDTO;
 import com.kb.store.service.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +20,12 @@ public class TeacherStoreController {
 
     @PostMapping("/coupon-apply")
     public ResponseEntity<String> applyCoupon(
-            @RequestPart("storeDTO") StoreDTO storeDTO,
-            @RequestPart("file") MultipartFile file) {
+            @RequestPart("storeDTO") String storeDTOString,
+            @RequestPart("file") MultipartFile file) throws JsonProcessingException {
+
+        // storeDTOString을 JSON으로 변환
+        ObjectMapper objectMapper = new ObjectMapper();
+        StoreDTO storeDTO = objectMapper.readValue(storeDTOString, StoreDTO.class);
 
         String filePath = storeService.saveFile(file);
         storeDTO.setCpImage(filePath);

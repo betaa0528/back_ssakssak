@@ -12,11 +12,11 @@
         <result property="stdNum" column="std_num"/>
         <result property="stdBirth" column="std_birth"/>
         <result property="jobId" column="job_id"/>
-        <result property="seed" column="std_seed"/>
+        <result property="seed" column="seed"/>
     </resultMap>
 
     <select id="getStudentList" resultMap="StudentResultMap">
-        SELECT std_id, std_name, std_num, std_birth, job_id, std_seed
+        SELECT std_id, std_name, std_num, std_birth, job_id, seed
         FROM student
     </select>
 
@@ -33,16 +33,18 @@
           AND check_date >= DATE_SUB(NOW(), INTERVAL 5 DAY)
         ORDER BY check_date DESC
     </select>
+
     <select id="selectStudentById" resultType="com.kb.student.domain.Student">
         select * from student where std_id = #{stdId};
     </select>
+
     <select id="selectStudentByUsernameAndStdName" resultType="com.kb.student.domain.Student">
         select * from student where std_account = #{username} and std_name = #{name};
     </select>
 
     <update id="updateStudentSeed">
         update student
-        set seed = seed + #{rewardSeed}
+        set seed = seed + #{changeSeed}
         where std_id = #{stdId};
     </update>
 
@@ -84,9 +86,59 @@
         FROM student
     </select>
 
+    <select id="selectStudentByUsernameAndName" resultType="com.kb.student.dto.StudentDTO">
+        select * from student where std_account = #{username} and std_name = #{name};
+    </select>
+
     <insert id="insertStudent" parameterType="com.kb.student.dto.StudentDTO">
-        INSERT INTO student (tch_id, std_num, std_name, std_birth, job_id, std_seed)
-        VALUES (1, #{stdName}, #{stdNum}, #{stdBirth}, #{jobName}, #{stdSeed})
+        INSERT INTO student (tch_id, std_num, std_name, std_birth, job_id, seed)
+        VALUES (1,#{stdNum}, #{stdName}, #{stdBirth}, #{jobId}, #{seed});
     </insert>
 
+
+    <update id="updateAllStudentSeed">
+        UPDATE student SET seed = seed + #{pay}
+    </update>
+
+    <select id="getStudentCount" resultType="int">
+        SELECT COUNT(*) FROM Student
+    </select>
+
+    <select id="selectStudentBaseSalary" resultType="com.kb.student.dto.StudentSalaryDTO">
+        select std_id, seed
+        from student s
+        join job j on s.job_id = j.job_id
+        where j.isPrime = 'N';
+    </select>
+
+    <select id="selectStudentAdditionalSalary" resultType="com.kb.student.dto.StudentSalaryDTO">
+        select std_id, seed
+        from student s
+        join job j on s.job_id = j.job_id
+        where j.isPrime = 'Y';
+    </select>
+
+
+
+    <update id="updateStudent" parameterType="com.kb.student.dto.StudentDTO">
+        UPDATE student
+        SET
+            std_num = #{student.stdNum},
+            std_name = #{student.stdName},
+            std_birth = #{student.stdBirth},
+            job_id = #{student.jobId},
+            seed = #{student.seed}
+        WHERE std_id = #{student.stdId}
+    </update>
+  
+<!--
+    <update id="updateStudentInfo" parameterType="com.kb.student.dto.StudentDTO">
+        UPDATE student
+        SET std_name = #{stdName},
+            std_birth = #{stdBirth},
+            job_id = #{jobId},
+            seed = #{seed}
+        WHERE std_id = #{stdId}
+    </update>
+ -->
 </mapper>

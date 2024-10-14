@@ -16,4 +16,5 @@ public interface TeacherMapper {
     void updateTeacherPassword(TeacherDTO teacherDTO);
 
     TeacherDTO selectByTeacherProfile(String username);
+    String selectTchNameByTchId(long tchId);
 }
