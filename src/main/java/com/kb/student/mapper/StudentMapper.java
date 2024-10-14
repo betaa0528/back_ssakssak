@@ -28,6 +28,7 @@ public interface StudentMapper {
     int getStudentCount();
 
     void updateAllStudentSeed(int pay);
+    void updateStudent(@Param("student") StudentDTO student);
 
     Student selectStudentById(long stdId);
     Student selectStudentByUsernameAndStdName(@Param("username") String username,@Param("name") String name);

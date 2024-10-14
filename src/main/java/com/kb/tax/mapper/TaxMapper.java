@@ -16,4 +16,6 @@ public interface TaxMapper {
 
 
     void updateTaxPolicy(TaxPolicyDTO taxPolicyDTO);
+
+    TaxPolicyDTO getLatestWeeklyTax();
 }

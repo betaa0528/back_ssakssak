@@ -32,4 +32,8 @@ public class TaxService {
     public void updateTaxPolicy(TaxPolicyDTO taxPolicyDTO) {
         taxMapper.updateTaxPolicy(taxPolicyDTO);
     }
+
+    public TaxPolicyDTO getLatestWeeklyTax() {
+        return taxMapper.getLatestWeeklyTax();
+    }
 }
