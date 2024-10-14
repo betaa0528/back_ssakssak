@@ -7,4 +7,6 @@ import java.util.List;
 @Mapper
 public interface DepositMapper {
     List<DepositDTO> getDepositList();
+
+    void deleteDeposit(long id);
 }
