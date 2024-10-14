@@ -1,5 +1,6 @@
 package com.kb.saving.mapper;
 
+import com.kb.saving.domain.PrimeRate;
 import com.kb.saving.domain.Saving;
 import com.kb.saving.dto.SavingAddPrimeRateDTO;
 import com.kb.saving.dto.SavingDTO;
@@ -11,5 +12,9 @@ public interface SavingMapper {
 
     List<SavingAddPrimeRateDTO> selectAllSaving();
 
-    int insertSaving(Saving saving);
+    void insertSaving(Saving saving);
+
+    void insertPrimeRate(PrimeRate primeRate);
+
+    void deleteSavingById(long id);
 }
