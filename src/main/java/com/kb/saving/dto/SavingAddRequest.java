@@ -15,9 +15,10 @@ public class SavingAddRequest {
     private String savingContent;
     private int maxDeposit;
     private long savingPeriod;
-    private long savingCycle;
+    private char savingCycle;
     private int rate;
-    private String img;
+    private int primeRate;
     private char isPrime;
+    private String img;
     private List<Long> jobList;
 }
