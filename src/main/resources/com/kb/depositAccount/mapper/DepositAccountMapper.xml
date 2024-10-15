@@ -3,9 +3,21 @@
 
 <mapper namespace="com.kb.depositAccount.mapper.DepositAccountMapper">
 
-    <insert id="insertDepositAccount" parameterType="com.kb.depositAccount.dto.DepositAccountDTO">
+    <insert id="insertDepositAccount" parameterType="com.kb.depositAccount.dto.DepositAccountRequest">
         INSERT INTO Deposit_account (std_id, tch_id, deposit_id, rate, deposit_amount, start_date, end_date, status)
-        VALUES (#{stdId}, #{tchId}, #{depositId}, #{rate}, #{depositAmount}, #{startDate}, #{endDate}, #{status})
+        VALUES (#{stdId}, #{tchId}, #{depositId}, #{rate}, #{depositAmount}, #{startDate}, #{endDate}, 'Y');
     </insert>
+    <delete id="deleteDepositAccount">
+        delete from deposit_account where account_id = #{id};
+    </delete>
+
+    <select id="selectDepositAccount" resultType="com.kb.depositAccount.dto.DepositAccountResponse">
+        select a.account_id, a.std_id, a.tch_id, a.deposit_id, d.deposit_name, a.rate, a.deposit_amount, a.start_date, a.end_date, a.status
+        from deposit_account a join deposit d on a.deposit_id = d.deposit_id
+        where std_id = #{stdId};
+    </select>
+    <select id="selectDepositAccountByAccountId" resultType="com.kb.depositAccount.domain.DepositAccount">
+        select * from deposit_account where account_id = #{id};
+    </select>
 
 </mapper>

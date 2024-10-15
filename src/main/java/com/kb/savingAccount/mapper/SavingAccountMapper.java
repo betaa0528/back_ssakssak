@@ -1,6 +1,7 @@
 package com.kb.savingAccount.mapper;
 
 import com.kb.saving.dto.SavingDTO;
+import com.kb.savingAccount.domain.SavingAccount;
 import com.kb.savingAccount.dto.SavingAccountDTO;
 import java.util.List;
 
@@ -12,4 +13,8 @@ public interface SavingAccountMapper {
     void insertSavingAccount(SavingAccountDTO savingAccountDTO);
 
     void insertSavingAccountTeacher(SavingAccountDTO savingAccountDTO);
+
+    SavingAccount selectSavingAccountByAccountId(long id);
+
+    int deleteSavingAccount(long id);
 }

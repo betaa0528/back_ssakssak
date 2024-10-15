@@ -1,5 +1,6 @@
 package com.kb.student.domain;
 
+import com.kb.member.dto.Member;
 import com.kb.student.dto.StudentDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,7 +34,5 @@ public class Student {
                 .jobId(studentDTO.getJobId())
                 .seed(studentDTO.getSeed())
                 .build();
-
-
     }
 }

@@ -11,14 +11,14 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-
 public class SavingAccountDTO {
-    private Long stdId;
-    private Long tchId;
-    private Long savingId;
-    private Integer rate;
-    private Integer depositAmount;
+    private long stdId;
+    private long tchId;
+    private long savingId;
+    private String savingName;
+    private int rate;
+    private int depositAmount;
     private LocalDate startDate;
     private LocalDate endDate;
-    private Integer totalAmount;
+    private int totalAmount;
 }

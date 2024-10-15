@@ -15,6 +15,9 @@
         <result property="endDate" column="end_date"/>
         <result property="totalAmount" column="total_amount"/>
     </resultMap>
+    <delete id="deleteSavingAccount">
+        delete from saving_account where account_id = #{id};
+    </delete>
 
     <select id="selectSavingAccount" resultMap="savingAccountResultMap">
         select * from Saving_account;
@@ -23,21 +26,25 @@
 
     <select id="selectSavingAccountByStudentId" resultMap="savingAccountResultMap">
         SELECT
-            std_id,
-            tch_id,
-            saving_id,
-            rate,
-            deposit_amount,
-            start_date,
-            end_date,
-            total_amount
-        FROM Saving_account
+            a.std_id,
+            a.tch_id,
+            a.saving_id,
+            s.saving_name,
+            a.rate,
+            a.deposit_amount,
+            a.start_date,
+            a.end_date,
+            a.total_amount
+        FROM Saving_account a join saving s on a.saving_id = s.saving_id
         WHERE std_id = #{stdId};
+    </select>
+    <select id="selectSavingAccountByAccountId" resultType="com.kb.savingAccount.domain.SavingAccount">
+        select * from saving_account where account_id = #{id}
     </select>
 
     <insert id="insertSavingAccount" parameterType="com.kb.savingAccount.dto.SavingAccountDTO">
-        INSERT INTO Saving_account (std_id,tch_id, saving_id, rate, deposit_amount, start_date, end_date, total_amount)
-        VALUES (#{stdId},#{tchId}, #{savingId}, #{rate}, #{depositAmount}, #{startDate}, #{endDate}, #{totalAmount})
+        INSERT INTO Saving_account (std_id,tch_id, saving_id, rate, deposit_amount, start_date, end_date, status, total_amount)
+        VALUES (#{stdId},#{tchId}, #{savingId}, #{rate}, #{depositAmount}, #{startDate}, #{endDate}, 'y', 0)
     </insert>
 
     <insert id="insertSavingAccountTeacher" parameterType="com.kb.saving.dto.SavingDTO">

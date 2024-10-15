@@ -9,7 +9,9 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class DepositAccountDTO {
+public class DepositAccountRequest {
+    private long stdId;
+    private long tchId;
     private long depositId;
     private int rate;
     private int depositAmount;
