@@ -12,6 +12,6 @@ public class StoreDTO {
     private String cpName;
     private String cpContent;
     private Integer cpQuantity;
-    private LocalDateTime cpDate;
+    private String cpDate;
     private String cpImage;
 }
