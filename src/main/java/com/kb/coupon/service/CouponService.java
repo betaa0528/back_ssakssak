@@ -7,6 +7,7 @@ import com.kb.coupon.domain.StudentCoupon;
 import com.kb.coupon.dto.BuyRequest;
 import com.kb.coupon.dto.CouponAlarmArgs;
 import com.kb.coupon.dto.CouponDTO;
+import com.kb.coupon.dto.StudentCouponDTO;
 import com.kb.coupon.mapper.CouponMapper;
 import com.kb.member.dto.Member;
 import com.kb.student.domain.Student;
@@ -70,4 +71,14 @@ public class CouponService {
         }
 
     }
+    public List<StudentCouponDTO> getStudentCoupons(long stdId) {
+        List<StudentCouponDTO> studentCoupons = couponMapper.getStudentCoupons(stdId);
+        for (StudentCouponDTO studentCoupon : studentCoupons) {
+            CouponDTO coupon = couponMapper.getCouponByCpId(studentCoupon.getCpId());
+            studentCoupon.setCpName(coupon.getCpName()); // CouponDTO의 이름을 StudentCouponDTO에 추가
+        }
+        return studentCoupons;
+    }
+
+
 }

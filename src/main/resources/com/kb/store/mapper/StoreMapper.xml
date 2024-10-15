@@ -15,8 +15,8 @@
     </resultMap>
 
     <insert id="insertStore" parameterType="com.kb.store.dto.StoreDTO">
-        INSERT INTO coupon (cp_name, cp_content, cp_price, cp_quantity, cp_image)
-        VALUES ( #{cpName}, #{cpContent}, #{cpPrice}, #{cpQuantity}, #{cpImage})
+        INSERT INTO coupon (cp_name, cp_content, cp_price, cp_quantity, cp_image,cp_date)
+        VALUES ( #{cpName}, #{cpContent}, #{cpPrice}, #{cpQuantity}, #{cpImage}, #{cpDate})
     </insert>
 
     <select id="getStoreList" resultMap="StoreResultMap">

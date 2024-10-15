@@ -2,6 +2,7 @@ package com.kb.controller.student;
 
 import com.kb.coupon.dto.BuyRequest;
 import com.kb.coupon.dto.CouponDTO;
+import com.kb.coupon.dto.StudentCouponDTO;
 import com.kb.coupon.service.CouponService;
 import com.kb.member.dto.Member;
 import io.swagger.annotations.Api;
@@ -50,5 +51,10 @@ public class StudentCouponController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("쿠폰 구매 중 서버 오류가 발생했습니다.");
         }
+    }
+
+    @GetMapping("/mycp/{stdId}")
+    public List<StudentCouponDTO> getStudentCoupons(@PathVariable("stdId") long stdId) {
+        return couponService.getStudentCoupons(stdId);
     }
 }

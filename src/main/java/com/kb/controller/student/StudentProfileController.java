@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/student/profile")
+@RequestMapping("/api/student/profile")
 @RequiredArgsConstructor
 @Slf4j
 
