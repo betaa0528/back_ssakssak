@@ -9,15 +9,14 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-
 public class DepositAccount {
-    private Long accountId;
-    private Long stdId;
-    private Long tchId;
-    private Long depositId;
-    private Integer rate;
-    private Integer depositAmount;
+    private long accountId;
+    private long stdId;
+    private long tchId;
+    private long depositId;
+    private int rate;
+    private int depositAmount;
     private LocalDate startDate;
     private LocalDate endDate;
-    private String status;
+    private char status;
 }

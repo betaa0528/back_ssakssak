@@ -1,18 +1,18 @@
 package com.kb.depositAccount.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class DepositAccountDTO {
-    private Long accountId;
-    private Long stdId;
-    private Long tchId;
-    private Long depositId;
-    private Integer rate;
-    private Integer depositAmount;
+    private long depositId;
+    private int rate;
+    private int depositAmount;
     private LocalDate startDate;
     private LocalDate endDate;
-    private String status;
 }
