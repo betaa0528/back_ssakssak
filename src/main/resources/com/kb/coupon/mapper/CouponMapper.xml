@@ -44,4 +44,16 @@
           and std_id = #{stdId};
     </update>
 
+
+    <select id="getStudentCoupons" parameterType="long" resultType="com.kb.coupon.dto.StudentCouponDTO">
+        SELECT stcp_id, cp_id, std_id, cp_quantity
+        FROM student_coupon
+        WHERE std_id = #{stdId}
+    </select>
+
+    <select id="getCouponByCpId" parameterType="long" resultType="com.kb.coupon.dto.CouponDTO">
+        SELECT cp_id, cp_name, cp_content, cp_quantity, cp_price
+        FROM coupon
+        WHERE cp_id = #{cpId}
+    </select>
 </mapper>

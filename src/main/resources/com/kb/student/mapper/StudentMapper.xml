@@ -21,7 +21,7 @@
     </select>
 
     <select id="selectStudentProfile" parameterType="long" resultMap="StudentResultMap">
-        select std_id, std_num, std_name, std_account, std_birth, job_id
+        select std_id, std_num, std_name, std_account, std_birth, job_id,seed
         from student
         where std_id = #{studentId}
     </select>
