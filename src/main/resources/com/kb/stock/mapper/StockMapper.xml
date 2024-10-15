@@ -45,8 +45,7 @@
         insert into rate_history(stock_date, `change`, stock_price) values (now(), #{change}, #{stockPrice});
     </insert>
 
-    <insert id="insertStockNews" parameterType="com.kb.stock.dto.StockNewsRequest"
-            useGeneratedKeys="true" keyProperty="newsId">
+    <insert id="insertStockNews" parameterType="com.kb.stock.dto.StockNewsRequest">
         insert into stock_news(title, content, news_date) values (#{title}, #{content}, now());
     </insert>
 
