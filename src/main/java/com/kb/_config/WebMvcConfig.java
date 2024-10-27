@@ -59,13 +59,5 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
         converters.add(new MappingJackson2HttpMessageConverter());
     }
-
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/api/**")
-                .allowedOrigins("https://front-ssakssak-fevy.vercel.app/")
-                .allowedMethods("GET", "POST", "PUT", "DELETE")
-                .allowCredentials(true);
-    }
 }
 
