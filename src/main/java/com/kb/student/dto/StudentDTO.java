@@ -7,7 +7,6 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-
 public class StudentDTO {
     private long stdId;
     private long tchId;
