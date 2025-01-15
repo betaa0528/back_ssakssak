@@ -4,6 +4,7 @@ import com.kb.depositAccount.domain.DepositAccount;
 import com.kb.depositAccount.dto.DepositAccountDTO;
 import com.kb.depositAccount.dto.DepositAccountRequest;
 import com.kb.depositAccount.dto.DepositAccountResponse;
+import com.kb.depositAccount.dto.DepositMaturity;
 import com.kb.depositAccount.mapper.DepositAccountMapper;
 import com.kb.member.dto.Member;
 import com.kb.student.domain.Student;
@@ -27,7 +28,6 @@ public class DepositAccountService {
     public List<DepositAccountResponse> getDepositAccountById(Member member) {
         Student student = studentMapper.selectStudentByUsernameAndStdName(member.getUsername(), member.getName());
         return depositAccountMapper.selectDepositAccount(student.getStdId());
-
     }
 
     @Transactional
@@ -60,5 +60,10 @@ public class DepositAccountService {
         if(result != 1) {
             throw new NoSuchElementException();
         }
+    }
+
+    // TODO : TEST용도 였으므로 지울것
+    public DepositMaturity getMaturity() {
+        return depositAccountMapper.getMaturityDeposit();
     }
 }

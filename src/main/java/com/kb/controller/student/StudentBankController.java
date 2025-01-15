@@ -3,6 +3,7 @@ package com.kb.controller.student;
 import com.kb.depositAccount.domain.DepositAccount;
 import com.kb.depositAccount.dto.DepositAccountDTO;
 import com.kb.depositAccount.dto.DepositAccountResponse;
+import com.kb.depositAccount.dto.DepositMaturity;
 import com.kb.depositAccount.service.DepositAccountService;
 import com.kb.member.dto.Member;
 import com.kb.saving.domain.Saving;
@@ -88,6 +89,12 @@ public class StudentBankController {
     public ResponseEntity<String> cancelSavingAccount(@PathVariable long id) {
         savingAccountService.cancelSavingAccount(id);
         return ResponseEntity.ok("적금을 해지 했습니다.");
+    }
+    // TODO : 나중에 지울것
+    @GetMapping("/maturity")
+    public ResponseEntity<DepositMaturity> getMaturity() {
+        DepositMaturity maturity = depositAccountService.getMaturity();
+        return ResponseEntity.ok(maturity);
     }
 
 }
