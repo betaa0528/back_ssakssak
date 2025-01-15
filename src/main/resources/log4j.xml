@@ -17,18 +17,18 @@
 
     <!-- 3rdparty Loggers -->
     <logger name="org.springframework.core">
-        <level value="info" />
+        <level value="warn" />
     </logger>
     <logger name="org.springframework.beans">
-        <level value="info" />
+        <level value="warn" />
     </logger>
 
     <logger name="org.springframework.context">
-        <level value="info" />
+        <level value="warn" />
     </logger>
 
     <logger name="org.springframework.web">
-        <level value="info" />
+        <level value="warn" />
     </logger>
 
 
@@ -54,6 +54,14 @@
 <!--    <logger name="jdbc.sqlonly">-->
 <!--        <level value="trace" />-->
 <!--    </logger>-->
+
+    <!-- MyBatis SQL Logging -->
+    <logger name="org.apache.ibatis">
+        <level value="debug" />
+    </logger>
+    <logger name="jdbc.sqlonly">
+        <level value="debug" />
+    </logger>
 
     <!-- Root Logger -->
     <root>
