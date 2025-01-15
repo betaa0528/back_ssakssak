@@ -1,7 +1,8 @@
-package com.kb.student.mapper;
+    package com.kb.student.mapper;
 
 import com.kb.student.domain.Student;
 import com.kb.student.dto.*;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -10,6 +11,12 @@ import java.util.List;
 
 @Mapper
 public interface StudentMapper {
+    // 배치용
+    List<StudentDTO> getStudentListByJobId();
+
+
+
+    // ================================
     List<StudentDTO> getStudentList();
     void insertStudent(StudentDTO studentDTO);
     // 학생 프로필 조회
@@ -29,6 +36,7 @@ public interface StudentMapper {
 
     void updateAllStudentSeed(int pay);
     void updateStudent(@Param("student") StudentDTO student);
+    void updateStudentJob(@Param("stdId") long stdId,@Param("jobId") long jobId);
 
     Student selectStudentById(long stdId);
     Student selectStudentByUsernameAndStdName(@Param("username") String username,@Param("name") String name);

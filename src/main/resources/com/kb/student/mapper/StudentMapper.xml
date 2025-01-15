@@ -15,9 +15,19 @@
         <result property="seed" column="seed"/>
     </resultMap>
 
+<!--    배치용-->
+    <select id="getStudentListByJobId" resultMap="StudentResultMap">
+        select std_id, std_name, std_num, std_birth, job_id, seed
+        from student
+        where job_id = 1
+        order by std_id
+    </select>
+<!--    배치용-->
+
     <select id="getStudentList" resultMap="StudentResultMap">
         SELECT std_id, std_name, std_num, std_birth, job_id, seed
         FROM student
+        ORDER BY std_id
     </select>
 
     <select id="selectStudentProfile" parameterType="long" resultMap="StudentResultMap">
@@ -129,6 +139,10 @@
             job_id = #{student.jobId},
             seed = #{student.seed}
         WHERE std_id = #{student.stdId}
+    </update>
+
+    <update id="updateStudentJob">
+        UPDATE student SET job_Id = #{jobId} WHERE std_id = #{stdId}
     </update>
   
 <!--
