@@ -10,10 +10,23 @@
         insert into salary(base_salary, additional_salary,created_at) values (baseSalary, additionalSalary, now());
     </insert>
 
+    <insert id="insertSalaryHistory">
+        INSERT INTO salaryhistory (std_id, salary_id, paid_amount, paid_date)
+        VALUES (#{stdId}, #{salaryId}, #{baseSalary}, now())
+    </insert>
+
     <select id="selectSalary" resultType="com.kb.salary.dto.Salary">
         select * from salary order by created_at desc limit 1;
     </select>
 
+    <select id="selectSalaryByTchId" resultType="com.kb.salary.dto.SalaryBatchRequest">
+        select s.std_id, s.tch_id, a.salary_id, a.base_salary, a.additional_salary
+        from student s
+                 join salary a
+                      on s.tch_id = a.tch_id
+        order by tch_id, std_id
+        limit #{_pagesize} offset #{_skiprows}
+    </select>
 
 
 </mapper>
