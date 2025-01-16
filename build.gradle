@@ -99,6 +99,10 @@ dependencies {
   implementation 'org.springframework.batch:spring-batch-infrastructure:4.3.7'
 
 
+  implementation 'org.springframework:spring-web'
+  implementation 'com.google.code.gson:gson:2.10.1' // JSON 처리
+
+
   // 테스트
   testImplementation "org.springframework:spring-test:${springVersion}"
   testCompileOnly"org.projectlombok:lombok:${lombokVersion}"
