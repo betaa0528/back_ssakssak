@@ -144,15 +144,20 @@
     <update id="updateStudentJob">
         UPDATE student SET job_Id = #{jobId} WHERE std_id = #{stdId}
     </update>
-  
-<!--
-    <update id="updateStudentInfo" parameterType="com.kb.student.dto.StudentDTO">
-        UPDATE student
-        SET std_name = #{stdName},
-            std_birth = #{stdBirth},
-            job_id = #{jobId},
-            seed = #{seed}
-        WHERE std_id = #{stdId}
+    <update id="updateStudentSalaryBatch">
+        update student
+        set seed = seed + #{baseSalary}
+        where std_id = #{stdId}
     </update>
- -->
+
+    <!--
+        <update id="updateStudentInfo" parameterType="com.kb.student.dto.StudentDTO">
+            UPDATE student
+            SET std_name = #{stdName},
+                std_birth = #{stdBirth},
+                job_id = #{jobId},
+                seed = #{seed}
+            WHERE std_id = #{stdId}
+        </update>
+     -->
 </mapper>
