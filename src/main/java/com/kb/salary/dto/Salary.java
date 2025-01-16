@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Data
 public class Salary {
     private long salaryId;
+    private long tchId;
     private int baseSalary;
     private int additionalSalary;
     private LocalDateTime createdAt;
