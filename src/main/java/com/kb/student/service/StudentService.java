@@ -1,13 +1,10 @@
 package com.kb.student.service;
 
-import com.kb.salary.dto.Salary;
 import com.kb.salary.mapper.SalaryMapper;
-import com.kb.student.domain.Student;
 import com.kb.student.dto.*;
 import com.kb.student.mapper.StudentMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,7 +43,6 @@ public class StudentService {
     @Transactional
     public void updateStudent(StudentDTO studentDTO) {
         studentMapper.updateStudent(studentDTO);
-
     }
 
     public void saveStudents(List<StudentCsvDTO> Student) {
@@ -55,8 +51,8 @@ public class StudentService {
         }
     }
 
-    public List<StudentDTO> getAllStudents() {
-        return studentMapper.getAllStudents();
+    public List<StudentDTO> getAllStudents(String userName) {
+        return studentMapper.getAllStudentsByTchAccount(userName);
     }
 
     public List<SeedRankingDTO> getStudentSeed() {
