@@ -90,11 +90,5 @@ public class StudentBankController {
         savingAccountService.cancelSavingAccount(id);
         return ResponseEntity.ok("적금을 해지 했습니다.");
     }
-    // TODO : 나중에 지울것
-    @GetMapping("/maturity")
-    public ResponseEntity<DepositMaturity> getMaturity() {
-        DepositMaturity maturity = depositAccountService.getMaturity();
-        return ResponseEntity.ok(maturity);
-    }
 
 }
