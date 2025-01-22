@@ -19,6 +19,11 @@
         <result property="quizDate" column="quiz_date"/>
     </resultMap>
 
+    <insert id="insertQuiz">
+        insert into quiz (quiz_content, answer1, answer2, answer3, answer4, answer_num, quiz_date)
+        values (#{quizContent}, #{answer1}, #{answer2}, #{answer3}, #{answer4}, #{answerNum}, now())
+    </insert>
+
     <!-- 오늘의 퀴즈 가져오기 -->
     <select id="getTodayQuiz" resultType="com.kb.quiz.dto.QuizDTO">
         SELECT quiz_id, quiz_content, answer1, answer2, answer3, answer4, quiz_date, answer_num
