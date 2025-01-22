@@ -1,9 +1,11 @@
 package com.kb.controller.teacher;
 
+import com.kb.member.dto.Member;
 import com.kb.student.dto.StudentDTO;
 import com.kb.student.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,8 +18,8 @@ public class TeacherStudentController {
     private final StudentService studentService;
 
     @GetMapping("/list")
-    public List<StudentDTO> getStudentList() {
-        return studentService.getAllStudents();
+    public List<StudentDTO> getStudentList(@AuthenticationPrincipal Member member) {
+        return studentService.getAllStudents(member.getUsername());
     }
 
     @PostMapping("/student-apply")
@@ -27,7 +29,6 @@ public class TeacherStudentController {
     }
 
     @PutMapping("/update")
-
     public String updateStudent(@RequestBody StudentDTO studentDTO) {
         studentService.updateStudent(studentDTO);
         return "Student updated successfully!";

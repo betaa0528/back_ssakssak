@@ -44,8 +44,8 @@ public class TeacherRewardController {
     }
 
     @GetMapping("/student-list")
-    public ResponseEntity<List<RewardStudentDTO>> getStudentList() {
-        List<RewardStudentDTO> rewardStudentList = rewardService.getRewardStudentList();
+    public ResponseEntity<List<RewardStudentDTO>> getStudentList(@AuthenticationPrincipal Member member) {
+        List<RewardStudentDTO> rewardStudentList = rewardService.getRewardStudentList(member.getUsername());
         return ResponseEntity.ok(rewardStudentList);
     }
 

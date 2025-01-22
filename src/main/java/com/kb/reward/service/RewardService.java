@@ -56,8 +56,8 @@ public class RewardService {
         return getRewardById(rewardDTO.getRewardId());
     }
 
-    public List<RewardStudentDTO> getRewardStudentList() {
-        return rewardMapper.selectStudentsList();
+    public List<RewardStudentDTO> getRewardStudentList(String userName) {
+        return rewardMapper.selectStudentsList(userName);
     }
 
 
