@@ -1,5 +1,7 @@
 package com.kb.Scheduled;
 
+import com.kb.quiz.domain.Quiz;
+import com.kb.quiz.service.QuizService;
 import com.kb.salary.mapper.SalaryMapper;
 import com.kb.student.mapper.StudentMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -14,12 +16,16 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.util.Date;
+
 @Slf4j
 @Component
 public class ScheduledTasks {
 
     private final StudentMapper studentMapper;
     private final SalaryMapper salaryMapper;
+    private final QuizService quizService;
     private final JobLauncher jobLauncher;
     private final Job maturityJob;
     private final Job salaryBatchJob;
@@ -27,12 +33,13 @@ public class ScheduledTasks {
     @Autowired
     public ScheduledTasks(
             StudentMapper studentMapper,
-            SalaryMapper salaryMapper,
+            SalaryMapper salaryMapper, QuizService quizService,
             JobLauncher jobLauncher,
             @Qualifier("maturityJob") Job job,
             @Qualifier("salaryBatchJob") Job salaryBatchJob) {
         this.studentMapper = studentMapper;
         this.salaryMapper = salaryMapper;
+        this.quizService = quizService;
         this.jobLauncher = jobLauncher;
         this.maturityJob = job;
         this.salaryBatchJob = salaryBatchJob;
@@ -66,7 +73,7 @@ public class ScheduledTasks {
         }
     }
 
-    @Scheduled(cron = "0 * * * * *")
+    @Scheduled(cron = "0 0 9 * * Mon")
     public void salaryUpdate() {
         try {
             log.info("Starting Batch Job... Salary Update {}, Thread ID: {}", System.currentTimeMillis(), Thread.currentThread().getId());
@@ -80,5 +87,11 @@ public class ScheduledTasks {
             e.printStackTrace();
             log.info("Job failed: " + e.getMessage());
         }
+    }
+
+    @Scheduled(cron = "0 0 9 * * 1-5")
+    public void quizAutoSave() {
+        Quiz quiz = quizService.generateAndSaveQuiz();
+        log.info("{}, Quiz: {}", LocalDateTime.now(), quiz);
     }
 }
