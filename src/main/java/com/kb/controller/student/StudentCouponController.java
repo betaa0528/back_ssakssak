@@ -4,6 +4,7 @@ import com.kb.coupon.dto.BuyRequest;
 import com.kb.coupon.dto.CouponDTO;
 import com.kb.coupon.dto.StudentCouponDTO;
 import com.kb.coupon.service.CouponService;
+import com.kb.coupon.service.CouponUsageService;
 import com.kb.member.dto.Member;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 @RestController
@@ -27,6 +29,7 @@ import java.util.NoSuchElementException;
 public class StudentCouponController {
 
     private final CouponService couponService;
+    private final CouponUsageService couponUsageService;
 
     @GetMapping("/list")
     public ResponseEntity<List<CouponDTO>> getCoupons() {
@@ -53,8 +56,17 @@ public class StudentCouponController {
         }
     }
 
-    @GetMapping("/mycp/{stdId}")
-    public List<StudentCouponDTO> getStudentCoupons(@PathVariable("stdId") long stdId) {
-        return couponService.getStudentCoupons(stdId);
+    @GetMapping("/mycp")
+    public List<StudentCouponDTO> getStudentCoupons(@AuthenticationPrincipal Member member) {
+
+        return couponService.getStudentCoupons(member);
     }
+
+    @PostMapping("/use")
+    public ResponseEntity<Void> useCoupon(@AuthenticationPrincipal Member member, @RequestBody String cpName) {
+        couponUsageService.useCoupon(member, cpName);
+        return ResponseEntity.ok().build();
+    }
+
+
 }
