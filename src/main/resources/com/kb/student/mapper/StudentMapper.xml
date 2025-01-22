@@ -86,9 +86,12 @@
     </insert>
 
 
-    <select id="getAllStudents" resultType="com.kb.student.dto.StudentDTO">
-        SELECT std_id, std_num, std_name, std_birth, job_id, seed, tch_id
-        FROM student
+    <select id="getAllStudentsByTchAccount" resultType="com.kb.student.dto.StudentDTO">
+        SELECT s.std_id, s.std_num, s.std_name, s.std_birth, s.job_id, s.seed, s.tch_id
+        FROM student s
+        JOIN teacher t
+        ON s.tch_id = t.tch_id
+        WHERE t.tch_account = #{userName};
     </select>
 
     <select id="getStudentSeed" resultType="com.kb.student.dto.SeedRankingDTO">

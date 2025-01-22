@@ -32,9 +32,11 @@
         where reward_id = #{rewardId};
     </select>
     <select id="selectStudentsList" resultType="com.kb.reward.dto.RewardStudentDTO">
-        select std_id, std_name, seed
-        from student
-        order by std_num;
+        select s.std_id, s.std_name, s.seed
+        from student s
+        join teacher t on s.tch_id = t.tch_id
+        where t.tch_account = #{userName}
+        order by s.std_num;
     </select>
     <select id="selectRewardGiveList" resultType="com.kb.reward.dto.RewardGiveDTO">
         SELECT give_id,

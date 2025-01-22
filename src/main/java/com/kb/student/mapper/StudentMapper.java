@@ -3,10 +3,8 @@ package com.kb.student.mapper;
 import com.kb.salary.dto.SalaryBatchRequest;
 import com.kb.student.domain.Student;
 import com.kb.student.dto.*;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -38,7 +36,7 @@ public interface StudentMapper {
 
     void insertCSVStudent(StudentCsvDTO student);
 
-    List<StudentDTO> getAllStudents();
+    List<StudentDTO> getAllStudentsByTchAccount(String userName);
 
     List<SeedRankingDTO> getStudentSeed();
 

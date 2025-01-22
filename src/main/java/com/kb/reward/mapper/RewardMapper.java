@@ -16,7 +16,7 @@ public interface RewardMapper {
 
     int insertReward(RewardDTO rewardDTO);
 
-    List<RewardStudentDTO> selectStudentsList();
+    List<RewardStudentDTO> selectStudentsList(String userName);
 
     List<RewardGiveDTO> selectRewardGiveList(RewardGiveParam rewardGiveParam);
 
