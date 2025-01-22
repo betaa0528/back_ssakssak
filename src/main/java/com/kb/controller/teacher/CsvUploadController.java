@@ -1,6 +1,7 @@
 package com.kb.controller.teacher;
 
 
+import com.kb.member.dto.Member;
 import com.kb.student.dto.StudentCsvDTO;
 import com.kb.student.dto.StudentDTO;
 import com.kb.student.service.StudentService;
@@ -10,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -82,7 +84,7 @@ public class CsvUploadController {
     }
 
     @GetMapping("/class/student")
-    public List<StudentDTO> getAllStudents() {
-        return studentService.getAllStudents();
+    public List<StudentDTO> getAllStudents(@AuthenticationPrincipal Member member) {
+        return studentService.getAllStudents(member.getUsername());
     }
 }
