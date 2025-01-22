@@ -55,7 +55,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             } catch (Exception e) {
                 log.error("토큰 검증 실패", e);
             }
-        }else {
+        } else {
             log.info("JWT 토큰이 없거나 형식이 잘못되었습니다.");
         }
 

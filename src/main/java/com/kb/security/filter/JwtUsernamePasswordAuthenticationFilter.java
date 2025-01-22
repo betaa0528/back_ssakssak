@@ -30,8 +30,6 @@ public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAut
         super(authenticationManager);
 
         setFilterProcessesUrl("/api/auth/login");		          // POST 로그인 요청 url
-//        setFilterProcessesUrl("/api/student/auth/login");		          // POST 로그인 요청 url
-//        setFilterProcessesUrl("/api/teacher/auth/login");		          // POST 로그인 요청 url
         setAuthenticationSuccessHandler(loginSuccessHandler);	// 로그인 성공 핸들러 등록
         setAuthenticationFailureHandler(loginFailureHandler);  // 로그인 실패 핸들러 등록
     }
