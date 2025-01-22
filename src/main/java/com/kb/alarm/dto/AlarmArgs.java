@@ -4,7 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-public interface AlarmArgs {
-    AlarmType getAlarmType();
-    String getProductName();
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class AlarmArgs {
+    private AlarmType alarmType;
+    private String productName;
+    private String stdName;
 }

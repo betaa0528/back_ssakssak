@@ -15,4 +15,5 @@ public class Alarm {
     private long productId;
     private String targetUserName;
     private char isChecked;
+    private char sent;
 }
