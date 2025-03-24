@@ -22,10 +22,10 @@ import java.util.Optional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@PropertySource({"classpath:/application.properties"})
+@PropertySource({"classpath:/application.yml"})
 public class MemberService{
 
-    @Value("#{'${os_type}' == 'win' ? '${file_save_location_win}':'${file_save_location_other}'}")
+    @Value("#{'${os.type}' == 'win' ? '${file_save_location_win}':'${file_save_location_other}'}")
     public String LOCATION;
 
     final PasswordEncoder passwordEncoder;

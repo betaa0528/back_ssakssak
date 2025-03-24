@@ -3,12 +3,18 @@ package com.kb.coupon.mapper;
 import com.kb.coupon.domain.StudentCoupon;
 import com.kb.coupon.dto.BuyRequest;
 import com.kb.coupon.dto.CouponDTO;
+import com.kb.coupon.dto.CouponUsageDTO;
 import com.kb.coupon.dto.StudentCouponDTO;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+@Mapper
 public interface CouponMapper {
+    /// test용 코드
+    List<CouponUsageDTO> selectAllCouponUsage();
+    ///
     List<CouponDTO> selectCoupon();
 
     CouponDTO selectAvailableCouponById(Long id);
@@ -29,4 +35,5 @@ public interface CouponMapper {
 
     // CouponDTO의 cpId와 StudentCouponDTO의 cpId가 일치하는 쿠폰 이름을 가져옴
     CouponDTO getCouponByCpId(@Param("cpId") long cpId);
+
 }

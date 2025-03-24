@@ -12,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
 public class OpenAIService {
 
     private final String API_URL = "https://api.openai.com/v1/chat/completions";
-    @Value("${chat-gpt-api-key}")
+    @Value("${chat-gpt.api-key}")
     private String API_KEY;
 
     public String generateQuiz(String prompt) {

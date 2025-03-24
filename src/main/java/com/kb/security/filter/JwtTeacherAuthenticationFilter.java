@@ -5,6 +5,7 @@ import com.kb.member.dto.LoginDTO;
 import com.kb.security.handler.LoginFailureHandler;
 import com.kb.security.handler.LoginSuccessHandler;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,8 +15,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.Collection;
 
 @Slf4j
@@ -24,7 +25,7 @@ public class JwtTeacherAuthenticationFilter extends UsernamePasswordAuthenticati
 
     // 스프링 생성자 주입을 통해 전달
     public JwtTeacherAuthenticationFilter(
-            AuthenticationManager authenticationManager,
+            @Lazy AuthenticationManager authenticationManager,
             LoginSuccessHandler loginSuccessHandler,
             LoginFailureHandler loginFailureHandler ) {
         super(authenticationManager);

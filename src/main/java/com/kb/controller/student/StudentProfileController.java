@@ -1,6 +1,5 @@
 package com.kb.controller.student;
 
-import com.kb.student.dto.DailyCheckDTO;
 import com.kb.student.dto.StudentDTO;
 import com.kb.student.service.StudentService;
 import lombok.RequiredArgsConstructor;

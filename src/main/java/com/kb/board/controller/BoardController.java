@@ -3,7 +3,7 @@ package com.kb.board.controller;
 import com.kb.board.dto.*;
 import com.kb.board.service.BoardService;
 import com.kb.member.dto.Member;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,11 +24,11 @@ import java.util.List;
 @RequestMapping("/api/board")
 @RequiredArgsConstructor
 @Slf4j
-@Api(value = "BoardController", tags = "게시판 정보")
-@PropertySource({"classpath:/application.properties"})
+@Tag(description = "BoardController", name = "게시판 정보")
+@PropertySource({"classpath:/application.yml"})
 public class BoardController {
 
-    @Value("#{'${os_type}' == 'win' ? '${file_save_location_win}/board':'${file_save_location_other}/board'}")
+    @Value("#{'${os.type}' == 'win' ? '${file_save_location_win}/board':'${file_save_location_other}/board'}")
     public String BASE_DIR;
 
     private final BoardService service;

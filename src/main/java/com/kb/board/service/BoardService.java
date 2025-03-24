@@ -3,7 +3,7 @@ package com.kb.board.service;
 import com.kb.board.dto.*;
 import com.kb.board.mapper.BoardMapper;
 import com.kb.common.pagination.PageInfo;
-import com.kb.common.util.UploadFiles;
+import com.kb.common.utils.UploadFiles;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,9 +22,10 @@ import java.util.Optional;
 @Log4j
 @Service
 @RequiredArgsConstructor
-@PropertySource({"classpath:/application.properties"})
+@PropertySource({"classpath:/application.yml"})
 public class BoardService {
-    @Value("#{'${os_type}' == 'win' ? '${file_save_location_win}/board':'${file_save_location_other}/board'}")
+
+    @Value("#{'${os.type}' == 'win' ? '${file_save_location_win}/board':'${file_save_location_other}/board'}")
     public String BASE_DIR;
 
     private final BoardMapper mapper;
@@ -82,7 +83,7 @@ public class BoardService {
         for (MultipartFile part : files) {
             if (part.isEmpty()) continue;
             try {
-                String renameFileName = UploadFiles.upload(BASE_DIR, part);
+                String renameFileName = UploadFiles.upload(part);
                 BoardAttachFile attach = new BoardAttachFile(0, bno, part.getOriginalFilename(), renameFileName, part.getContentType(), part.getSize(), null);
                 mapper.insertAttachFile(attach);
             } catch (IOException e) {

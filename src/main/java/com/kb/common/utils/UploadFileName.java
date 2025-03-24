@@ -1,4 +1,4 @@
-package com.kb.common.util;
+package com.kb.common.utils;
 
 public class UploadFileName {
     public static String getUniqueName(String filename) {

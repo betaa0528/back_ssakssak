@@ -4,8 +4,9 @@ package com.kb.controller.teacher;
 import com.kb.member.dto.Member;
 import com.kb.student.dto.StudentCsvDTO;
 import com.kb.student.dto.StudentDTO;
+import com.kb.student.dto.StudentResponse;
 import com.kb.student.service.StudentService;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.PropertySource;
@@ -19,14 +20,13 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/teacher")
 @RequiredArgsConstructor
 @Slf4j
-@Api(value = "StudentGrade", tags = "학생 학급 등록")
-@PropertySource({"classpath:/application.properties"})
+@Tag(description = "StudentGrade", name = "학생 학급 등록")
+@PropertySource({"classpath:/application.yml"})
 public class CsvUploadController {
     private final StudentService studentService;
 
@@ -84,7 +84,7 @@ public class CsvUploadController {
     }
 
     @GetMapping("/class/student")
-    public List<StudentDTO> getAllStudents(@AuthenticationPrincipal Member member) {
+    public List<StudentResponse> getAllStudents(@AuthenticationPrincipal Member member) {
         return studentService.getAllStudents(member.getUsername());
     }
 }

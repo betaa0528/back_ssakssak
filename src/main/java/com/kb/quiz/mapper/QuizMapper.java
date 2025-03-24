@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Select;
 import java.time.LocalDate;
 import java.util.List;
 
+@Mapper
 public interface QuizMapper { // 오늘의 퀴즈 가져오기@Select("SELECT quiz_id, quiz_content, answer1, answer2, answer3, answer4, answer_num, quiz_date FROM quiz WHERE quiz_date = CURDATE()")
     QuizDTO getTodayQuiz();
 

@@ -1,11 +1,11 @@
 package com.kb.member.controller;
 
-import com.kb.common.util.UploadFiles;
+import com.kb.common.utils.UploadFiles;
 import com.kb.member.dto.ChangePasswordDTO;
 import com.kb.member.dto.Member;
 import com.kb.member.dto.MemberDTO;
 import com.kb.member.service.MemberService;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,18 +14,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.File;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/member")
-@Api(value = "MemberController", tags = "멤버 정보")
-@PropertySource({"classpath:/application.properties"})
+@Tag(description = "MemberController", name = "멤버 정보")
+@PropertySource({"classpath:/application.yml"})
 public class MemberController {
 
-    @Value("#{'${os_type}' == 'win' ? '${file_save_location_win}':'${file_save_location_other}'}")
+    @Value("#{'${os.type}' == 'win' ? '${file_save_location_win}':'${file_save_location_other}'}")
     public String LOCATION;
 
     private final MemberService service;

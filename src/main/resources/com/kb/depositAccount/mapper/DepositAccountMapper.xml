@@ -21,13 +21,21 @@
         select * from deposit_account where account_id = #{id};
     </select>
 
+    <select id="getMaturityDeposits" resultType="com.kb.depositAccount.dto.DepositMaturity">
+        select a.*, d.deposit_period
+        from deposit_account a
+                 join deposit d on a.deposit_id = d.deposit_id
+        where end_date &lt;= NOW() and status = 'Y'
+        order by account_id
+    </select>
+
     <select id="getMaturityDepositList" resultType="com.kb.depositAccount.dto.DepositMaturity">
         select a.*, d.deposit_period
         from deposit_account a
             join deposit d on a.deposit_id = d.deposit_id
         where end_date &lt;= NOW() and status = 'Y'
         order by account_id
-        limit #{pageSize} offset #{offset}
+        limit #{_pagesize} offset #{_skiprows}
     </select>
     <select id="getMaturityDeposit" resultType="com.kb.depositAccount.dto.DepositMaturity">
         select a.*, d.deposit_period

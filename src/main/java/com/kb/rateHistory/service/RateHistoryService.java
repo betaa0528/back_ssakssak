@@ -12,7 +12,7 @@ import java.util.List;
 @Log4j
 @Service
 @RequiredArgsConstructor
-@PropertySource({"classpath:/application.properties"})
+@PropertySource({"classpath:/application.yml"})
 public class RateHistoryService {
 
     private final RateHistoryMapper rateHistoryMapper;

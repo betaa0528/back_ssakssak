@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.kb.openAPI.dto.OpenApiResponseDTO;
 import com.kb.openAPI.service.OpenAIService;
 import com.kb.quiz.domain.Quiz;
-import com.kb.quiz.dto.QuizAnswerDTO;
 import com.kb.quiz.dto.QuizDTO;
 import com.kb.quiz.dto.QuizResponse;
 import com.kb.quiz.mapper.QuizMapper;
@@ -12,17 +11,14 @@ import com.kb.quizRecord.dto.QuizRecordDTO;
 import com.kb.quizRecord.mapper.QuizRecordMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
-import org.json.simple.JSONObject;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Log4j
 @Service
 @RequiredArgsConstructor
-@PropertySource({"classpath:/application.properties"})
+@PropertySource({"classpath:/application.yml"})
 public class QuizService {
 
     private final QuizMapper quizMapper;

@@ -15,6 +15,16 @@
         <result property="seed" column="seed"/>
     </resultMap>
 
+    <resultMap id="StudentResponseMap" type="com.kb.student.dto.StudentResponse">
+        <result property="stdId" column="std_id"/>
+        <result property="tchId" column="tch_id"/>
+        <result property="stdNum" column="std_num"/>
+        <result property="stdName" column="std_name"/>
+        <result property="stdBirth" column="std_birth"/>
+        <result property="jobId" column="job_id"/>
+        <result property="seed" column="seed"/>
+    </resultMap>
+
 <!--    배치용-->
     <select id="getStudentListByJobId" resultMap="StudentResultMap">
         select std_id, std_name, std_num, std_birth, job_id, seed
@@ -36,7 +46,7 @@
         where std_id = #{studentId}
     </select>
 
-    <select id="selectRecentFiveDaysAttendance" parameterType="long" resultType="com.kb.student.dto.DailyCheckDTO">
+    <select id="selectRecentFiveDaysAttendance" parameterType="long" resultType="com.kb.dailyCheck.dto.DailyCheckDTO">
         SELECT check_id, std_id, tch_id, check_date, isCheck
         FROM Daily_check
         WHERE std_id = #{studentId}
@@ -59,7 +69,7 @@
     </update>
 
 
-    <insert id="insertDailyCheck" parameterType="com.kb.student.dto.DailyCheckDTO">
+    <insert id="insertDailyCheck" parameterType="com.kb.dailyCheck.dto.DailyCheckDTO">
         INSERT INTO Daily_check (std_id, tch_id, check_date, isCheck)
         VALUES (#{stdId}, #{tchId}, #{checkDate}, #{isCheck})
     </insert>
@@ -86,7 +96,7 @@
     </insert>
 
 
-    <select id="getAllStudentsByTchAccount" resultType="com.kb.student.dto.StudentDTO">
+    <select id="getAllStudentsByTchAccount" resultMap="StudentResponseMap">
         SELECT s.std_id, s.std_num, s.std_name, s.std_birth, s.job_id, s.seed, s.tch_id
         FROM student s
         JOIN teacher t

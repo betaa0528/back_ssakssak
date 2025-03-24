@@ -1,4 +1,4 @@
-package com.kb.utils;
+package com.kb.common.utils;
 
 public class DepositCalculator implements InterestCalculator {
     @Override

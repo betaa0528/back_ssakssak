@@ -1,5 +1,6 @@
 package com.kb.student.dto;
 
+import com.kb.dailyCheck.dto.DailyCheckDTO;
 import com.kb.student.domain.Student;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,8 +20,4 @@ public class StudentDTO {
     private int seed;
 
     private List<DailyCheckDTO> recentAttendance;  // 필드가 존재해야 함
-
-    public static Student toEntity(StudentDTO studentDTO) {
-        return Student.of(studentDTO);
-    }
 }

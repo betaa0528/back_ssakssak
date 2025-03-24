@@ -1,55 +1,57 @@
 package com.kb.batch.job;
 
-import com.kb.depositAccount.domain.DepositAccount;
 import com.kb.depositAccount.dto.DepositMaturity;
 import com.kb.depositAccount.mapper.DepositAccountMapper;
-import com.kb.student.domain.Student;
 import com.kb.student.mapper.StudentMapper;
-import com.kb.utils.Calculator;
-import com.kb.utils.DepositCalculator;
+import com.kb.common.utils.Calculator;
+import com.kb.common.utils.DepositCalculator;
+import jakarta.transaction.Transactional;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.batch.MyBatisPagingItemReader;
-import org.mybatis.spring.batch.builder.MyBatisPagingItemReaderBuilder;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
-import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
+import org.springframework.batch.core.job.builder.JobBuilder;
+import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.Map;
+import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
+@EnableBatchProcessing
 public class DepositBatch {
-    private final int CHUNK_SIZE = 10;
-    private final JobBuilderFactory jobBuilderFactory;
-    private final StepBuilderFactory stepBuilderFactory;
+    private final int CHUNK_SIZE = 100;
     private final SqlSessionFactory sqlSessionFactory;
     private final DepositAccountMapper depositAccountMapper;
     private final StudentMapper studentMapper;
 
-    public DepositBatch(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory, SqlSessionFactory sqlSessionFactory, DepositAccountMapper depositAccountMapper, StudentMapper studentMapper) {
-        this.jobBuilderFactory = jobBuilderFactory;
-        this.stepBuilderFactory = stepBuilderFactory;
+    private final JobRepository jobRepository;
+    private final PlatformTransactionManager transactionManager;
+
+    public DepositBatch(SqlSessionFactory sqlSessionFactory, JobRepository jobRepository, PlatformTransactionManager transactionManager, DepositAccountMapper depositAccountMapper, StudentMapper studentMapper) {
         this.sqlSessionFactory = sqlSessionFactory;
+        this.jobRepository = jobRepository;
+        this.transactionManager = transactionManager;
         this.depositAccountMapper = depositAccountMapper;
         this.studentMapper = studentMapper;
     }
 
 
+
     @Bean
     public Job maturityJob() {
-        return jobBuilderFactory.get("maturityJob")
+        return new JobBuilder("maturityJob", jobRepository)
                 .start(maturityStep())
                 .build();
     }
 
     @Bean
     public Step maturityStep() {
-        return stepBuilderFactory.get("maturityStep")
-                .<DepositMaturity, DepositMaturity>chunk(CHUNK_SIZE)
+        return new StepBuilder("maturityStep", jobRepository)
+                .<DepositMaturity, DepositMaturity>chunk(CHUNK_SIZE ,transactionManager)
                 .reader(maturityReader())
                 .processor(maturityProcessor())
                 .writer(maturityWriter())
@@ -58,12 +60,11 @@ public class DepositBatch {
 
     @Bean
     public MyBatisPagingItemReader<DepositMaturity> maturityReader() {
-        return new MyBatisPagingItemReaderBuilder<DepositMaturity>()
-                .sqlSessionFactory(sqlSessionFactory)
-                .queryId("com.kb.depositAccount.mapper.DepositAccountMapper.getMaturityDepositList")
-                .parameterValues(Map.of("pageSize", CHUNK_SIZE, "offset", 0))
-                .pageSize(CHUNK_SIZE)
-                .build();
+        MyBatisPagingItemReader<DepositMaturity> reader = new MyBatisPagingItemReader<>();
+        reader.setSqlSessionFactory(sqlSessionFactory);
+        reader.setQueryId("com.kb.depositAccount.mapper.DepositAccountMapper.getMaturityDepositList");
+        reader.setPageSize(CHUNK_SIZE);
+        return reader;
     }
 
     @Bean
@@ -75,6 +76,7 @@ public class DepositBatch {
     }
 
     @Bean
+    @Transactional
     public ItemWriter<DepositMaturity> maturityWriter() {
         return items -> items.forEach(deposit -> {
             depositAccountMapper.updateDepositAccountStatus(deposit.getAccountId());

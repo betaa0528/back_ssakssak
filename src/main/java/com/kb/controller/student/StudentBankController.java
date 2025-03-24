@@ -1,20 +1,16 @@
 package com.kb.controller.student;
 
-import com.kb.depositAccount.domain.DepositAccount;
 import com.kb.depositAccount.dto.DepositAccountDTO;
 import com.kb.depositAccount.dto.DepositAccountResponse;
-import com.kb.depositAccount.dto.DepositMaturity;
 import com.kb.depositAccount.service.DepositAccountService;
 import com.kb.member.dto.Member;
-import com.kb.saving.domain.Saving;
 import com.kb.saving.dto.SavingDTO;
 import com.kb.saving.service.SavingService;
 import com.kb.savingAccount.dto.SavingAccountDTO;
 import com.kb.savingAccount.service.SavingAccountService;
 import com.kb.student.dto.SeedRankingDTO;
 import com.kb.student.service.StudentService;
-import io.swagger.annotations.Api;
-import io.swagger.models.Response;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.PropertySource;
@@ -29,8 +25,8 @@ import java.util.List;
 @RequestMapping("/api/student/bank")
 @RequiredArgsConstructor
 @Slf4j
-@Api(value= "StudentBankController", tags = "학생 은행 정보")
-@PropertySource({"classpath:/application.properties"})
+@Tag(description= "StudentBankController", name = "학생 은행 정보")
+@PropertySource({"classpath:/application.yml"})
 public class StudentBankController {
 
     private final SavingService SavingService;

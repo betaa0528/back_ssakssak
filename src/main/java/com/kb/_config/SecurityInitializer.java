@@ -4,7 +4,7 @@ import org.springframework.security.web.context.AbstractSecurityWebApplicationIn
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.multipart.support.MultipartFilter;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 public class SecurityInitializer extends AbstractSecurityWebApplicationInitializer {
 

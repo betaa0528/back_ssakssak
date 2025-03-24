@@ -9,10 +9,13 @@ import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
+import org.springframework.kafka.listener.ContainerProperties;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.springframework.kafka.listener.ContainerProperties.*;
 
 @EnableKafka
 @Configuration
@@ -34,6 +37,7 @@ public class KafkaConsumerConfig {
     public ConcurrentKafkaListenerContainerFactory<String, AlarmEvent> kafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, AlarmEvent> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
+        factory.getContainerProperties().setAckMode(AckMode.MANUAL);
         return factory;
     }
 }

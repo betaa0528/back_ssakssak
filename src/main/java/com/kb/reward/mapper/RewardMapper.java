@@ -2,10 +2,12 @@ package com.kb.reward.mapper;
 
 import com.kb.reward.domain.Reward;
 import com.kb.reward.dto.*;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+@Mapper
 public interface RewardMapper {
 
     List<Reward> selectRewardList();

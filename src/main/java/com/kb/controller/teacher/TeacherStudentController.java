@@ -2,14 +2,17 @@ package com.kb.controller.teacher;
 
 import com.kb.member.dto.Member;
 import com.kb.student.dto.StudentDTO;
+import com.kb.student.dto.StudentResponse;
 import com.kb.student.service.StudentService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/teacher/student")
 @RequiredArgsConstructor
@@ -18,7 +21,7 @@ public class TeacherStudentController {
     private final StudentService studentService;
 
     @GetMapping("/list")
-    public List<StudentDTO> getStudentList(@AuthenticationPrincipal Member member) {
+    public List<StudentResponse> getStudentList(@AuthenticationPrincipal Member member) throws IllegalAccessException {
         return studentService.getAllStudents(member.getUsername());
     }
 

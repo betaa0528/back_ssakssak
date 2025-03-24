@@ -22,7 +22,8 @@ public interface DepositAccountMapper {
 
     DepositAccount selectDepositAccountByAccountId(long id);
 
-    List<DepositMaturity> getMaturityDepositList(@Param("pageSize") int pageSize, @Param("offset") int offset);
+    List<DepositMaturity> getMaturityDepositList();
+    List<DepositMaturity> getMaturityDeposits();
     DepositMaturity getMaturityDeposit();
 
     void updateDepositAccountStatus(long accountId);

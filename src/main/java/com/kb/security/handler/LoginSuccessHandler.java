@@ -8,10 +8,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
@@ -20,18 +21,6 @@ import java.nio.charset.StandardCharsets;
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     private final JwtProcessor jwtProcessor;
-
-    @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-                                        Authentication authentication) throws IOException, ServletException {
-        // 인증 결과 Principal
-        Member member = (Member) authentication.getPrincipal();
-        String token = jwtProcessor.generateToken(member.getUsername());
-        setJwtCookie(response, token);
-        member.setToken(token);
-        JsonResponse.send(response, member);
-
-    }
 
     private void setJwtCookie(HttpServletResponse response, String jwt) {
         Cookie cookie = new Cookie("jwt", jwt);
@@ -42,4 +31,13 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         response.addCookie(cookie); // 응답에 쿠키 추가
     }
 
+    @Override
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException, IOException {
+        // 인증 결과 Principal
+        Member member = (Member) authentication.getPrincipal();
+        String token = jwtProcessor.generateToken(member.getUsername());
+        setJwtCookie(response, token);
+        member.setToken(token);
+        JsonResponse.send(response, member);
+    }
 }

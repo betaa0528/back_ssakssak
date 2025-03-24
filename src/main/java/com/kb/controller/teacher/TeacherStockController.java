@@ -1,12 +1,13 @@
 package com.kb.controller.teacher;
 
+import com.kb.rateHistory.dto.RateHistoryDTO;
+import com.kb.stock.domain.HoldingStock;
 import com.kb.stock.domain.StockNews;
-import com.kb.stock.dto.RateHistoryDTO;
 import com.kb.stock.dto.StockChartDTO;
 import com.kb.stock.dto.StockNewsDTO;
 import com.kb.stock.dto.StockNewsRequest;
 import com.kb.stock.service.StockService;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.PropertySource;
@@ -19,8 +20,8 @@ import java.util.List;
 @RequestMapping("/api/teacher/stock")
 @RequiredArgsConstructor
 @Slf4j
-@Api(value = "TeacherStockController", tags = "선생님 주식 관리 페이지")
-@PropertySource({"classpath:/application.properties"})
+@Tag(description = "TeacherStockController", name = "선생님 주식 관리 페이지")
+@PropertySource({"classpath:/application.yml"})
 public class TeacherStockController {
 
     private final StockService stockService;
@@ -32,10 +33,10 @@ public class TeacherStockController {
     }
 
     @PostMapping("/rate-apply")
-    public ResponseEntity<RateHistoryDTO> createRate(@RequestBody RateHistoryDTO rateHistoryDTO) {
-        RateHistoryDTO rateHistory = stockService.createRateHistory(rateHistoryDTO);
+    public ResponseEntity<RateHistoryDTO> createRate(@RequestBody RateHistoryDTO rateHistory) {
+        RateHistoryDTO rateApplied = stockService.createRateHistory(rateHistory);
 
-        return ResponseEntity.ok(rateHistory);
+        return ResponseEntity.ok(rateApplied);
     }
 
     @GetMapping("/news/list")

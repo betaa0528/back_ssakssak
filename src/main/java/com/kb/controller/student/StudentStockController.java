@@ -1,13 +1,13 @@
 package com.kb.controller.student;
 
 import com.kb.member.dto.Member;
+import com.kb.stock.domain.HoldingStock;
 import com.kb.stock.domain.RateHistory;
-import com.kb.stock.dto.HoldingStockDTO;
 import com.kb.stock.dto.StockNewsDTO;
 import com.kb.stock.dto.StockTradeRequest;
 import com.kb.stock.domain.StockTrade;
 import com.kb.stock.service.StockService;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.PropertySource;
@@ -22,8 +22,8 @@ import java.util.List;
 @RequestMapping("/api/student/stock")
 @RequiredArgsConstructor
 @Slf4j
-@Api(value = "StudentStockController", tags = "학생 주식 정보")
-@PropertySource({"classpath:/application.properties"})
+@Tag(description = "StudentStockController", name = "학생 주식 정보")
+@PropertySource({"classpath:/application.yml"})
 public class StudentStockController {
 
     private final StockService stockService;
@@ -49,24 +49,24 @@ public class StudentStockController {
     }
 
     @PostMapping("/buy")
-    public ResponseEntity<HoldingStockDTO> buyStock(@RequestBody StockTradeRequest request) {
+    public ResponseEntity<HoldingStock> buyStock(@RequestBody StockTradeRequest request) throws IllegalAccessException {
         stockService.buyStock(request);
-        HoldingStockDTO holdingStock = stockService.getHoldingStock(request.getUsername(), request.getName());
+        HoldingStock holdingStock = stockService.getHoldingStock(request.getUsername(), request.getName());
 
         return ResponseEntity.status(HttpStatus.OK).body(holdingStock);
     }
 
     @PostMapping("/sell")
-    public ResponseEntity<HoldingStockDTO> sellStock(@RequestBody StockTradeRequest request) {
+    public ResponseEntity<HoldingStock> sellStock(@RequestBody StockTradeRequest request) {
         stockService.sellStock(request);
-        HoldingStockDTO holdingStock = stockService.getHoldingStock(request.getUsername(), request.getName());
+        HoldingStock holdingStock = stockService.getHoldingStock(request.getUsername(), request.getName());
 
         return ResponseEntity.status(HttpStatus.OK).body(holdingStock);
     }
 
     @GetMapping("/my-stock")
-    public ResponseEntity<HoldingStockDTO> getHoldingStock(@AuthenticationPrincipal Member principal) throws Exception {
-        HoldingStockDTO holdingStock = stockService.getHoldingStock(principal.getUsername(), principal.getName());
+    public ResponseEntity<HoldingStock> getHoldingStock(@AuthenticationPrincipal Member principal) throws Exception {
+        HoldingStock holdingStock = stockService.getHoldingStock(principal.getUsername(), principal.getName());
         return ResponseEntity.ok(holdingStock);
     }
 

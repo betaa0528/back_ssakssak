@@ -2,7 +2,9 @@ package com.kb.Scheduled;
 
 import com.kb.quiz.domain.Quiz;
 import com.kb.quiz.service.QuizService;
+import com.kb.salary.dto.Salary;
 import com.kb.salary.mapper.SalaryMapper;
+import com.kb.student.dto.StudentSalaryDTO;
 import com.kb.student.mapper.StudentMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Slf4j
 @Component
@@ -36,7 +39,8 @@ public class ScheduledTasks {
             SalaryMapper salaryMapper, QuizService quizService,
             JobLauncher jobLauncher,
             @Qualifier("maturityJob") Job job,
-            @Qualifier("salaryBatchJob") Job salaryBatchJob) {
+            @Qualifier("salaryBatchJob") Job salaryBatchJob
+            ) {
         this.studentMapper = studentMapper;
         this.salaryMapper = salaryMapper;
         this.quizService = quizService;
@@ -46,16 +50,16 @@ public class ScheduledTasks {
     }
 
 //
-//    @Scheduled(cron = "0 0 8 * * MON")
-//    public void giveSalaryToAllStudents() {
-//        List<StudentSalaryDTO> additionalSalaryStudentList = studentMapper.selectStudentAdditionalSalary();
-//        Salary salary = salaryMapper.selectSalary();
-//        studentMapper.updateAllStudentSeed(salary.getBaseSalary());
-//
-//        for(StudentSalaryDTO dto : additionalSalaryStudentList) {
-//            studentMapper.updateStudentSeed(dto.getStdId(), salary.getAdditionalSalary());
-//        }
-//    }
+    @Scheduled(cron = "0 0 8 * * MON")
+    public void giveSalaryToAllStudents() {
+        List<StudentSalaryDTO> additionalSalaryStudentList = studentMapper.selectStudentAdditionalSalary();
+        Salary salary = salaryMapper.selectSalary();
+        studentMapper.updateAllStudentSeed(salary.getBaseSalary());
+
+        for(StudentSalaryDTO dto : additionalSalaryStudentList) {
+            studentMapper.updateStudentSeed(dto.getStdId(), salary.getAdditionalSalary());
+        }
+    }
 
     @Scheduled(cron = "0 * 22 * * *")
     public void depositInterest() {

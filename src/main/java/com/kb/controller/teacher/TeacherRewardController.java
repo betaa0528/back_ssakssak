@@ -4,7 +4,7 @@ import com.kb.member.dto.Member;
 import com.kb.reward.domain.Reward;
 import com.kb.reward.dto.*;
 import com.kb.reward.service.RewardService;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.context.annotation.PropertySource;
@@ -18,8 +18,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @Log4j
 @RequestMapping("/api/teacher/reward")
-@Api(value = "TeacherRewardController", tags = "선생님 리워드 관리 페이지")
-@PropertySource({"classpath:/application.properties"})
+@Tag(description = "TeacherRewardController", name = "선생님 리워드 관리 페이지")
+@PropertySource({"classpath:/application.yml"})
 public class TeacherRewardController {
 
     private final RewardService rewardService;

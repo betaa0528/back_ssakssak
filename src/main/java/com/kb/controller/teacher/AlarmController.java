@@ -26,7 +26,7 @@ public class AlarmController {
 
     @GetMapping("/subscribe/{username}")
     public SseEmitter subscribe(@PathVariable String username) throws IOException {
-        log.info("subscribe");
+        log.info("subscribe =============> {}", username);
         return alarmService.addEmitter(username);
     }
 

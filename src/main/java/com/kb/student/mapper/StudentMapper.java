@@ -1,5 +1,6 @@
 package com.kb.student.mapper;
 
+import com.kb.dailyCheck.dto.DailyCheckDTO;
 import com.kb.salary.dto.SalaryBatchRequest;
 import com.kb.student.domain.Student;
 import com.kb.student.dto.*;
@@ -36,7 +37,7 @@ public interface StudentMapper {
 
     void insertCSVStudent(StudentCsvDTO student);
 
-    List<StudentDTO> getAllStudentsByTchAccount(String userName);
+    List<StudentResponse> getAllStudentsByTchAccount(String userName);
 
     List<SeedRankingDTO> getStudentSeed();
 

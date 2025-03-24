@@ -56,4 +56,7 @@
         FROM coupon
         WHERE cp_id = #{cpId}
     </select>
+    <select id="selectAllCouponUsage" resultType="com.kb.coupon.dto.CouponUsageDTO">
+        select * from coupon_usage where teacher_id = 1 and `date` = CURDATE();
+    </select>
 </mapper>

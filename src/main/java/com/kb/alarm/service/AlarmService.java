@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
@@ -25,7 +26,6 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
-@Log4j
 @Service
 public class AlarmService {
 
@@ -53,6 +53,7 @@ public class AlarmService {
             log.error("alarm sent error : {}", e);
             throw new IOException(e.getMessage());
         }
+        log.info("emitter 저장됐는지 확인 - " + emitterRepository.get(username));
         return sseEmitter;
     }
 
@@ -82,6 +83,10 @@ public class AlarmService {
         alarmMapper.insertAlarm(alarm);
         ObjectMapper om = new ObjectMapper();
         SseEmitter sseEmitter = emitterRepository.get(alarm.getTargetUserName());
+        if(sseEmitter == null) {
+            log.warn("No active emitter found for user: {}", alarm.getTargetUserName());
+            return; // 알림을 보낼 수 없는 경우 조기 반환
+        }
         try {
             String alarmJson = om.writeValueAsString(request);
             log.info("alarm sent check");
@@ -111,6 +116,7 @@ public class AlarmService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public void changeIsChecked(long id) {
         int result = alarmMapper.updateAlarmIsChecked(id);
         if (result != 1) {

@@ -6,26 +6,24 @@ import com.kb.coupon.dto.StudentCouponDTO;
 import com.kb.coupon.service.CouponService;
 import com.kb.coupon.service.CouponUsageService;
 import com.kb.member.dto.Member;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/student/coupon")
 @RequiredArgsConstructor
 @Slf4j
-@Api(value = "StudentCouponController", tags = "쿠폰 상세 정보")
-@PropertySource({"classpath:/application.properties"})
+@Tag(description = "StudentCouponController", name = "쿠폰 상세 정보")
+@PropertySource({"classpath:/application.yml"})
 public class StudentCouponController {
 
     private final CouponService couponService;

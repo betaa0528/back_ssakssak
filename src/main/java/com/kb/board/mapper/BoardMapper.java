@@ -1,9 +1,11 @@
 package com.kb.board.mapper;
 
 import com.kb.board.dto.*;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
+@Mapper
 public interface BoardMapper {
     List<BoardCategory> selectBoardCategory();
     List<Board> selectBoardList(BoardParam param);

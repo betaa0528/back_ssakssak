@@ -1,57 +1,54 @@
 package com.kb.batch.job;
 
-import com.kb.depositAccount.dto.DepositMaturity;
 import com.kb.salary.dto.SalaryBatchRequest;
-import com.kb.salary.dto.SalaryHistory;
-import com.kb.student.domain.Student;
-import com.kb.student.dto.UpdatedStudentSalary;
-import com.kb.student.mapper.StudentMapper;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.batch.MyBatisBatchItemWriter;
 import org.mybatis.spring.batch.MyBatisPagingItemReader;
-import org.mybatis.spring.batch.builder.MyBatisBatchItemWriterBuilder;
-import org.mybatis.spring.batch.builder.MyBatisPagingItemReaderBuilder;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
-import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
+import org.springframework.batch.core.job.builder.JobBuilder;
+import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemProcessor;
-import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.support.CompositeItemWriter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @Configuration
+@EnableBatchProcessing
 public class SalaryBatch {
 
     private final int CHUNK_SIZE = 10;
 
-    private final JobBuilderFactory jobBuilderFactory;
-    private final StepBuilderFactory stepBuilderFactory;
     private final SqlSessionFactory sqlSessionFactory;
+    private final JobRepository jobRepository;
+    private final PlatformTransactionManager transactionManager;
 
-    public SalaryBatch(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory, SqlSessionFactory sqlSessionFactory) {
-        this.jobBuilderFactory = jobBuilderFactory;
-        this.stepBuilderFactory = stepBuilderFactory;
+    public SalaryBatch(SqlSessionFactory sqlSessionFactory, JobRepository jobRepository, PlatformTransactionManager transactionManager) {
         this.sqlSessionFactory = sqlSessionFactory;
+        this.jobRepository = jobRepository;
+        this.transactionManager = transactionManager;
     }
+
 
     @Bean
     public Job salaryBatchJob() {
-        return jobBuilderFactory.get("salaryBatchJob")
+        return new JobBuilder("salaryBatchJob", jobRepository)
                 .start(salaryBatchStep())
                 .build();
     }
 
     @Bean
     public Step salaryBatchStep() {
-        return stepBuilderFactory.get("salaryBatchStep")
-                .<SalaryBatchRequest, SalaryBatchRequest>chunk(CHUNK_SIZE)
+        return new StepBuilder("salaryBatchStep", jobRepository)
+                .<SalaryBatchRequest, SalaryBatchRequest>chunk(CHUNK_SIZE, transactionManager)
                 .reader(reader())
                 .processor(processor())
                 .writer(compositeWriter())
@@ -60,13 +57,12 @@ public class SalaryBatch {
 
     @Bean
     public MyBatisPagingItemReader<SalaryBatchRequest> reader() {
-        return new MyBatisPagingItemReaderBuilder<SalaryBatchRequest>()
-                .sqlSessionFactory(sqlSessionFactory)
-                .queryId("com.kb.salary.mapper.SalaryMapper.selectSalaryByTchId")
-                .pageSize(CHUNK_SIZE)
-                .build();
+        MyBatisPagingItemReader<SalaryBatchRequest> reader = new MyBatisPagingItemReader<>();
+        reader.setSqlSessionFactory(sqlSessionFactory);
+        reader.setQueryId("com.kb.salary.mapper.SalaryMapper.selectSalaryByTchId");
+        reader.setPageSize(CHUNK_SIZE);
+        return reader;
     }
-
 
     public ItemProcessor<SalaryBatchRequest, SalaryBatchRequest> processor() {
         return item -> {
@@ -75,19 +71,17 @@ public class SalaryBatch {
         };
     }
 
-
     @Bean
     public MyBatisBatchItemWriter<SalaryBatchRequest> salaryUpdateWriter() {
-        log.info("salary writer 오고 있나요?");
-        return new MyBatisBatchItemWriterBuilder<SalaryBatchRequest>()
-                .sqlSessionFactory(sqlSessionFactory)
-                .statementId("com.kb.student.mapper.StudentMapper.updateStudentSalaryBatch")
-                .build();
+        MyBatisBatchItemWriter<SalaryBatchRequest> writer = new MyBatisBatchItemWriter<>();
+        writer.setSqlSessionFactory(sqlSessionFactory);
+        writer.setStatementId("com.kb.student.mapper.StudentMapper.updateStudentSalaryBatch");
+        return writer;
     }
 
     @Bean
+    @Transactional
     public MyBatisBatchItemWriter<SalaryBatchRequest> salaryLogWriter() {
-        log.info("salary writer 오고 있나요?22222");
         MyBatisBatchItemWriter<SalaryBatchRequest> batchItemWriter = new MyBatisBatchItemWriter<>();
         batchItemWriter.setSqlSessionFactory(sqlSessionFactory);
         batchItemWriter.setStatementId("com.kb.salary.mapper.SalaryMapper.insertSalaryHistory");
@@ -95,8 +89,8 @@ public class SalaryBatch {
     }
 
     @Bean
+    @Transactional
     public CompositeItemWriter<SalaryBatchRequest> compositeWriter() {
-        log.info("compositeWriter 실행함!!!!!!");
         CompositeItemWriter<SalaryBatchRequest> writer = new CompositeItemWriter<>();
         writer.setDelegates(List.of(salaryUpdateWriter(), salaryLogWriter()));
         return writer;

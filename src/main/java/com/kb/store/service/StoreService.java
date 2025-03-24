@@ -16,7 +16,7 @@ import java.util.List;
 @Log4j
 @Service
 @RequiredArgsConstructor
-@PropertySource({"classpath:/application.properties"})
+@PropertySource({"classpath:/application.yml"})
 public class StoreService {
 
     private final StoreMapper storeMapper;

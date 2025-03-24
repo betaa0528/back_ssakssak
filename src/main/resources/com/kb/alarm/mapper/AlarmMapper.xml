@@ -24,14 +24,19 @@
 
 
     <insert id="insertAlarm" parameterType="com.kb.alarm.dto.Alarm">
-        insert into alarm (student_id, type, target_user_name, product_id)
-        values (#{student.stdId}, #{type}, #{targetUserName}, #{productId});
+        insert into alarm (student_id, type, target_user_name, product_id, sent)
+        values (#{student.stdId}, #{type}, #{targetUserName}, #{productId}, #{sent});
     </insert>
+
     <update id="updateAlarmIsChecked">
         update alarm set is_checked = 'n' where id = #{id};
     </update>
 
-<!--    <select id="selectAllByStudentId" resultType="com.kb.alarm.dto.Alarm">-->
+    <update id="updateAlarmSent" parameterType="com.kb.alarm.dto.Alarm">
+        update alarm set sent = #{sent} where id = #{id}
+    </update>
+
+    <!--    <select id="selectAllByStudentId" resultType="com.kb.alarm.dto.Alarm">-->
 <!--        select * from alarm where student_id = #{stdId} and target_user_name = #{tchId} and is_checked = 'y';-->
 <!--    </select>-->
 
@@ -51,7 +56,7 @@
         s.seed
         FROM Alarm a
         JOIN Student s ON a.student_id = s.std_id
-        WHERE s.tch_id = #{teacherId} and a.is_checked = 'y';
+        WHERE s.tch_id = #{teacherId} and a.is_checked = 'y' and a.sent = 'y';
     </select>
 
 

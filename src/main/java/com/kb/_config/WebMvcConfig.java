@@ -16,7 +16,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Configuration
-@EnableWebMvc
 @ComponentScan(basePackages = "com.kb")
 public class WebMvcConfig implements WebMvcConfigurer {
 
