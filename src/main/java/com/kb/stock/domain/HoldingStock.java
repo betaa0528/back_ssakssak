@@ -1,5 +1,7 @@
 package com.kb.stock.domain;
 
+import com.kb.common.exception.ErrorCode;
+import com.kb.common.exception.SsakssakApplicationException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,4 +19,15 @@ public class HoldingStock {
     private double currentValue;
     private double profitLoss;
     private double profitRate;
+
+
+    public void validateSellable(int quantity) {
+        if(quantity <= 0 || quantity > totalQuantity) {
+            throw new SsakssakApplicationException(ErrorCode.INSUFFICIENT_STOCK_QUANTITY);
+        }
+    }
+
+    public void plusStock(int quantity) {
+        this.totalQuantity += quantity;
+    }
 }
