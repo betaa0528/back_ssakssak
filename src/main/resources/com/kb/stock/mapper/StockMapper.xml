@@ -35,13 +35,13 @@
         values (#{stdId}, #{tchId}, 'B', #{quantity}, #{stockPrice}, now());
     </insert>
 
-    <insert id="insertHoldingStock" parameterType="com.kb.stock.dto.HoldingStockDTO">
+    <insert id="insertHoldingStock" parameterType="com.kb.stock.domain.HoldingStock">
         insert into holding_stock
         values (#{stdId}, #{totalQuantity}, #{totalInvestment}, #{averagePrice}, #{currentValue}, #{profitLoss},
                 #{profitRate});
     </insert>
 
-    <insert id="insertRateHistory" parameterType="com.kb.stock.dto.RateHistoryDTO">
+    <insert id="insertRateHistory" parameterType="com.kb.rateHistory.dto.RateHistoryDTO">
         insert into rate_history(stock_date, `change`, stock_price) values (now(), #{change}, #{stockPrice});
     </insert>
 
@@ -49,7 +49,7 @@
         insert into stock_news(title, content, news_date) values (#{title}, #{content}, now());
     </insert>
 
-    <update id="updateHoldingStock" parameterType="com.kb.stock.dto.HoldingStockDTO">
+    <update id="updateHoldingStock" parameterType="com.kb.stock.domain.HoldingStock">
         update holding_stock
         set total_quantity   = #{totalQuantity},
             total_investment = #{totalInvestment},
@@ -60,21 +60,19 @@
         where std_id = #{stdId};
     </update>
 
-    <select id="selectHoldingStock" parameterType="long" resultType="com.kb.stock.dto.HoldingStockDTO">
-        select h.std_id,
-               h.total_quantity,
-               h.total_investment,
-               h.average_price,
-               h.current_value,
-               h.profit_loss,
-               h.profit_rate,
-               s.seed
-        from holding_stock h
-                 join student s on h.std_id = s.std_id
-        where h.std_id = #{stdId};
+    <select id="selectHoldingStock" parameterType="long" resultType="com.kb.stock.domain.HoldingStock">
+        select std_id,
+               total_quantity,
+               total_investment,
+               average_price,
+               current_value,
+               profit_loss,
+               profit_rate
+        from holding_stock
+        where std_id = #{stdId};
     </select>
 
-    <select id="selectRateHistoryLast5Days" resultType="com.kb.stock.dto.RateHistoryDTO">
+    <select id="selectRateHistoryLast5Days" resultType="com.kb.rateHistory.dto.RateHistoryDTO">
         select `change`, stock_price
         from rate_history
         order by stock_date desc
