@@ -35,4 +35,8 @@ public class Student {
                 .seed(studentDTO.getSeed())
                 .build();
     }
+
+    public void minusSeed(int totalPrice) {
+        this.seed -= totalPrice;
+    }
 }
