@@ -1,5 +1,7 @@
 package com.kb.student.domain;
 
+import com.kb.common.exception.ErrorCode;
+import com.kb.common.exception.SsakssakApplicationException;
 import com.kb.member.dto.Member;
 import com.kb.student.dto.StudentDTO;
 import lombok.AllArgsConstructor;
@@ -36,7 +38,12 @@ public class Student {
                 .build();
     }
 
-    public void minusSeed(int totalPrice) {
-        this.seed -= totalPrice;
+    public void minusSeed(int amount) {
+        if(seed < amount) throw new SsakssakApplicationException(ErrorCode.INSUFFICIENT_SEED);
+        this.seed -= amount;
+    }
+
+    public void plusSeed(int amount) {
+        this.seed += amount;
     }
 }
