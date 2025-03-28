@@ -1,6 +1,5 @@
 package com.kb.stock.mapper;
 
-import com.kb.rateHistory.dto.RateHistoryDTO;
 import com.kb.stock.domain.HoldingStock;
 import com.kb.stock.domain.RateHistory;
 import com.kb.stock.domain.StockNews;
