@@ -54,8 +54,8 @@
         s.std_birth,
         s.job_Id,
         s.seed
-        FROM Alarm a
-        JOIN Student s ON a.student_id = s.std_id
+        FROM alarm a
+        JOIN student s ON a.student_id = s.std_id
         WHERE s.tch_id = #{teacherId} and a.is_checked = 'y' and a.sent = 'y';
     </select>
 

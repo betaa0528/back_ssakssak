@@ -6,7 +6,7 @@
 <mapper namespace="com.kb.dailyCheck.mapper.DailyCheckMapper">
 
     <insert id="insertDailyCheck" parameterType="com.kb.dailyCheck.dto.DailyCheckDTO">
-        INSERT INTO Daily_check (std_id, tch_id, check_date, isCheck)
+        INSERT INTO daily_check (std_id, tch_id, check_date, isCheck)
         VALUES (#{stdId}, #{tchId}, NOW(), #{isCheck});
     </insert>
 

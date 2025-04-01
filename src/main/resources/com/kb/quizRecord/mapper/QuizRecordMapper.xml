@@ -25,7 +25,7 @@
         SELECT std.std_id AS stdId,
                std.std_name AS stdName,
                COUNT(qr.isCorrect) AS correctCount
-        FROM Student std
+        FROM student std
                  LEFT JOIN quiz_record qr ON std.std_id = qr.std_id
         WHERE qr.isCorrect = 'Y'
         GROUP BY std.std_id, std.std_name

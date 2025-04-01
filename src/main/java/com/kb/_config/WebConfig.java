@@ -13,7 +13,6 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 
 @Slf4j
 @Configuration
-@PropertySource({"classpath:/application.yml"})
 public class WebConfig {
     @Value("${os.type}")
     private String osType;

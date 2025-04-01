@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/student/profile")
 @RequiredArgsConstructor
 @Slf4j
-
 public class StudentProfileController {
 
     private final StudentService studentService;

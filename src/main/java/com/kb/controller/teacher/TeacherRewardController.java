@@ -19,7 +19,6 @@ import java.util.List;
 @Log4j
 @RequestMapping("/api/teacher/reward")
 @Tag(description = "TeacherRewardController", name = "선생님 리워드 관리 페이지")
-@PropertySource({"classpath:/application.yml"})
 public class TeacherRewardController {
 
     private final RewardService rewardService;

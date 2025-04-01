@@ -26,7 +26,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 @Tag(description= "StudentBankController", name = "학생 은행 정보")
-@PropertySource({"classpath:/application.yml"})
 public class StudentBankController {
 
     private final SavingService SavingService;

@@ -19,7 +19,7 @@
     </delete>
 
     <select id="getDepositList" resultMap="depositResultMap">
-        select * from Deposit;
+        select * from deposit;
     </select>
 
 </mapper>

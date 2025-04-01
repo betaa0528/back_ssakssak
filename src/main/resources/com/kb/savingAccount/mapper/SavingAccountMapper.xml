@@ -20,7 +20,7 @@
     </delete>
 
     <select id="selectSavingAccount" resultMap="savingAccountResultMap">
-        select * from Saving_account;
+        select * from saving_account;
     </select>
 
 
@@ -35,7 +35,7 @@
             a.start_date,
             a.end_date,
             a.total_amount
-        FROM Saving_account a join saving s on a.saving_id = s.saving_id
+        FROM saving_account a join saving s on a.saving_id = s.saving_id
         WHERE std_id = #{stdId};
     </select>
     <select id="selectSavingAccountByAccountId" resultType="com.kb.savingAccount.domain.SavingAccount">
@@ -43,12 +43,12 @@
     </select>
 
     <insert id="insertSavingAccount" parameterType="com.kb.savingAccount.dto.SavingAccountDTO">
-        INSERT INTO Saving_account (std_id,tch_id, saving_id, rate, deposit_amount, start_date, end_date, status, total_amount)
+        INSERT INTO saving_account (std_id,tch_id, saving_id, rate, deposit_amount, start_date, end_date, status, total_amount)
         VALUES (#{stdId},#{tchId}, #{savingId}, #{rate}, #{depositAmount}, #{startDate}, #{endDate}, 'y', 0)
     </insert>
 
     <insert id="insertSavingAccountTeacher" parameterType="com.kb.saving.dto.SavingDTO">
-        INSERT INTO Saving (product, rate, saving_content, target, deposit_period, deposit_cycle, max_deposit, prime_rate, prime_job)
+        INSERT INTO saving (product, rate, saving_content, target, deposit_period, deposit_cycle, max_deposit, prime_rate, prime_job)
         VALUES (#{product}, #{rate}, #{savingContent}, #{target}, #{depositPeriod}, #{depositCycle}, #{maxDeposit}, #{primeRate}, #{primeJob})
     </insert>
 

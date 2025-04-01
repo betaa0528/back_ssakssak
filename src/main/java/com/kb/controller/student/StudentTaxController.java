@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/student/home")
 @RequiredArgsConstructor
 @Slf4j
-
 public class StudentTaxController {
 
     private final TaxService taxService;

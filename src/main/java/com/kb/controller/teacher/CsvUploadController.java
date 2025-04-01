@@ -26,7 +26,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 @Tag(description = "StudentGrade", name = "학생 학급 등록")
-@PropertySource({"classpath:/application.yml"})
 public class CsvUploadController {
     private final StudentService studentService;
 

@@ -21,7 +21,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 @Tag(description= "StudentEventController", name = "학생 이벤트")
-@PropertySource({"classpath:/application.yml"})
 public class StudentEventController {
 
     private final QuizService quizService;

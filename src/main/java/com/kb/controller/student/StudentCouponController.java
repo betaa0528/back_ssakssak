@@ -23,7 +23,6 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 @Slf4j
 @Tag(description = "StudentCouponController", name = "쿠폰 상세 정보")
-@PropertySource({"classpath:/application.yml"})
 public class StudentCouponController {
 
     private final CouponService couponService;

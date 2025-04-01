@@ -4,7 +4,7 @@
 <mapper namespace="com.kb.depositAccount.mapper.DepositAccountMapper">
 
     <insert id="insertDepositAccount" parameterType="com.kb.depositAccount.dto.DepositAccountRequest">
-        INSERT INTO Deposit_account (std_id, tch_id, deposit_id, rate, deposit_amount, start_date, end_date, status)
+        INSERT INTO deposit_account (std_id, tch_id, deposit_id, rate, deposit_amount, start_date, end_date, status)
         VALUES (#{stdId}, #{tchId}, #{depositId}, #{rate}, #{depositAmount}, #{startDate}, #{endDate}, 'Y');
     </insert>
 

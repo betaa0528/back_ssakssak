@@ -48,7 +48,7 @@
 
     <select id="selectRecentFiveDaysAttendance" parameterType="long" resultType="com.kb.dailyCheck.dto.DailyCheckDTO">
         SELECT check_id, std_id, tch_id, check_date, isCheck
-        FROM Daily_check
+        FROM daily_check
         WHERE std_id = #{studentId}
           AND check_date >= DATE_SUB(NOW(), INTERVAL 5 DAY)
         ORDER BY check_date DESC
@@ -70,7 +70,7 @@
 
 
     <insert id="insertDailyCheck" parameterType="com.kb.dailyCheck.dto.DailyCheckDTO">
-        INSERT INTO Daily_check (std_id, tch_id, check_date, isCheck)
+        INSERT INTO daily_check (std_id, tch_id, check_date, isCheck)
         VALUES (#{stdId}, #{tchId}, #{checkDate}, #{isCheck})
     </insert>
 
@@ -78,13 +78,13 @@
 
     <select id="getSeedRanking" resultType="com.kb.student.dto.SeedRankingDTO">
         SELECT std_name, seed
-        FROM Student
+        FROM student
         ORDER BY seed DESC
     </select>
 
     <select id="getSeedRankingThree" resultType="com.kb.student.dto.SeedRankingDTO">
         SELECT std_name, seed
-        FROM Student
+        FROM student
         ORDER BY seed DESC
             LIMIT 3
     </select>

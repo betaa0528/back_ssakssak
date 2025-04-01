@@ -13,17 +13,17 @@
     </resultMap>
 
     <select id="getJobList" resultMap="JobResultMap">
-        SELECT * FROM Job
+        SELECT * FROM job
     </select>
 
     <select id="checkJobExistsByName" parameterType="String" resultType="int">
         SELECT COUNT(*)
-        FROM Job
+        FROM job
         WHERE job_name = #{jobName}
     </select>
 
     <insert id="insertJob" parameterType="com.kb.job.dto.JobDTO">
-        INSERT INTO Job (job_name, job_content, isPrime)
+        INSERT INTO job (job_name, job_content, isPrime)
         VALUES (#{jobName}, #{jobContent}, #{isPrime})
     </insert>
 

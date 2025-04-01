@@ -21,7 +21,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CharacterEncodingFilter;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -41,10 +45,12 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable()) // CSRF 보호 비활성화
-                .cors(cors -> cors.configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues())) // CORS 설정
+                .cors(cors -> cors.configurationSource(configurationSource())) // CORS 설정
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 정책 설정
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/student/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/teacher/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/login/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/alarm/subscribe/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/hello", "/api/teacher/home/test/**").permitAll()
@@ -61,6 +67,19 @@ public class SecurityConfig {
                 .addFilterBefore(jwtStudentAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // JWT 학생 필터
 
         return http.build(); // 필터 체인을 반환
+    }
+
+    @Bean
+    public CorsConfigurationSource configurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOriginPatterns(List.of("http://localhost:21000", "http://ec2-13-209-69-73.ap-northeast-2.compute.amazonaws.com"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true); // ✅ 이게 핵심
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
     @Bean

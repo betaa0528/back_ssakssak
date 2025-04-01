@@ -5,19 +5,19 @@
 
 <mapper namespace="com.kb.teacher.mapper.TeacherMapper">
     <insert id="insertTeacher" parameterType="com.kb.teacher.dto.TeacherDTO">
-        INSERT INTO Teacher (tch_name, tch_email, tch_account, tch_pw, grade, room)
+        INSERT INTO teacher (tch_name, tch_email, tch_account, tch_pw, grade, room)
         VALUES (#{tchName}, #{tchEmail}, #{tchAccount}, #{tchPw}, #{grade}, #{room})
     </insert>
 
     <select id="findTeacherIdByNameAndEmail" parameterType="com.kb.teacher.dto.TeacherDTO" resultType="String">
         SELECT tch_account
-        FROM Teacher
+        FROM teacher
         WHERE tch_name = #{tchName} AND tch_email = #{tchEmail}
     </select>
 
     <select id="checkTeacherAccount" parameterType="com.kb.teacher.dto.TeacherDTO" resultType="int">
         SELECT COUNT(*)
-        FROM Teacher
+        FROM teacher
         WHERE tch_name = #{tchName} AND tch_email = #{tchEmail} AND tch_account = #{tchAccount}
     </select>
     <select id="selectByTeacherProfile" resultType="com.kb.teacher.dto.TeacherDTO">
@@ -29,7 +29,7 @@
     </select>
 
     <update id="updateTeacherPassword" parameterType="com.kb.teacher.dto.TeacherDTO">
-        UPDATE Teacher
+        UPDATE teacher
         SET tch_pw = #{tchPw}
         WHERE tch_account = #{tchAccount}
     </update>

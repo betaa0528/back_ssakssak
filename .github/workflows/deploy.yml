@@ -29,7 +29,19 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_KEY }}
           source: "build/libs/*.jar"
-          target: "/home/ubuntu/ssakssak/build/libs/"
+          target: "/home/ubuntu/back_ssakssak/build/libs/"
+
+      - name: Checkout frontend repo
+        uses: actions/checkout@v3
+        with:
+          repository: betaa0528/front_ssakssak
+          path: front_ssakssak
+
+      - name: Build frontend
+        run: |
+          cd front_ssakssak
+          npm install
+          npm run build
 
       - name: Copy Vue dist to EC2
         uses: appleboy/scp-action@master
@@ -37,7 +49,7 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ubuntu
           key: ${{ secrets.EC2_KEY }}
-          source: "../front_ssakssak/dist/*"
+          source: "front_ssakssak/dist/*"
           target: "/home/ubuntu/front_ssakssak/dist/"
 
       - name: SSH to EC2 and deploy

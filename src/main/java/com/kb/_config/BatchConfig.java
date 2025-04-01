@@ -25,19 +25,19 @@ public class BatchConfig {
     }
 
 
-
-    @Bean
-    public InitializingBean initializeSchema() {
-        return () -> {
-            Resource dropSchema = new ClassPathResource("org/springframework/batch/core/schema-drop-mysql.sql");
-            ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator(dropSchema);
-            databasePopulator.execute(dataSource);
-
-            Resource schema = new ClassPathResource("org/springframework/batch/core/schema-mysql.sql");
-            ResourceDatabasePopulator populator = new ResourceDatabasePopulator(schema);
-            populator.execute(dataSource);
-        };
-    }
+//
+//    @Bean
+//    public InitializingBean initializeSchema() {
+//        return () -> {
+//            Resource dropSchema = new ClassPathResource("org/springframework/batch/core/schema-drop-mysql.sql");
+//            ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator(dropSchema);
+//            databasePopulator.execute(dataSource);
+//
+//            Resource schema = new ClassPathResource("org/springframework/batch/core/schema-mysql.sql");
+//            ResourceDatabasePopulator populator = new ResourceDatabasePopulator(schema);
+//            populator.execute(dataSource);
+//        };
+//    }
 
 
 }

@@ -1,0 +1,50 @@
+server:
+  port: 8081
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://ssakssak-db.cr44gicogt2s.ap-northeast-2.rds.amazonaws.com:3306/ssakssak
+    username: root
+    password: kb123123
+  batch:
+    job.enabled: false
+    jdbc.initialize-schema: never
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  kafka:
+    bootstrap-servers: ""
+    topic:
+      notification: alarm
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      properties.spring.json.trusted.packages: "*"
+      group-id: alert-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+
+mybatis:
+  mapper-locations: classpath:mapper/**/*.xml
+  config-location: classpath:mybatis-config.xml
+
+logging:
+  level:
+    com.kb: info
+    org.mybatis: warn
+    org.apache.ibatis: warn
+    org.springframework.batch: warn
+
+upload:
+  maxFileSize: 1024
+
+os:
+  type: linux
+  file:
+    upload: /home/ubuntu/upload
+
+file_save_location_win: c:/upload
+file_save_location_other: /home/ubuntu/upload

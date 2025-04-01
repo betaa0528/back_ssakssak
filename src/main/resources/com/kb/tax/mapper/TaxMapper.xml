@@ -5,7 +5,7 @@
 
     <select id="getTaxTotalForLastWeek" parameterType="map" resultType="int">
         SELECT SUM(amount)
-        FROM Tax
+        FROM tax
         WHERE DATE(transaction_date) BETWEEN #{startDate} AND #{endDate}
     </select>
 
@@ -14,7 +14,7 @@
     </select>
 
     <update id="updateTaxPolicy" parameterType="com.kb.tax.dto.TaxPolicyDTO">
-        UPDATE Tax_Policy
+        UPDATE tax_Policy
         SET policy_type = #{policyType}, rate = #{rate}
         WHERE policy_id = #{policyId}
     </update>

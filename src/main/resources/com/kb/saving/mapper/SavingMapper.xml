@@ -27,7 +27,7 @@
     </delete>
 
     <select id="selectSaving" resultMap="savingResultMap">
-        select * from Saving;
+        select * from saving;
     </select>
 
     <select id="selectAllSaving" resultType="com.kb.saving.dto.SavingAddPrimeRateDTO">
@@ -46,9 +46,9 @@
                 ELSE 0
                 END AS prime_rate
         FROM
-            Saving s
+            saving s
                 LEFT JOIN
-            Prime_rate pr
+            prime_rate pr
             ON
                 s.saving_id = pr.saving_id
         WHERE
