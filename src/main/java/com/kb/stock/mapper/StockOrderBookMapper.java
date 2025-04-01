@@ -3,6 +3,7 @@ package com.kb.stock.mapper;
 import com.kb.stock.domain.StockOrderBook;
 import com.kb.stock.dto.StockOrderBookRequest;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
@@ -14,7 +15,11 @@ public interface StockOrderBookMapper {
 
     List<StockOrderBook> selectSellStockOrderBookList();
 
-    List<StockOrderBook> selectAvailableSellOrdersUnderPrice(@PathVariable("stockId")Long stock_id ,@PathVariable("price") int price);
+    List<StockOrderBook> selectAvailableSellOrdersUnderPrice(@Param("stockId") Long stockId , @Param("price") int price);
 
     void updateStockOrderBook(StockOrderBook stockOrderBook);
+
+    List<StockOrderBook> selectAvailableBuyOrdersOverPrice(@PathVariable("stockId") Long stockId ,@PathVariable("price") int stockPrice);
+
+    List<StockOrderBook> findAllOpenOrders();
 }

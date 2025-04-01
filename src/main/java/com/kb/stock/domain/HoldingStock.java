@@ -19,6 +19,7 @@ public class HoldingStock {
     private double currentValue;
     private double profitLoss;
     private double profitRate;
+    private int seed;
 
 
     public void validateSellable(int quantity) {
@@ -29,5 +30,9 @@ public class HoldingStock {
 
     public void plusStock(int quantity) {
         this.totalQuantity += quantity;
+    }
+
+    public void minusStock(int quantity) {
+        this.totalQuantity -= quantity;
     }
 }

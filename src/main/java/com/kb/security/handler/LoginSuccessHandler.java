@@ -3,6 +3,10 @@ package com.kb.security.handler;
 import com.kb.member.dto.Member;
 import com.kb.security.util.JsonResponse;
 import com.kb.security.util.JwtProcessor;
+import com.kb.student.domain.Student;
+import com.kb.student.mapper.StudentMapper;
+import com.kb.teacher.dto.TeacherDTO;
+import com.kb.teacher.mapper.TeacherMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -21,6 +25,8 @@ import java.nio.charset.StandardCharsets;
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     private final JwtProcessor jwtProcessor;
+    private final StudentMapper studentMapper;
+    private final TeacherMapper teacherMapper;
 
     private void setJwtCookie(HttpServletResponse response, String jwt) {
         Cookie cookie = new Cookie("jwt", jwt);
@@ -35,7 +41,16 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException, IOException {
         // 인증 결과 Principal
         Member member = (Member) authentication.getPrincipal();
-        String token = jwtProcessor.generateToken(member.getUsername());
+        Long stdId = -1L;
+        Long tchId = -1L;
+        if(member.getAuthorities().contains("ROLE_STUDENT")) {
+            Student student = studentMapper.selectStudentByUsernameAndName(member.getUsername(), member.getName());
+            stdId = student.getStdId();
+        } else if(member.getAuthorities().contains("ROLE_TEACHER")) {
+            TeacherDTO teacherDTO = teacherMapper.selectByTeacherProfile(member.getUsername());
+            tchId = teacherDTO.getTchId();
+        }
+        String token = jwtProcessor.generateToken(member.getUsername(), stdId, tchId);
         setJwtCookie(response, token);
         member.setToken(token);
         JsonResponse.send(response, member);

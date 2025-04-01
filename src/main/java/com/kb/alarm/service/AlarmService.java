@@ -45,7 +45,6 @@ public class AlarmService {
         sseEmitter.onTimeout(() -> emitterRepository.delete(username));
 
         try {
-            log.info("alarm subscribe check");
             sseEmitter.send(SseEmitter.event()
                     .name(ALARM_NAME)
                     .data("connect alarm"));
@@ -53,7 +52,6 @@ public class AlarmService {
             log.error("alarm sent error : {}", e);
             throw new IOException(e.getMessage());
         }
-        log.info("emitter 저장됐는지 확인 - " + emitterRepository.get(username));
         return sseEmitter;
     }
 

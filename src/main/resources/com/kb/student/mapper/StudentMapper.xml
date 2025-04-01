@@ -109,7 +109,7 @@
         FROM student
     </select>
 
-    <select id="selectStudentByUsernameAndName" resultType="com.kb.student.dto.StudentDTO">
+    <select id="selectStudentByUsernameAndName" resultType="com.kb.student.domain.Student">
         select * from student where std_account = #{username} and std_name = #{name};
     </select>
 

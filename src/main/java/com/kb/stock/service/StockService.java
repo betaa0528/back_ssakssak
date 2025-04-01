@@ -4,11 +4,11 @@ import com.kb.common.enums.OrderStatus;
 import com.kb.common.enums.OrderType;
 import com.kb.common.exception.ErrorCode;
 import com.kb.common.exception.SsakssakApplicationException;
-import com.kb.rateHistory.dto.RateHistoryDTO;
 import com.kb.stock.domain.*;
 import com.kb.stock.dto.*;
 import com.kb.stock.mapper.StockMapper;
 import com.kb.stock.mapper.StockOrderBookMapper;
+import com.kb.student.StudentIdentifiable;
 import com.kb.student.domain.Student;
 import com.kb.student.mapper.StudentMapper;
 import lombok.RequiredArgsConstructor;
@@ -17,9 +17,13 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import static com.kb.stock.dto.OrderBookDTO.*;
 
 @Log4j
 @RequiredArgsConstructor
@@ -30,9 +34,11 @@ public class StockService {
     private final StockMapper stockMapper;
     private final StudentMapper studentMapper;
     private final StockOrderBookMapper stockOrderBookMapper;
+    private final OrderMatchingService orderMatchingService;
 
-    public List<RateHistory> getRateHistories() {
-        return stockMapper.selectRateHistory();
+    public List<RateHistoryDTO> getRateHistories() {
+        List<RateHistory> rateHistories = stockMapper.selectRateHistory();
+        return rateHistories.stream().map(RateHistoryDTO::from).toList();
     }
 
     public List<StockNewsDTO> getStockNewsList() {
@@ -45,140 +51,80 @@ public class StockService {
     }
 
     @Transactional
-    public void buyStock(StockTradeRequest stockTradeRequest) {
-        Student student = studentMapper.selectStudentByUsernameAndStdName(stockTradeRequest.getUsername(), stockTradeRequest.getName());
-        HoldingStock holdingStock = getHoldingStock(stockTradeRequest.getUsername(), stockTradeRequest.getName());
+    public void buyStock(StockTradeRequest request) {
+        Student student = getStudent(request);
+        HoldingStock holdingStock = getHoldingStock(request);
 
-        int totalPrice = stockTradeRequest.getStockPrice() * stockTradeRequest.getQuantity();
-        if(student.getSeed() < totalPrice) {
+        int totalPrice = request.getStockPrice() * request.getQuantity();
+        if (student.getSeed() < totalPrice) {
             throw new SsakssakApplicationException(ErrorCode.INSUFFICIENT_SEED);
         }
-        List<StockOrderBook> stockOrderBooks = stockOrderBookMapper.selectAvailableSellOrdersUnderPrice(1L, stockTradeRequest.getStockPrice());
-        // TODO : 현재는 주식 하나 뿐이라 1L로 고정
-        if(stockOrderBooks.isEmpty()) {
-            stockOrderBookMapper.insertStockOrderBook(
-                    new StockOrderBookRequest(student.getStdId(), 1L, OrderType.BUY, stockTradeRequest.getQuantity(), stockTradeRequest.getStockPrice(), OrderStatus.OPEN));
-        } else {
-            int needQuantity = stockTradeRequest.getQuantity();
-            for(StockOrderBook stockOrderBook : stockOrderBooks) {
-                needQuantity -= stockOrderBook.getQuantity();
-                if(needQuantity == 0) {
-                    stockOrderBook.setStatus(OrderStatus.COMPLETED);
-                    stockOrderBookMapper.updateStockOrderBook(stockOrderBook);
-                    break;
-                }
-            }
-            student.minusSeed(totalPrice);
-            holdingStock.plusStock(stockTradeRequest.getQuantity());
-            stockOrderBookMapper.insertStockOrderBook(
-                    new StockOrderBookRequest(student.getStdId(), 1L, OrderType.BUY, stockTradeRequest.getQuantity(), stockTradeRequest.getStockPrice(), OrderStatus.COMPLETED));
 
-            // TODO : 매도자 업데이트 부분
+        // TODO : 현재는 주식 하나 뿐이라 1L로 고정이지만 수정해야함
+        List<StockOrderBook> stockOrderBooks = stockOrderBookMapper.selectAvailableSellOrdersUnderPrice(1L, request.getStockPrice());
+        int needQuantity = request.getQuantity();
+        needQuantity = orderMatchingService.matchSellOrders(stockOrderBooks, student, holdingStock, needQuantity, request.getStockPrice());
 
+        if(request.getQuantity() - needQuantity > 0) {
+            stockOrderBookMapper.insertStockOrderBook(
+                new StockOrderBookRequest(
+                        student.getStdId(), 1L, OrderType.BUY, request.getQuantity() - needQuantity,
+                        request.getStockPrice(), OrderStatus.COMPLETED)
+            );
         }
 
-//
-//        Student student = Student.of(studentMapper.selectStudentByUsernameAndName
-//                (stockTradeRequest.getUsername(), stockTradeRequest.getName()));
-//
-//        int buyTotalPrice = stockTradeRequest.getQuantity() * stockTradeRequest.getStockPrice();
-//
-//        if (student.getSeed() < buyTotalPrice) {
-//            throw new IllegalArgumentException("보유한 씨드가 부족합니다.");
-//        }
-//
-//        int currentPrice = stockMapper.selectCurrentStockPrice();
-//
-//        TradeRequest tradeRequest = new TradeRequest();
-//        tradeRequest.setStdId(student.getStdId());
-//        tradeRequest.setTchId(student.getTchId());
-//        tradeRequest.setQuantity(stockTradeRequest.getQuantity());
-//        tradeRequest.setStockPrice(stockTradeRequest.getStockPrice());
-//
-//        int result = stockMapper.insertStockBuy(tradeRequest);
-//
-//        HoldingStockDTO holdingStockDTO = getHoldingStock(stockTradeRequest.getUsername(), stockTradeRequest.getName());
-//
-//        int totalInvestment = holdingStockDTO.getTotalInvestment() + tradeRequest.getQuantity() * tradeRequest.getStockPrice();
-//        int totalQuantity = holdingStockDTO.getTotalQuantity() + tradeRequest.getQuantity();
-//        double averagePrice = (double) totalInvestment / totalQuantity;
-//        double currentValue = currentPrice * totalQuantity;
-//        double profitLoss = currentValue - totalInvestment;
-//        double profitRate = (profitLoss / totalInvestment) * 100;
-//
-//        holdingStockDTO.setTotalQuantity(totalQuantity);
-//        holdingStockDTO.setTotalInvestment(totalInvestment);
-//        holdingStockDTO.setAveragePrice(averagePrice);
-//        holdingStockDTO.setCurrentValue(currentValue);
-//        holdingStockDTO.setProfitLoss(profitLoss);
-//        holdingStockDTO.setProfitRate(profitRate);
-//
-//        studentMapper.updateStudentSeed(student.getStdId(), -buyTotalPrice);
-//        int holdingStockResult = stockMapper.updateHoldingStock(holdingStockDTO);
-//        if (holdingStockResult != 1 || result != 1) {
-//            throw new NoSuchElementException();
-//        }
+        if (needQuantity > 0) {
+            stockOrderBookMapper.insertStockOrderBook(
+                    new StockOrderBookRequest(
+                            student.getStdId(), 1L, OrderType.BUY, needQuantity,
+                            request.getStockPrice(), OrderStatus.OPEN)
+            );
+        }
+        studentMapper.updateStudentSeed(student.getStdId(), student.getSeed());
     }
 
+    private Student getStudent(StudentIdentifiable identifiable) {
+        return studentMapper.selectStudentByUsernameAndStdName(identifiable.getUsername(), identifiable.getName());
+    }
+
+
     @Transactional
-    public void sellStock(StockTradeRequest stockTradeRequest) {
-        Student student = studentMapper.selectStudentByUsernameAndStdName(stockTradeRequest.getUsername(), stockTradeRequest.getName());
-        HoldingStock holdingStock = stockMapper.selectHoldingStock(student.getStdId());
+    public void sellStock(StockTradeRequest request) {
+        Student student = getStudent(request);
+        HoldingStock holdingStock = getHoldingStock(request);
 
-        holdingStock.validateSellable(stockTradeRequest.getQuantity());
+        holdingStock.validateSellable(request.getQuantity());
 
-        StockOrderBookRequest order = StockOrderBookRequest.builder()
-                .stdId(student.getStdId())
-                .stockId(1L) // 만약 stockId가 1개뿐이면 고정. 아니면 조회 필요
-                .orderType(OrderType.SELL)
-                .quantity(stockTradeRequest.getQuantity())
-                .price(stockTradeRequest.getStockPrice())
-                .build();
+        List<StockOrderBook> buyOrders = stockOrderBookMapper.selectAvailableBuyOrdersOverPrice(1L, request.getStockPrice());
+        int remainingQuantity = orderMatchingService.matchBuyOrders(buyOrders, student, holdingStock, request.getQuantity(), request.getStockPrice());
 
-        stockOrderBookMapper.insertStockOrderBook(order);
+        if (request.getQuantity() - remainingQuantity > 0) {
+            stockOrderBookMapper.insertStockOrderBook(
+                    new StockOrderBookRequest(
+                            student.getStdId(), 1L, OrderType.SELL, request.getQuantity() - remainingQuantity,
+                            request.getStockPrice(), OrderStatus.COMPLETED)
+            );
+        }
+
+        if (remainingQuantity > 0) {
+            stockOrderBookMapper.insertStockOrderBook(
+                    new StockOrderBookRequest(
+                            student.getStdId(), 1L, OrderType.SELL, remainingQuantity,
+                            request.getStockPrice(), OrderStatus.OPEN)
+            );
+        }
 
 
-//        Student student = Student.of(studentMapper.selectStudentByUsernameAndName
-//                (stockTradeRequest.getUsername(), stockTradeRequest.getName()));
-//
-//        int sellTotalPrice = stockTradeRequest.getQuantity() * stockTradeRequest.getStockPrice();
-//        int currentPrice = stockMapper.selectCurrentStockPrice();
-//
-//        TradeRequest tradeRequest = new TradeRequest();
-//        tradeRequest.setStdId(student.getStdId());
-//        tradeRequest.setTchId(student.getTchId());
-//        tradeRequest.setQuantity(stockTradeRequest.getQuantity());
-//        tradeRequest.setStockPrice(stockTradeRequest.getStockPrice());
-//
-//        int result = stockMapper.insertStockSell(tradeRequest);
-//
-//        HoldingStockDTO holdingStockDTO = getHoldingStock(stockTradeRequest.getUsername(), stockTradeRequest.getName());
-//
-//        int totalInvestment = holdingStockDTO.getTotalInvestment() - tradeRequest.getQuantity() * tradeRequest.getStockPrice();
-//        int totalQuantity = holdingStockDTO.getTotalQuantity() - tradeRequest.getQuantity();
-//        double averagePrice = (double) totalInvestment / totalQuantity;
-//        double currentValue = currentPrice * totalQuantity;
-//        double profitLoss = currentValue - totalInvestment;
-//        double profitRate = profitLoss / totalInvestment * 100;
-//
-//        holdingStockDTO.setTotalQuantity(totalQuantity);
-//        holdingStockDTO.setTotalInvestment(totalInvestment);
-//        holdingStockDTO.setAveragePrice(averagePrice);
-//        holdingStockDTO.setCurrentValue(currentValue);
-//        holdingStockDTO.setProfitLoss(profitLoss);
-//        holdingStockDTO.setProfitRate(profitRate);
-//
-//        studentMapper.updateStudentSeed(student.getStdId(), sellTotalPrice);
-//        int holdingStockResult = stockMapper.updateHoldingStock(holdingStockDTO);
-//        if (holdingStockResult != 1 || result != 1) {
-//            throw new NoSuchElementException();
-//        }
+
+        studentMapper.updateStudentSeed(student.getStdId(), student.getSeed());
+    }
+
+    public HoldingStock getHoldingStock(StudentIdentifiable identifiable) {
+        return stockMapper.selectHoldingStock(identifiable.getStdId());
     }
 
     public HoldingStock getHoldingStock(String username, String name) {
-        Student student = Student.of(studentMapper.selectStudentByUsernameAndName
-                (username, name));
-        return stockMapper.selectHoldingStock(student.getStdId());
+        return stockMapper.selectHoldingStock(studentMapper.selectStudentByUsernameAndName(username, name).getStdId());
     }
 
     public List<RateHistoryDTO> getRateHistoryLast5Days() {
@@ -192,7 +138,7 @@ public class StockService {
 
     public void createStockNews(StockNewsRequest request) {
         int result = stockMapper.insertStockNews(request);
-        if(result != 1) {
+        if (result != 1) {
             throw new NoSuchElementException("뉴스 생성 실패");
         }
     }
@@ -224,5 +170,27 @@ public class StockService {
 
     public List<StockOrderBook> getSellStockOrderBookList() {
         return stockOrderBookMapper.selectSellStockOrderBookList();
+    }
+
+    public OrderBookDTO getOrderBook() {
+        List<StockOrderBook> allOrders = stockOrderBookMapper.findAllOpenOrders();
+
+        List<OrderInfo> buyList = allOrders.stream()
+                .filter(o -> o.getOrderType().equals(OrderType.BUY))
+                .collect(Collectors.groupingBy(StockOrderBook::getPrice, Collectors.summingInt(StockOrderBook::getQuantity)))
+                .entrySet().stream()
+                .map(e -> new OrderInfo(e.getKey(), e.getValue()))
+                .sorted(Comparator.comparing(OrderInfo::getPrice).reversed()) // 높은 가격부터
+                .toList();
+
+        List<OrderInfo> sellList = allOrders.stream()
+                .filter(o -> o.getOrderType().equals(OrderType.SELL))
+                .collect(Collectors.groupingBy(StockOrderBook::getPrice, Collectors.summingInt(StockOrderBook::getQuantity)))
+                .entrySet().stream()
+                .map(e -> new OrderInfo(e.getKey(), e.getValue()))
+                .sorted(Comparator.comparing(OrderInfo::getPrice)) // 낮은 가격부터
+                .toList();
+
+        return new OrderBookDTO(buyList, sellList);
     }
 }

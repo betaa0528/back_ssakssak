@@ -3,6 +3,9 @@ package com.kb.controller.student;
 import com.kb.member.dto.Member;
 import com.kb.stock.domain.HoldingStock;
 import com.kb.stock.domain.RateHistory;
+import com.kb.stock.domain.StockOrderBook;
+import com.kb.stock.dto.OrderBookDTO;
+import com.kb.stock.dto.RateHistoryDTO;
 import com.kb.stock.dto.StockNewsDTO;
 import com.kb.stock.dto.StockTradeRequest;
 import com.kb.stock.domain.StockTrade;
@@ -23,14 +26,13 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 @Tag(description = "StudentStockController", name = "학생 주식 정보")
-@PropertySource({"classpath:/application.yml"})
 public class StudentStockController {
 
     private final StockService stockService;
 
     @GetMapping("/data")
-    public ResponseEntity<List<RateHistory>> getHistories() {
-        List<RateHistory> histories = stockService.getRateHistories();
+    public ResponseEntity<List<RateHistoryDTO>> getHistories() {
+        List<RateHistoryDTO> histories = stockService.getRateHistories();
 
         return ResponseEntity.ok(histories);
     }
@@ -51,7 +53,7 @@ public class StudentStockController {
     @PostMapping("/buy")
     public ResponseEntity<HoldingStock> buyStock(@RequestBody StockTradeRequest request) throws IllegalAccessException {
         stockService.buyStock(request);
-        HoldingStock holdingStock = stockService.getHoldingStock(request.getUsername(), request.getName());
+        HoldingStock holdingStock = stockService.getHoldingStock(request);
 
         return ResponseEntity.status(HttpStatus.OK).body(holdingStock);
     }
@@ -59,7 +61,7 @@ public class StudentStockController {
     @PostMapping("/sell")
     public ResponseEntity<HoldingStock> sellStock(@RequestBody StockTradeRequest request) {
         stockService.sellStock(request);
-        HoldingStock holdingStock = stockService.getHoldingStock(request.getUsername(), request.getName());
+        HoldingStock holdingStock = stockService.getHoldingStock(request);
 
         return ResponseEntity.status(HttpStatus.OK).body(holdingStock);
     }
@@ -68,6 +70,11 @@ public class StudentStockController {
     public ResponseEntity<HoldingStock> getHoldingStock(@AuthenticationPrincipal Member principal) throws Exception {
         HoldingStock holdingStock = stockService.getHoldingStock(principal.getUsername(), principal.getName());
         return ResponseEntity.ok(holdingStock);
+    }
+
+    @GetMapping("/orderBook")
+    public ResponseEntity<OrderBookDTO> getStockOrderBook() throws Exception {
+        return ResponseEntity.ok(stockService.getOrderBook());
     }
 
 

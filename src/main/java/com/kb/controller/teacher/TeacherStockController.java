@@ -1,8 +1,8 @@
 package com.kb.controller.teacher;
 
-import com.kb.rateHistory.dto.RateHistoryDTO;
 import com.kb.stock.domain.HoldingStock;
 import com.kb.stock.domain.StockNews;
+import com.kb.stock.dto.RateHistoryDTO;
 import com.kb.stock.dto.StockChartDTO;
 import com.kb.stock.dto.StockNewsDTO;
 import com.kb.stock.dto.StockNewsRequest;

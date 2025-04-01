@@ -19,9 +19,11 @@ public class JwtProcessor {
 
     //    private Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);  -- 운영시 사용
     // JWT 생성
-    public String generateToken(String subject) {
+    public String generateToken(String subject, Long stdId, Long tchId) {
         return Jwts.builder()
                 .setSubject(subject)
+                .claim("stdId", stdId)
+                .claim("tchId", tchId)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(new Date().getTime() + TOKEN_VALID_MILISECOND))
                 .signWith(key)

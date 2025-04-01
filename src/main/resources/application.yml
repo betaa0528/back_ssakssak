@@ -1,0 +1,57 @@
+server:
+  port: 8081
+
+spring:
+  profiles:
+    active: default
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/ssakssak
+    username: user
+    password: 1234
+  batch:
+    job.enabled: false
+    jdbc.initialize-schema: always
+  kafka:
+    bootstrap-servers: localhost:9092
+    topic:
+      notification: alarm
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      properties.spring.json.trusted.packages: "*"
+      group-id: alert-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+
+mybatis:
+  mapper-locations: classpath:mapper/**/*.xml
+  config-location: classpath:mybatis-config.xml
+#  configuration:
+#    map-underscore-to-camel-case: true
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
+logging:
+  level:
+    com.kb: debug
+    org.mybatis: debug
+    org.apache.ibatis: debug
+    org.springframework.batch: DEBUG
+
+upload:
+  maxFileSize: 1024
+
+os:
+  type: win
+  file:
+    upload: c:/upload
+
+file_save_location_win: c:/upload
+file_save_location_other: /home/upload
+
+chat-gpt:
+  api-key: sk-proj-qar-HCZRLpV33OkWk8G3ouMPhlmxbBozwR9ChfbEQjm0jfIsp0KHW6Md5CX1F4f5ljkFRI2Tb9T3BlbkFJjAP1WorgLOBX1bm9                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               4MWVDYnU9C3iYrEnb7i6p-0nxwvQMUEMo1n_uvdmHcpglKoubIG9i8OmwA
+

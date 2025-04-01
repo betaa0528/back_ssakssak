@@ -53,7 +53,7 @@ public interface StudentMapper {
 
     Student selectStudentByUsernameAndStdName(@Param("username") String username, @Param("name") String name);
 
-    StudentDTO selectStudentByUsernameAndName(@Param("username") String username, @Param("name") String name);
+    Student selectStudentByUsernameAndName(@Param("username") String username, @Param("name") String name);
 
     List<StudentSalaryDTO> selectStudentBaseSalary();
 

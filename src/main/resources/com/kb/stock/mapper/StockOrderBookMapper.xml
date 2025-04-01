@@ -22,10 +22,22 @@
         WHERE order_type = 'SELL' AND status = 'OPEN'
         ORDER BY created_at ASC
     </select>
+
     <select id="selectAvailableSellOrdersUnderPrice" resultType="com.kb.stock.domain.StockOrderBook">
         SELECT *
         FROM stock_order_book
-        WHERE stock_id = #{stock_id} AND order_type = 'BUY' AND status = 'OPEN' AND price <= #{price}
-        ORDER BY created_at ASC
+        WHERE stock_id = #{stockId} AND order_type = 'SELL' AND status = 'OPEN' AND price &lt;= #{price}
+        ORDER BY price , created_at
+    </select>
+    <select id="selectAvailableBuyOrdersOverPrice" resultType="com.kb.stock.domain.StockOrderBook">
+        SELECT *
+        FROM stock_order_book
+        WHERE stock_id = #{stockId} AND order_type = 'BUY' AND status = 'OPEN' AND price &lt;= #{price}
+        ORDER BY price DESC, created_at
+    </select>
+    <select id="findAllOpenOrders" resultType="com.kb.stock.domain.StockOrderBook">
+        SELECT *
+        FROM stock_order_book
+        WHERE status = 'OPEN'
     </select>
 </mapper>

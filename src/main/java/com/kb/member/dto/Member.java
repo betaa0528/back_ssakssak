@@ -20,6 +20,8 @@ public class Member implements UserDetails {
     private String username;            // 로그인 아이디
     private String password;    // password
     private String name;        // 사용자이름
+    private Long stdId;
+    private Long tchId;
     private Date createDate;    // 생성일
     private Date modifyDate;    // 수정일
 
