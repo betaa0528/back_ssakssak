@@ -38,6 +38,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
+        log.info("JwtStudentAuthenticationFilter activated for URI: " + request.getRequestURI());
+
         String token = null;
         if (bearerToken != null && bearerToken.startsWith(BEARER_PREFIX)) {
             token = bearerToken.substring(BEARER_PREFIX.length());
