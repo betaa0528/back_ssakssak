@@ -42,7 +42,15 @@ jobs:
           cd front_ssakssak
           npm install
           npm run build
-
+      - name: Cleanup dist folder on EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_KEY }}
+          script: |
+            echo "🧹 기존 dist 파일 삭제 중..."
+            rm -rf /home/ubuntu/front_ssakssak/dist/*
       - name: Copy Vue dist to EC2
         uses: appleboy/scp-action@master
         with:
