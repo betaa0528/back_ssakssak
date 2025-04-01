@@ -44,8 +44,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // CSRF 보호 비활성화
                 .cors(cors -> cors.configurationSource(configurationSource())) // CORS 설정
+                .csrf(csrf -> csrf.disable()) // CSRF 보호 비활성화
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 정책 설정
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
@@ -71,6 +71,7 @@ public class SecurityConfig {
 
     @Bean
     public CorsConfigurationSource configurationSource() {
+        log.info("Configuring CorsConfigurationSource");
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("http://ssakssak.shop", "https://ssakssak.shop","http://localhost:21000", "http://ec2-13-209-69-73.ap-northeast-2.compute.amazonaws.com"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
