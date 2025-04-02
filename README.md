@@ -179,3 +179,21 @@ Pull Request는 각 브랜치에서 작업을 완료한 후, 메인 브랜치로
 # 개발 기간 및 팀원
 - 개발 기간 : 2024.09 ~ 2024.10 (고도화 진행중)
 - 팀원 : 3인
+<table>
+  <thead>
+    <td>이름</td>
+    <td>깃허브</td>
+  </thead>
+  <tr>
+    <td>박민주</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>이조은</td>
+    <td>https://github.com/leejoeun98</td>
+  </tr>
+  <tr>
+    <td>한가연</td>
+    <td>https://github.com/iamgayeon</td>
+  </tr>
+</table>
