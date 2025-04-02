@@ -39,7 +39,6 @@ jobs:
 
       - name: Build frontend
         run: |
-          cd front_ssakssak
           npm install
           npm run build
         working-directory: front_ssakssak
