@@ -181,12 +181,12 @@ Pull Request는 각 브랜치에서 작업을 완료한 후, 메인 브랜치로
 - 팀원 : 3인
 <table>
   <thead>
-    <td>이름</td>
-    <td>깃허브</td>
+    <td><b>이름</b></td>
+    <td><b>깃허브</b></td>
   </thead>
   <tr>
     <td>박민주</td>
-    <td></td>
+    <td>https://github.com/betaa0528</td>
   </tr>
   <tr>
     <td>이조은</td>
