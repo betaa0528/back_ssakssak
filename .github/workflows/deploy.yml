@@ -57,7 +57,7 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_KEY }}
           source: "dist/*"
-          target: "/home/ubuntu/front_ssakssak/dist/"
+          target: "/home/ubuntu/front_ssakssak/"
 
       - name: SSH to EC2 and deploy
         uses: appleboy/ssh-action@master
