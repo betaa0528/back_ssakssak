@@ -42,6 +42,8 @@ jobs:
           cd front_ssakssak
           npm install
           npm run build
+        working-directory: front_ssakssak
+
       - name: Cleanup dist folder on EC2
         uses: appleboy/ssh-action@master
         with:
@@ -57,7 +59,7 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ubuntu
           key: ${{ secrets.EC2_KEY }}
-          source: "front_ssakssak/dist"
+          source: "front_ssakssak/dist/*"
           target: "/home/ubuntu/front_ssakssak/dist/"
 
       - name: SSH to EC2 and deploy
