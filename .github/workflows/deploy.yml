@@ -35,13 +35,11 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: betaa0528/front_ssakssak
-          path: front_ssakssak
 
       - name: Build frontend
         run: |
           npm install
           npm run build
-        working-directory: front_ssakssak
 
       - name: Cleanup dist folder on EC2
         uses: appleboy/ssh-action@master
@@ -58,7 +56,7 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ubuntu
           key: ${{ secrets.EC2_KEY }}
-          source: "front_ssakssak/dist/*"
+          source: "dist/*"
           target: "/home/ubuntu/front_ssakssak/dist/"
 
       - name: SSH to EC2 and deploy
