@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kb.student.mapper.StudentTransactionHistoryMapper">
+    <insert id="insertTransactionHistory">
+        insert into student_transaction_history(std_id, amount, type, reason)
+        values (#{stdId}, #{amount}, #{type}, #{reason})
+    </insert>
+
+    <select id="selectTransactionHistoryByStdId" resultType="com.kb.student.domain.StudentTransactionHistory">
+        select * from student_transaction_history where std_id = #{stdId};
+    </select>
+
+    <select id="selectTransactionHistoryByStdIdAndType"
+            resultType="com.kb.student.domain.StudentTransactionHistory">
+        select * from student_transaction_history where std_id = #{stdId} and type = #{type}
+    </select>
+</mapper>
