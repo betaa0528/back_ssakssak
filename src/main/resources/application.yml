@@ -7,8 +7,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/ssakssak
-    username: user
-    password: 1234
+    username: 
+    password: 
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
@@ -56,5 +56,6 @@ file_save_location_win: c:/upload
 file_save_location_other: /home/upload
 
 chat-gpt:
-  api-key: sk-proj-qar-HCZRLpV33OkWk8G3ouMPhlmxbBozwR9ChfbEQjm0jfIsp0KHW6Md5CX1F4f5ljkFRI2Tb9T3BlbkFJjAP1WorgLOBX1bm9                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               4MWVDYnU9C3iYrEnb7i6p-0nxwvQMUEMo1n_uvdmHcpglKoubIG9i8OmwA
+  api-key:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  4MWVDYnU9C3iYrEnb7i6p-0nxwvQMUEMo1n_uvdmHcpglKoubIG9i8OmwA
+
 
